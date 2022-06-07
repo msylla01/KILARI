@@ -1,0 +1,455 @@
+<app-header></app-header>
+
+
+
+<section id="main-content" *ngIf="dis ==1" >
+  <section class="wrapper">
+    <span><h2>Etape 1</h2></span>
+    <h3><i class="fa fa-angle-right"></i> Creation Rai</h3>
+      <!-- BASIC FORM ELELEMNTS -->
+      <div class="row mt">
+        <div class="col-lg-10">
+          <div class="form-panel">
+            <h4 class="mb"><i class="fa fa-angle-right"></i>Creation Rai</h4>
+            <form class="form-horizontal style-form" [formGroup]="form" (ngSubmit)="submit()">
+              <div class="form-group">
+                <label class="col-sm-3 col-sm-5 control-label" for="Numero">TOC</label>
+                <div class="col-sm-10">
+                  <input
+                formControlName="Numero"
+                id="Numero"
+                type="text"
+                class="form-control">
+                </div>
+              </div>
+
+
+              <div class="form-group">
+                <label class="col-sm-2 col-sm-2 control-label" for ="priorite">PRIORITE</label>
+                <div class="col-md-10">
+                  <select id="inputState" class="form-control" name="priorite"formControlName="priorite" >
+                    <option selected>P1</option>
+                    <option selected>P2</option>
+
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                  <label class="col-sm-2 col-sm-2 control-label" >pays</label>
+                  <div class="col-md-10">
+                      <select id="pays" class="form-control" name="pays" formControlName ="pays">
+                        <option selected>OCI</option>
+                        <option selected>OCD</option>
+                        <option selected>OML</option>
+                        <option selected>OJO</option>
+                        <option selected>OBF</option>
+                        <option selected>OSN</option>
+                        <option selected>OLS</option>
+                        <option selected>OGW</option>
+                        <option selected>OBW</option>
+  
+                      </select>
+                    </div>
+                </div>
+              <div class="form-group">
+                <label class="col-sm-2 " for ="Datedebut">Date incident </label>
+                <div class="form-group col-md-6">
+                  <input  name="Datedebut"
+                  type="date" class="form-control round-form" formControlName ="Datedebut">
+                </div>
+              </div>
+
+              <div class="form-group">
+                  <label class="col-sm-4 col-sm-5 control-label" for="heurD"> Heur Incident</label>
+                  <div class="col-sm-3">
+                  <input
+                  formControlName="heurD"
+                  id="heurD"
+                  type="time" 
+                  name="time"
+                  class="form-control">
+                  </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 col-sm-2 control-label">Rétablissement</label>
+                <div class="col-sm-6">
+                  <input name="Datefin" class="form-control" id="Datefin" type="date" formControlName="Datefin" >
+                </div>
+              </div>
+     
+              <div class="form-group">
+                    <label class="col-sm-3 col-sm-5 control-label" for="heurF"> Heur retablissement</label>
+                    <div class="col-sm-4">
+                      <input
+                    formControlName="heurF"
+                    id="heurF"
+                    type="time" 
+                    name="time"
+                    class="form-control">
+                    </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 col-sm-2 control-label">Description</label>
+                <div class="col-sm-10">
+                  <textarea
+                  name="Description"
+                  formControlName ="Description"
+                  id="Description"
+                  type="text"
+                  class="form-control">
+              </textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 col-sm-2 control-label">Plateform/ Service</label>
+                <div class="col-md-10">
+                  <select id="SerPlat" class="form-control" name="SerPlat" formControlName="SerPlat" >
+                    <option selected>NOMAD</option>
+                    <option selected>EME </option>
+                    <option selected>WAAAT</option>
+                    <option selected>MESSAGING PRO</option>
+                    <option selected>OMS</option>
+                    <option selected>MY ORANGE</option>
+                    <option selected>OTRS</option>
+                    <option selected>CENTREON</option>
+                    <option selected>USSD SHOP</option>
+
+                  </select>
+                </div>
+
+              </div>
+             
+              <button type="submit" class="btn btn-primary">Enregistrer et passé a l'etape suivant</button>
+            </form>
+          </div>
+        </div>
+        <!-- col-lg-12-->
+      </div>
+  </section>
+</section>
+
+
+
+
+<section id="main-content"  *ngIf="dis==2">
+  <section class="wrapper">
+      <span><h2>Etape 2</h2></span>
+      <h3><i class="fa fa-angle-right"></i> Creation Rai</h3>
+      <!-- BASIC FORM ELELEMNTS -->
+      <div class="row mt">
+        <div class="col-lg-10">
+          <div class="form-panel">
+            <h4 class="mb"><i class="fa fa-angle-right"></i>Creation Rai</h4>
+            <form class="form-horizontal style-form" [formGroup]="form1" (ngSubmit)="submit2()">
+              <div class="form-group">
+                <label class="col-sm-3 col-sm-5 control-label" for="Numerotocpro">TOC PROBLEM</label>
+                <div class="col-sm-6">
+                  <input
+                formControlName="Numerotocpro"
+                id="Numerotocpro"
+                type="text"
+                class="form-control">
+                </div>
+              </div>
+              <!--
+                              <div class="form-group">
+                <label class="col-sm-2 col-sm-2 control-label" for ="Priorite">TOC </label>
+                <div class="col-md-10">
+                  <select id="inputState" class="form-control"   name="toc" formControlName="toc" >
+                    <option *ngFor="let d of dt " [value]="d.id ">{{d.Numerotoc}}</option>
+
+                  </select>
+                </div>
+              </div>
+              -->
+              
+              <!--
+                <div class="form-group">
+                <label class="col-sm-2 col-sm-2 control-label" for ="Priorite">PRIORITE</label>
+                <div class="col-md-10">
+                  <select id="inputState" class="form-control" name="Priorite"formControlName="Priorite" >
+                    <option selected>P1</option>
+                    <option selected>P2</option>
+
+                  </select>
+                </div>
+              </div>
+              -->
+              <!--
+                <div class="form-group">
+                <label class="col-sm-2 " for ="Dtatustocprob">STATUT TOC PROBLEME </label>
+                <div class="form-group col-md-10">
+                  <select id="inputState" class="form-control" name="Dtatustocprob"formControlName="Dtatustocprob" >
+                    <option selected>CLOS</option>
+                    <option selected>EN COURS</option>
+
+                  </select>
+                </div>
+              </div>
+              -->
+
+                <div class="form-group">
+                <label class="col-sm-2 col-sm-2 control-label">PORTEUR</label>
+                <div class="col-sm-6">
+                  <select
+                  name="Porteur"
+                  formControlName ="Porteur"
+                  id="Porteur"
+                  type="text"
+                  class="form-control">
+                  <option selected >Charles Modeste KAMBO</option>
+                  <option selected>Roland AMON</option>
+                    <option selected>Elodie TUHE LOU</option>
+                  </select>
+                </div>
+              </div>
+
+              
+              <div class="form-group">
+                <label class="col-sm-2 " for ="typeproblem">TYPE</label>
+                <div class="form-group col-md-6">
+                  <select id="inputState" class="form-control" name="typeproblem"formControlName="typeproblem" >
+                    <option selected>MAJEUR</option>
+                    <option selected>RECURRENT</option>
+
+                  </select>
+                   </div>
+              </div>
+              <!--
+
+                              <div class="form-group">
+                <label class="col-sm-2 col-sm-2 control-label">DATE DE CLOTURE TOC PROBLEME</label>
+                <div class="col-sm-6">
+                  <input name="Datefin" class="form-control" id="Date" type="date" formControlName="Date" >
+                </div>
+              </div>
+              -->
+     
+              
+
+
+             
+              <button type="submit" class="btn btn-primary">Enregistrer et passé a l'etape suivant</button>
+              
+            </form>
+          </div>
+        </div>
+        <!-- col-lg-12-->
+      </div>
+  </section>
+</section>
+
+
+
+<section id="main-content" *ngIf="dis==3" >
+  <section class="wrapper">
+    <span><h2>Etape FInale</h2></span>
+    <h3><i class="fa fa-angle-right"></i> Creation Rai</h3>
+      <!-- BASIC FORM ELELEMNTS -->
+      <div class="row mt">
+        <div class="col-lg-10">
+          <div class="form-panel">
+            <h4 class="mb"><i class="fa fa-angle-right"></i>Creation Rai</h4>
+            <form class="form-horizontal style-form" [formGroup]="form2" (ngSubmit)="submit3()">
+              <!--
+                <div class="form-group">
+                <label class="col-sm-2 col-sm-2 control-label" for ="Priorite">TOC PROBLEMEE ASSOCIE</label>
+                <div class="col-md-10">
+                  <select id="inputState" class="form-control"   name="tocprobleme" formControlName="tocprobleme" >
+                    <option *ngFor="let d of dt1 " [value]="d.id ">{{d.Numerotocpro}}</option>
+
+                  </select>
+                </div>
+              </div>
+              -->
+
+              <div class="form-group">
+                <label class="col-sm-3 col-sm-5 control-label" for="status">STATUS RAI</label>
+                <div class="col-sm-10">
+                  <select id="inputState" class="form-control" name="status"formControlName="status" >
+                    <option selected>Réalisé</option>
+                    <option selected>Planifié</option>
+                    <option selected>Annulé</option>
+                    <option selected>Reporté</option>
+                    <option selected>Non tenu</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-3 col-sm-5 control-label" for="Rirecu">RI Recu</label>
+                <div class="col-sm-10">
+                  <select id="inputState" class="form-control" name="Rirecu"formControlName="Rirecu" >
+                    <option selected>OUI</option>
+                    <option selected>NON </option>
+                    <option selected>N/A</option>
+
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-3 col-sm-5 control-label" for="Rapportredige">Rapports Rédigés</label>
+                <div class="col-sm-10">
+                  <select id="inputState" class="form-control" name="Rapportredige"formControlName="Rapportredige" >
+                    <option selected>OUI</option>
+                    <option selected>NON </option>
+                    <option selected>N/A</option>
+
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-3 col-sm-5 control-label" for="Rapportpartage">Rapports Partagés</label>
+                <div class="col-sm-10">
+                  <select id="inputState" class="form-control" name="Rapportpartage"formControlName="Rapportpartage" >
+                    <option selected>OUI</option>
+                    <option selected>NON </option>
+                    <option selected>N/A</option>
+
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-3 col-sm-5 control-label" for="RirecuComptrendus">Comptes rendus</label>
+                <div class="col-sm-10">
+                  <select id="inputState" class="form-control" name="Comptrendus"formControlName="Comptrendus" >
+                    <option selected>OUI</option>
+                    <option selected>NON </option>
+                    <option selected>N/A</option>
+
+                  </select>
+                </div>
+              </div>
+
+
+
+              <div class="form-group">
+                <label class="col-sm-3 col-sm-5 control-label" for="JoinToc">Joint au TOC</label>
+                <div class="col-sm-10">
+                  <select id="inputState" class="form-control" name="JoinToc"formControlName="JoinToc" >
+                    <option selected>OUI</option>
+                    <option selected>NON </option>
+                    <option selected>N/A</option>
+
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 col-sm-5 control-label" for="declenchement">Déclechement RAI</label>
+                <div class="col-sm-10">
+                  <select id="inputState" class="form-control" name="declenchement"formControlName="declenchement" >
+                    <option selected>1</option>
+                    <option selected>2 </option>
+                    <option selected>3</option>
+                    <option selected>4 </option>
+                    <option selected>5</option>
+
+                  </select>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label class="col-sm-2 " for ="Datecritere">Date RAI </label>
+                <div class="form-group col-md-10">
+                  <input  name="Datecritere"
+                  type="date" class="form-control round-form" formControlName ="Datecritere">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 " for ="DateRept">Date REception RAI </label>
+                <div class="form-group col-md-10">
+                  <input  name="DateRept"
+                  type="date" class="form-control round-form" formControlName ="DateRept">
+                </div>
+              </div>
+                  
+              <div class="form-group">
+                <label class="col-sm-2 col-sm-2 control-label">CAuse</label>
+                <div class="col-sm-10">
+                  <textarea
+                  name="Cause"
+                  formControlName ="Cause"
+                  id="Cause"
+                  type="text"
+                  class="form-control">
+                  </textarea>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 col-sm-2 control-label">Root Cause</label>
+                <div class="col-sm-10">
+                  <textarea
+                  name="Rootcause"
+                  formControlName ="Rootcause"
+                  id="Rootcause"
+                  type="text"
+                  class="form-control">
+                  </textarea>
+                </div>
+              </div>
+
+
+              <div class="form-group">
+                <label class="col-sm-2 col-sm-2 control-label">STAT ROOT CAUSE</label>
+                <div class="col-md-10">
+                  <select id="Statrootcause" class="form-control" name="Statrootcause" formControlName="Statrootcause" >
+                    <option selected>Ok</option>
+                    <option selected>NOK </option>
+                  </select>
+                </div>
+
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 col-sm-2 control-label">Action de rétablissement</label>
+                <div class="col-sm-10">
+                  <textarea
+                  name="Actionretablissement"
+                  formControlName ="Actionretablissement"
+                  id="Actionretablissement"
+                  type="text"
+                  class="form-control">
+                  </textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 col-sm-2 control-label">Types de solution</label>
+                <div class="col-md-10">
+                  <select id="Typesolution" class="form-control" name="Typesolution" formControlName="Typesolution" >
+                    <option selected>DEFINITIVE</option>
+                    <option selected>Contournement </option>
+                  </select>
+                </div>
+
+              </div>
+
+
+              <div class="form-group">
+                <label class="col-sm-2 col-sm-2 control-label">Commentaires</label>
+                <div class="col-sm-10">
+                  <textarea
+                  name="Commentaire"
+                  formControlName ="Commentaire"
+                  id="Commentaire"
+                  type="text"
+                  class="form-control">
+                  </textarea>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary">Enregistrer</button>
+            </form>
+            
+          </div>
+        </div>
+        <!-- col-lg-12-->
+      </div>
+  </section>
+</section>

@@ -1,0 +1,437 @@
+<app-header></app-header>
+
+<section id="main-content" *ngIf="dis =='1'" >
+    <section class="wrapper">
+      <span><h2>Etape 1</h2></span>
+      <h3><i class="fa fa-angle-right"></i> Modification Rai N° :{{post.Numerotoc}}</h3>
+        <!-- BASIC FORM ELELEMNTS -->
+        <div class="row mt">
+          <div class="col-lg-10">
+            <div class="form-panel">
+              <h4 class="mb"><i class="fa fa-angle-right"></i>Modification Rai</h4>
+              <form class="form-horizontal style-form" [formGroup]="form" (ngSubmit)="submit()">
+                <div class="form-group">
+                    <label class="col-sm-3 col-sm-5 control-label" for="Numerotoc">TOC</label>
+                    <div class="col-sm-5">
+                          <input
+                            formControlName="Numerotoc"
+                            id="Numerotoc"
+                            type="text"
+                            [(ngModel)]="post.Numerotoc"
+                            class="form-control">
+                    </div>
+                        
+                </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 col-sm-2 control-label" for ="priorite">PRIORITE</label>
+                <div class="col-md-10">
+                    <select id="inputState" class="form-control" name="priorite"formControlName="priorite" [(ngModel)]="post.priorite" >
+                        <option selected></option>
+                        <option selected>P1</option>
+                        <option selected>P2</option>
+
+                    </select>
+                </div>
+            </div>
+   
+            <div class="form-group">
+                  <label class="col-sm-2 col-sm-2 control-label" >pays</label>
+                  <div class="col-md-10">
+                      <select id="pays" class="form-control" name="pays" formControlName ="pays" [(ngModel)]="post.pays">
+                        <option selected></option>
+                        <option selected>OCI</option>
+                        <option selected>OCD</option>
+                        <option selected>OML</option>
+                        <option selected>OJO</option>
+                        <option selected>OBF</option>
+                        <option selected>OSN</option>
+                        <option selected>OLS</option>
+                        <option selected>OGW</option>
+                        <option selected>OBW</option>
+  
+                      </select>
+                    </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 " for ="Datedebut">Date incident </label>
+                <div class="form-group col-md-10">
+                  <input  name="Datedebut"
+                  type="date" class="form-control round-form" [(ngModel)]="post.Datedebut" formControlName ="Datedebut">
+                </div>
+            </div> 
+
+              <div class="form-group">
+                <label class="col-sm-2 col-sm-2 control-label">Rétablissement</label>
+                <div class="col-sm-10">
+                  <input name="Datefin" class="form-control" id="Datefin" type="date"[(ngModel)]="post.Datefin" formControlName="Datefin" >
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 col-sm-2 control-label">Description</label>
+                <div class="col-sm-10">
+                  <textarea
+                  name="Description"
+                  [(ngModel)]="post.Description" 
+                  formControlName ="Description"
+                  id="Description"
+                  type="text"
+                  class="form-control">
+              </textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 col-sm-2 control-label">Plateform/ Service</label>
+                <div class="col-md-10">
+                  <select id="SerPlat" class="form-control" name="SerPlat" formControlName="SerPlat"
+                  [(ngModel)]="post.SerPlat" >
+                    <option selected>NOMAD</option>
+                    <option selected>EME </option>
+                    <option selected>WAAAT</option>
+                    <option selected>MESSAGING PRO</option>
+                    <option selected>OMS</option>
+                    <option selected>MY ORANGE</option>
+                    <option selected>OTRS</option>
+                    <option selected>CENTREON</option>
+                    <option selected>USSD SHOP</option>
+
+                  </select>
+                </div>
+
+              </div>
+               
+                <button type="submit" class="btn btn-primary">Enregistrer et passé a l'etape suivant</button>
+                
+              </form>
+              <button (click)="Home()" class="btn btn">Acceuil</button>
+            </div>
+          </div>
+          <!-- col-lg-12-->
+        </div>
+    </section>
+  </section>
+
+<section id="main-content" *ngIf="dis ==2" >
+    <section class="wrapper">
+      <span><h2>Etape 2</h2></span>
+      <h3><i class="fa fa-angle-right"></i> Modification Rai N° :{{post.Numerotoc}}</h3>
+        <!-- BASIC FORM ELELEMNTS -->
+        <div class="row mt">
+          <div class="col-lg-10">
+            <div class="form-panel">
+              <h4 class="mb"><i class="fa fa-angle-right"></i>Modification Rai</h4>
+              <form class="form-horizontal style-form" [formGroup]="form1" (ngSubmit)="submit2()">
+
+                <div class="form-group">
+                    <label class="col-sm-3 col-sm-5 control-label" for="Numerotocpro">TOC PROBLEM</label>
+                    <div class="col-sm-10">
+                      <input
+                    formControlName="Numerotocpro"
+                    [(ngModel)]="post1.Numerotocpro"
+                    id="Numerotocpro"
+                    type="text"
+                    class="form-control">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 col-sm-2 control-label" for ="Priorite">TOC </label>
+                    <div class="col-md-10">
+                      <select id="inputState" class="form-control"   name="toc" formControlName="toc"
+                      [(ngModel)]="post1.toc" >
+                        <option *ngFor="let d of dt " [value]="d.id ">{{d.Numerotoc}}</option>
+    
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label class="col-sm-2 col-sm-2 control-label" for ="Priorite">PRIORITE</label>
+                    <div class="col-md-10">
+                      <select id="inputState" class="form-control" name="Priorite"formControlName="Priorite" 
+                      [(ngModel)]="post1.Priorite">
+                        <option selected>P1</option>
+                        <option selected>P2</option>
+    
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 " for ="Dtatustocprob">STATUT TOC PROBLEME </label>
+                    <div class="form-group col-md-10">
+                      <select id="inputState" class="form-control" name="Dtatustocprob"formControlName="Dtatustocprob" 
+                      [(ngModel)]="post1.Dtatustocprob">
+                        <option selected>CLOS</option>
+                        <option selected>EN COURS</option>
+    
+                      </select>
+                    </div>
+                  </div>
+    
+                  
+                  <div class="form-group">
+                    <label class="col-sm-2 " for ="typeproblem">TYPE</label>
+                    <div class="form-group col-md-10">
+                      <select id="inputState" class="form-control" name="typeproblem"formControlName="typeproblem" 
+                      [(ngModel)]="post1.typeproblem">
+                        <option selected>MAJEUR</option>
+                        <option selected>RECURRENT</option>
+    
+                      </select>
+                       </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 col-sm-2 control-label">DATE DE CLOTURE TOC PROBLEME</label>
+                    <div class="col-sm-10">
+                      <input name="Datefin" class="form-control" id="Date" type="date" formControlName="Date" 
+                      [(ngModel)]="post1.Date">
+                    </div>
+                  </div>
+         
+                  
+                  <div class="form-group">
+                    <label class="col-sm-2 col-sm-2 control-label">Porteur</label>
+                    <div class="col-sm-10">
+                      <input
+                      name="Porteur"
+                      formControlName ="Porteur"
+                      id="Porteur"
+                      [(ngModel)]="post1.Porteur"
+                      type="text"
+                      class="form-control">
+    
+                    </div>
+                  </div>
+    
+                 
+                  <button type="submit" class="btn btn-primary">Enregistrer et passé a l'etape suivant</button>
+                  
+                </form>
+                <button (click)="Home()" class="btn btn">Acceuil</button>
+              </div>
+            </div>
+            <!-- col-lg-12-->
+          </div>
+      </section>
+    </section>
+
+    <section id="main-content" *ngIf="dis =='3'" >
+        <section class="wrapper">
+          <span><h2>Etape Finale</h2></span>
+          <h3><i class="fa fa-angle-right"></i> Modification Rai N° :{{post.Numerotoc}}</h3>
+            <!-- BASIC FORM ELELEMNTS -->
+            <div class="row mt">
+              <div class="col-lg-10">
+                <div class="form-panel">
+                  <h4 class="mb"><i class="fa fa-angle-right"></i>Modification Rai</h4>
+                  <form class="form-horizontal style-form" [formGroup]="form2" (ngSubmit)="submit3()">
+                    <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label" for ="Priorite">TOC PROBLEMEE ASSOCIE</label>
+                        <div class="col-md-10">
+                          <select id="inputState" class="form-control"   name="tocprobleme" formControlName="tocprobleme"
+                          [(ngModel)]="post2.tocprobleme" >
+                            <option *ngFor="let d of dt1 " [value]="d.id ">{{d.Numerotocpro}}</option>
+        
+                          </select>
+                        </div>
+                      </div>
+        
+                      <div class="form-group">
+                        <label class="col-sm-3 col-sm-5 control-label" for="status">STATUS RAI</label>
+                        <div class="col-sm-10">
+                          <select id="inputState" class="form-control" name="status"formControlName="status" 
+                          [(ngModel)]="post2.status">
+                            <option selected>Réalisé</option>
+                            <option selected>Planifié</option>
+                            <option selected>Annulé</option>
+                            <option selected>Reporté</option>
+                            <option selected>Non tenu</option>
+                          </select>
+                        </div>
+                      </div>
+        
+                      <div class="form-group">
+                        <label class="col-sm-3 col-sm-5 control-label" for="Rirecu">RI Recu</label>
+                        <div class="col-sm-10">
+                          <select id="inputState" class="form-control" name="Rirecu"formControlName="Rirecu" 
+                          [(ngModel)]="post2.Rirecu">
+                            <option selected>OUI</option>
+                            <option selected>NON </option>
+                            <option selected>N/A</option>
+        
+                          </select>
+                        </div>
+                      </div>
+        
+                      <div class="form-group">
+                        <label class="col-sm-3 col-sm-5 control-label" for="Rapportredige">Rapports Rédigés</label>
+                        <div class="col-sm-10">
+                          <select id="inputState" class="form-control" name="Rapportredige"formControlName="Rapportredige" 
+                          [(ngModel)]="post2.Rapportredige">
+                            <option selected>OUI</option>
+                            <option selected>NON </option>
+                            <option selected>N/A</option>
+        
+                          </select>
+                        </div>
+                      </div>
+        
+                      <div class="form-group">
+                        <label class="col-sm-3 col-sm-5 control-label" for="Rapportpartage">Rapports Partagés</label>
+                        <div class="col-sm-10">
+                          <select id="inputState" class="form-control" name="Rapportpartage"formControlName="Rapportpartage" 
+                          [(ngModel)]="post2.Rapportpartage">
+                            <option selected>OUI</option>
+                            <option selected>NON </option>
+                            <option selected>N/A</option>
+        
+                          </select>
+                        </div>
+                      </div>
+        
+                      <div class="form-group">
+                        <label class="col-sm-3 col-sm-5 control-label" for="RirecuComptrendus">Comptes rendus</label>
+                        <div class="col-sm-10">
+                          <select id="inputState" class="form-control" name="Comptrendus"formControlName="Comptrendus" 
+                          [(ngModel)]="post2.Comptrendus">
+                            <option selected>OUI</option>
+                            <option selected>NON </option>
+                            <option selected>N/A</option>
+        
+                          </select>
+                        </div>
+                      </div>
+        
+
+        
+                      <div class="form-group">
+                        <label class="col-sm-3 col-sm-5 control-label" for="JoinToc">Joint au TOC</label>
+                        <div class="col-sm-10">
+                          <select id="inputState" class="form-control" name="JoinToc"formControlName="JoinToc"
+                          [(ngModel)]="post2.JoinToc" >
+                            <option selected>OUI</option>
+                            <option selected>NON </option>
+                            <option selected>N/A</option>
+        
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-3 col-sm-5 control-label" for="declenchement">Déclechement RAI</label>
+                        <div class="col-sm-10">
+                          <select id="inputState" class="form-control" name="declenchement"formControlName="declenchement"
+                          [(ngModel)]="post2.declenchement" >
+                            <option selected>1</option>
+                            <option selected>2 </option>
+                            <option selected>3</option>
+                            <option selected>4 </option>
+                            <option selected>5</option>
+        
+                          </select>
+                        </div>
+                      </div>
+                      
+                      <div class="form-group">
+                        <label class="col-sm-2 " for ="Datecritere">Date RAI </label>
+                        <div class="form-group col-md-10">
+                          <input  name="Datecritere"
+                          type="datetime" class="form-control round-form" formControlName ="Datecritere"
+                          [(ngModel)]="post2.Datecritere">
+                        </div>
+                      </div>
+        
+                      <div class="form-group">
+                        <label class="col-sm-2 " for ="DateRept">Date REception RAI </label>
+                        <div class="form-group col-md-10">
+                          <input  name="DateRept"
+                          type="datetime" class="form-control round-form" formControlName ="DateRept"
+                          [(ngModel)]="post2.DateRept">
+                        </div>
+                      </div>
+                          
+                      <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">CAuse</label>
+                        <div class="col-sm-10">
+                          <input
+                          name="Cause"
+                          formControlName ="Cause"
+                          id="Cause"
+                          [(ngModel)]="post2.Cause"
+                          type="text"
+                          class="form-control">
+                        </div>
+                      </div>
+        
+                      <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">Root Cause</label>
+                        <div class="col-sm-10">
+                          <input
+                          name="Rootcause"
+                          formControlName ="Rootcause"
+                          [(ngModel)]="post2.Rootcause"
+                          id="Rootcause"
+                          type="text"
+                          class="form-control">
+                        </div>
+                      </div>
+        
+        
+                      <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">STAT ROOT CAUSE</label>
+                        <div class="col-md-10">
+                          <select id="Statrootcause" class="form-control" name="Statrootcause" formControlName="Statrootcause" 
+                          [(ngModel)]="post2.Statrootcause">
+                            <option selected>Ok</option>
+                            <option selected>NOK </option>
+                          </select>
+                        </div>
+        
+                      </div>
+        
+                      <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">Action de rétablissement</label>
+                        <div class="col-sm-10">
+                          <input
+                          name="Actionretablissement"
+                          formControlName ="Actionretablissement"
+                          id="Actionretablissement"
+                          [(ngModel)]="post2.Actionretablissement"
+                          type="text"
+                          class="form-control">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">Types de solution</label>
+                        <div class="col-md-10">
+                          <select id="Typesolution" class="form-control" name="Typesolution" formControlName="Typesolution"
+                          [(ngModel)]="post2.Typesolution" >
+                            <option selected>DEFINITIVE</option>
+                            <option selected>Contournement </option>
+                          </select>
+                        </div>
+        
+                      </div>
+        
+        
+                      <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">Commentaires</label>
+                        <div class="col-sm-10">
+                          <input
+                          name="Commentaire"
+                          formControlName ="Commentaire"
+                          id="Commentaire"
+                          [(ngModel)]="post2.Commentaire"
+                          type="text"
+                          class="form-control">
+                        </div>
+                      </div>
+                      <button type="submit" class="btn btn-primary">Enregistrer</button>
+                    </form>
+                    <button (click)="Home()" class="btn btn">Acceuil</button>
+                  </div>
+                </div>
+                <!-- col-lg-12-->
+              </div>
+          </section>
+        </section>   
+    
