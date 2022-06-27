@@ -27,7 +27,7 @@
                   Remember me
                 </label>
                 </div>
-                <a href="#" class="oublier">Mot de passe oublié ?</a>
+                <a style="cursor: pointer;" class="oublier" (click)="openLock(contentLock)">Mot de passe oublié ?</a>
             </div>
 
             <div class="btn-connect">
@@ -39,8 +39,34 @@
 
         <div class="create-count">
             <p>Don't have an account yet ?</p>
-            <a href="#">Create an account</a>
+            <a style="cursor: pointer;" (click)="open(content)">Create an account</a>
         </div>
     </div>
 
 </div>
+
+
+
+<ng-template #content let-modal class="content-modal">
+    <div class="modal-header ">
+        <h5 class="modal-title " id="exampleModalLabel ">Création un compte utilisateur <i class="fa fa-user " style=" font-size:1rem ; margin-left: 1rem; color: #ff7900; " aria-hidden="true "></i></h5>
+        <button type="button " style="outline: none; " class="btn-close " (click)="deleStorageAndClose() "><span class="visually-hidden ">Close</span></button>
+    </div>
+    <div class="modal-body ">
+        <button type="button " class="btn btn-secondary " (click)="deleStorageAndClose() ">Annuler</button>
+        <button class="btn btn-primary" style="float: right; background: orange;" (click)="confirmSubmitPwdForgot()">Valider la modification</button>
+    </div>
+</ng-template>
+
+
+
+<ng-template #contentLock let-modal class="content-modal">
+    <div class="modal-header ">
+        <h5 class="modal-title " id="exampleModalLabel ">Mot de passe oublié <i class="fa fa-lock " style=" font-size:1rem ; margin-left: 1rem; color: #ff7900; " aria-hidden="true "></i></h5>
+        <button type="button " style="outline: none; " class="btn-close " (click)="deleStorageAndClose() "><span class="visually-hidden ">Close</span></button>
+    </div>
+    <div class="modal-body mt-4">
+        <button type="button " class="btn btn-secondary " (click)="deleStorageAndClose() ">Annuler</button>
+        <button class="btn btn-primary" style="float: right; background: orange;" (click)="confirmSubmitPwdForgot()">Valider la modification</button>
+    </div>
+</ng-template>

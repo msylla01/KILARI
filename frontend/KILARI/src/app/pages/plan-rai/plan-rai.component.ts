@@ -24,7 +24,7 @@ export class PlanRaiComponent implements OnInit {
   ListTocProbleme:any= [];
   Idtopro!: number;
   disableBtn:boolean = true;
-
+  Numerotocpro:any;
   Idinc! : number
 
   objet : any
@@ -35,12 +35,9 @@ export class PlanRaiComponent implements OnInit {
     private fb: FormBuilder) {
 
     this.PasForm = this.fb.group({
-
       pas: this.fb.array([]) ,
     });
    }
-
-
 
    showSuccess(msg:any) {
     this.toastr.success(msg);
@@ -50,9 +47,10 @@ export class PlanRaiComponent implements OnInit {
     this.toastr.error(msg);
   }
 
-  ngOnInit() {
-    console.log('visigelForm',this.visigelForm);
 
+  ngOnInit() {
+  this.Numerotocpro = JSON.parse(localStorage.getItem('Numerotocpro') || '{}');
+    console.log('visigelForm',this.visigelForm);
     this.getIncident();
     this.getTocProbleme();
 
@@ -66,6 +64,7 @@ export class PlanRaiComponent implements OnInit {
       Efficacite: new FormControl(),
       Commentaire: new FormControl(),
       tocpr: new FormControl(),
+      pas: this.fb.array([])
       });
 
 
@@ -90,24 +89,64 @@ export class PlanRaiComponent implements OnInit {
     if (!plan_rai) {
       this.PasForm.reset();
     }
-    this.form.patchValue({
-      Libelle: plan_rai.Libelle,
-      Porteur: plan_rai.planrai.Porteur,
-      Dateprevisionel: plan_rai.planrai.Dateprevisionel,
-      Dateeffective: plan_rai.Dateeffective,
-      Perimetre: plan_rai.Perimetre,
-      Status: plan_rai.Status,
-      Efficacite: plan_rai.Efficacite,
-      Commentaire: plan_rai.Commentaire,
-      tocpr: plan_rai.Numerotocpro
-     });
+    this.addPas()
+
+    // this.form.patchValue({
+    //   Libelle: plan_rai.Libelle,
+    //   Porteur: plan_rai.planrai.Porteur,
+    //   Dateprevisionel: plan_rai.planrai.Dateprevisionel,
+    //   Dateeffective: plan_rai.Dateeffective,
+    //   Perimetre: plan_rai.Perimetre,
+    //   Status: plan_rai.Status,
+    //   Efficacite: plan_rai.Efficacite,
+    //   Commentaire: plan_rai.Commentaire,
+    //   tocpr: plan_rai.Numerotocpro
+    //  });
+
 
     this.modalRef =  this.modalService.open(content, {size  : 'xl'})
     this.modalRef.result.then(
       (result:any) => {
         console.log('oooook',result);
-
     });
+  }
+
+  openEdit(content:any, item?:any) {
+
+    console.log('item', item);
+    if (!item) {
+      this.PasForm.reset();
+    }
+   // this.addPas()
+
+    // this.form.patchValue({
+    //   Libelle: item.Libelle,
+    //   Porteur: item.planrai.Porteur,
+    //   Dateprevisionel: item.planrai.Dateprevisionel,
+    //   Dateeffective: item.Dateeffective,
+    //   Perimetre: item.Perimetre,
+    //   Status: item.Status,
+    //   Efficacite: item.Efficacite,
+    //   Commentaire: item.Commentaire,
+    //   tocpr: item.Numerotocpro
+    //  });
+
+
+    this.modalRef =  this.modalService.open(content, {size  : 'xl'})
+    this.modalRef.result.then(
+      (result:any) => {
+        console.log('oooook',result);
+    });
+
+    console.log(' item.planrai', item.planrai);
+
+    item.planrai.forEach((t:any) => {
+      var rai: FormGroup = this.PasForm;
+      this.pas.push(rai);
+      rai.patchValue(t)
+    });
+
+    this.form.patchValue(item);
   }
 
 
@@ -188,56 +227,29 @@ export class PlanRaiComponent implements OnInit {
       );
     }
 
-    /**
-     * Write code on Method
-     *
-     * @return response()
-     */
-//     submit(){
-//       /*this.Idtoc = this.generatenumber()
-//       this.form.value.ToId = this.Idtoc*/
-//       let endPoint =  'incident';
-//        this.form1.value.tocprobleme = Number(this.form1.value.tocprobleme)
-//       console.log('form',this.form1.value);
-//     this.ApiService.post(endPoint,this.form1.value).subscribe((res:any) => {
-//         console.log('incident created successfully!');
+    onSubmit() {
+      let endPoint =  'planaction';
+      console.log(this.PasForm.value,'he',this.form.value);
+      this.objet = this.PasForm.value;
+      for(let i=0; i<this.pas.value.length; i++){
+        // if (condition) {
 
-//           this.tocs1 = this.ListIncident;
-//           this.dt1 = JSON.parse(this.tocs1)
-//           let last:any = this.dt1[this.dt1.length-1]
-//            this.Idinc =last.id
-//           console.log("Message id toc",last.id);
-
-
-//    })
-//    this.dis =2
-// }
-
-
-
-onSubmit() {
-  let endPoint =  'planaction';
-  console.log(this.PasForm.value,'he',this.form.value);
-  this.objet = this.PasForm.value;
-for(let i=0; i<this.pas.value.length; i++){
- //use i instead of 0
-    this.pas.value[i].Status= Number(this.pas.value[i].Status)
-    this.pas.value[i].tocpr= Number(this.pas.value[i].tocpr)
-    console.log('planaction  objet :',this.pas.value[i]);
-     this.ApiService.post(endPoint,this.pas.value[i]).subscribe(
-       (res:any) => {
-         console.log('res planification====>',res);
-      this.showSuccess('La création bine effectué')
-       this.getTocProbleme()
-       this.deleStorageAndClose();
-      console.log('planaction  objet :',i,'created successfully!',);
-      }),
-      (error: any) => {
-        this.showDanger('La création a échouée')
+        // }
+          this.pas.value[i].Status= Number(this.pas.value[i].Status)
+          this.pas.value[i].tocpr= Number(this.pas.value[i].tocpr)
+          console.log('planaction  objet :',this.pas.value[i]);
+          this.ApiService.post(endPoint,this.pas.value[i]).subscribe(
+            (res:any) => {
+              console.log('res planification====>',res);
+            this.showSuccess('La création bine effectué')
+            this.getTocProbleme()
+            this.deleStorageAndClose();
+            console.log('planaction  objet :',i,'created successfully!',);
+            }),
+            (error: any) => {
+              this.showDanger('La création a échouée')
+            }
+          }
       }
-    }
-// this.router.navigateByUrl('plan/index');
-
-}
 
 }

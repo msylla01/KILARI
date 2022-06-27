@@ -488,6 +488,7 @@ btnsled(){
         console.log('data res RAI data', res);
         this.loading2 = false;
         this.router.navigate(['plan-action-rai']);
+        localStorage.setItem('Numerotocpro', JSON.stringify(this.step2.Numerotocpro));
         this.showSuccess('La création bine effectué')
         this.deleStorageAndClose()
         this.getNumbTicket()
@@ -558,6 +559,7 @@ btnsled(){
 
   getNumbTicket(){
     let endPoint = "tocticket"
+    this.SpinnerService.showSpinner();
       this.ApiService.get(endPoint).subscribe(
         (response:any) => {
           this.ListTickOcean = response;

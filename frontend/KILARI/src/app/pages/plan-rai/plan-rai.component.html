@@ -68,7 +68,7 @@
                         <button type="button" class="btn btn-secondary" style="    margin-right: 0.6rem;">
                       <i class="fa fa-trash" aria-hidden="true"></i>
                     </button>
-                        <button style="    margin-right: 0.6rem;" type="button" class="btn btn-danger" (click)="open(content,toc)">
+                        <button style="    margin-right: 0.6rem;" type="button" class="btn btn-danger" (click)="openEdit(content,toc)">
                       <i class="fa fa-edit" aria-hidden="true"></i>
                     </button>
                         <button type="button" class="btn btn-success" (click)="open(content)">
@@ -209,8 +209,7 @@
                 </form>
             </div>
 
-            <div class="footer-finale " style="    display: flex;
-            gap: 1rem;margin-top: 1em">
+            <div class="footer-finale " style="display: flex;gap: 1rem;margin-top: 1em">
                 <button class="btn btn-primary" style="background: orange;" (click)="addPas()">Ajouter un Plan d'action</button>
                 <button class=" btn btn-secondary" (click)="deleStorageAndClose() ">Annuler</button>
             </div>
