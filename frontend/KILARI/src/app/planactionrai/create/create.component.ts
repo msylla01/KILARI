@@ -33,11 +33,11 @@ export class CreateComponent implements OnInit {
   constructor(private router: Router,
     public planactservice : PlanactionraiService,
     public raiservice : RaiService,
-    private fb: FormBuilder) { 
+    private fb: FormBuilder) {
 
 
       this.PasForm = this.fb.group({
- 
+
         pas: this.fb.array([]) ,
       });
   }
@@ -50,9 +50,9 @@ export class CreateComponent implements OnInit {
           let last:any = this.dt[this.dt.length-1]
           this.Idinc =last.id
           console.log("Message id toc",this.Idinc);
-          
 
-        }) 
+
+        })
 
 
     this.form = new FormGroup({
@@ -65,28 +65,28 @@ export class CreateComponent implements OnInit {
       Efficacite: new FormControl(),
       Commentaire: new FormControl(),
       tocpr: new FormControl(),
-        
-      
+
+
       });
 
 
       this.form1 = new FormGroup({
         NatureIncident: new FormControl(),
         tocprobleme: new FormControl(),
-      
-        
-      
+
+
+
       });
 
-       this.dis = 2
+       this.dis = 2;
 
-    
+
   }
 
   get pas() : FormArray {
     return this.PasForm.get("pas") as FormArray
   }
- 
+
   newPa(): FormGroup {
     return this.fb.group({
     Libelle: '',
@@ -100,17 +100,17 @@ export class CreateComponent implements OnInit {
     tocpr: '',
     })
   }
- 
+
   addPas() {
     this.pas.push(this.newPa());
   }
- 
+
   removePas(i:number) {
     this.pas.removeAt(i);
   }
- 
- 
-  
+
+
+
 
 
      get f(){
@@ -132,22 +132,22 @@ export class CreateComponent implements OnInit {
       console.log('form',this.form1.value);
     this.planactservice.createIncident(this.form1.value).subscribe((res:any) => {
         console.log('incident created successfully!');
-        
+
         this.planactservice.getAllIncident().subscribe((data: any)=>{
           this.tocs1 = JSON.stringify(data);
           this.dt1 = JSON.parse(this.tocs1)
           let last:any = this.dt1[this.dt1.length-1]
            this.Idinc =last.id
           console.log("Message id toc",last.id);
-        })  
-         
-      
+        })
+
+
    })
    this.dis =2
 }
 
- 
-   
+
+
 
 
 onSubmit() {
@@ -160,13 +160,10 @@ for(let i=0; i<this.pas.value.length; i++){
     console.log('planaction  objet :',this.pas.value[i]);
      this.planactservice.createPlanaction(this.pas.value[i]).subscribe((res:any) => {
       console.log('planaction  objet :',i,'created successfully!',);
-      
       })
-
     }
-    
 this.router.navigateByUrl('plan/index');
-   
+
 }
 
 }

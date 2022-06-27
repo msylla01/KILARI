@@ -34,14 +34,14 @@ export class PlanactionraiService {
     .pipe(
       catchError(this.errorHandler)
     )
-  }  
- 
+  }
+
   createPlanaction(rai: any): Observable<Planaction> {
     return this.httpClient.post<Planaction>(this.baseURL + '/planaction/', JSON.stringify(rai), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
-  }  
+  }
 
   find(id: number): Observable<any> {
     return this.httpClient.get<any>(this.baseURL + '/toc/' + id + '/')
@@ -50,21 +50,23 @@ export class PlanactionraiService {
     )
   }
 
-    
+
   update(id: number, post: any): Observable<Toc> {
     return this.httpClient.put<Toc>(this.baseURL + '/toc/' + id+'/', JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
- 
-    
+
+
   delete(id: number){
     return this.httpClient.delete<Toc>(this.baseURL + '/toc/' + id, this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
+
+
   errorHandler(error: { error: { message: string; }; status: any; message: any; }) {
     let errorMessage = '';
     if(error.error instanceof ErrorEvent) {

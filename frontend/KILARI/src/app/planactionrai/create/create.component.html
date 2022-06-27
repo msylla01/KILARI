@@ -14,7 +14,7 @@
             <form class="form-horizontal style-form" [formGroup]="form1" (ngSubmit)="submit()">
 
 
-     
+
                <div class="form-group">
                 <label class="col-sm-2 col-sm-2 control-label">Nature de L'Incident</label>
                 <div class="col-sm-10">
@@ -27,12 +27,12 @@
 
                 </div>
               </div>
-          
 
 
-               
 
-             
+
+
+
               <button type="submit" class="btn btn-primary">Enregistrer et passé a l'etape suivant</button>
             </form>
           </div>
@@ -40,57 +40,53 @@
        col-lg-12
       </div>
   </section>
-</section>--> 
+</section>-->
 
 
 
-<section id="main-content" *ngIf="dis ==2" >
-  <section class="wrapper">
-    <h3><i class="fa fa-angle-right"></i> Creation PA Pour un Incident</h3>
-      <!-- BASIC FORM ELELEMNTS -->
-      <div class="row mt">
-        <div class="col-lg-10">
-          <div class="form-panel">
-            <h4 class="mb"><i class="fa fa-angle-right"></i>Creation PA</h4>
-            <form class="form-horizontal style-form" [formGroup]="PasForm" (ngSubmit)="onSubmit()">
+<section id="main-content" *ngIf="dis ==2">
+    <section class="wrapper">
+        <h3><i class="fa fa-angle-right"></i> Creation PA Pour un Incident</h3>
+        <!-- BASIC FORM ELELEMNTS -->
+        <div class="row mt">
+            <div class="col-lg-10">
+                <div class="form-panel">
+                    <h4 class="mb"><i class="fa fa-angle-right"></i>Creation PA</h4>
+                    <form class="form-horizontal style-form" [formGroup]="PasForm" (ngSubmit)="onSubmit()">
+                        PA:
+                        <div formArrayName="pas">
+                            <div *ngFor="let skill of pas.controls; let i=index">
+                                <div [formGroupName]="i">
+                                    {{i}}
 
-             
-
-
-              PA:
-              <div formArrayName="pas">
-                <div *ngFor="let skill of pas.controls; let i=index">
-                  <div [formGroupName]="i">
-                    {{i}}
-
-                     <div class="form-group">
-                <label class="col-sm-2 col-sm-2 control-label" for ="Priorite">TOC PROBLEMEE </label>
-                <div class="col-md-10">
-                  <select id="inputState" class="form-control"   name="tocpr" formControlName="tocpr" >
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-sm-2 control-label" for="Priorite">TOC PROBLEMEE </label>
+                                        <div class="col-md-10">
+                                            <select id="inputState" class="form-control" name="tocpr" formControlName="tocpr">
                     <option *ngFor="let d of dt " [value]="d.id ">{{d.Numerotocpro}}</option>
 
                   </select>
-                </div>
-              </div>
-                    <div class="form-group">
-                    <label class="col-sm-2 col-sm-2 control-label">Libelle:</label>
-                    <div class="col-md-10">
-                    <input  type="text" formControlName="Libelle" class="form-control">
-                  </div>
-                  </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-sm-2 control-label">Libelle:</label>
+                                        <div class="col-md-10">
+                                            <input type="text" formControlName="Libelle" class="form-control">
+                                        </div>
+                                    </div>
 
-                    <div class="form-group">
-                      <label class="col-sm-2 col-sm-2 control-label">Porteur:</label>
-                      <div class="col-md-10">
-                        
-                    <input type="text" formControlName="Porteur" class="form-control">
-                      </div>
-                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-sm-2 control-label">Porteur:</label>
+                                        <div class="col-md-10">
 
-                    <div class="form-group">
-                       <label class="col-sm-2 col-sm-2 control-label">Perimetre:</label>
-                      <div class="col-md-10">
-                        <select id="inputState"  name="Perimetre"formControlName="Perimetre" class="form-control" >
+                                            <input type="text" formControlName="Porteur" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-sm-2 control-label">Perimetre:</label>
+                                        <div class="col-md-10">
+                                            <select id="inputState" name="Perimetre" formControlName="Perimetre" class="form-control">
                           <option selected>Filiale</option>
                           <option selected>Applicatif</option>
                           <option selected>DBA</option>
@@ -103,79 +99,79 @@
                           <option selected>IncidentChange</option>
                           <option selected>Filiale</option>
                        </select>
-                   
-                      </div>
-                    </div>
 
-                    <div class="form-group">
-                      <label class="col-sm-2 col-sm-2 control-label">Date P:</label>
-                      <div class="col-md-10">
-                        
-                        <input  type="date" formControlName="Dateprevisionel" class="form-control">
-                      </div>
-                    </div>
+                                        </div>
+                                    </div>
 
-                    <div class="form-group">
-                      <label class="col-sm-2 col-sm-2 control-label">Date Ef:</label>
-                      <div class="col-md-10">
-                        
-                    <input type="date" formControlName="Dateeffective" class="form-control">
-                      </div>
-                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-sm-2 control-label">Date P:</label>
+                                        <div class="col-md-10">
+
+                                            <input type="date" formControlName="Dateprevisionel" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-sm-2 control-label">Date Ef:</label>
+                                        <div class="col-md-10">
+
+                                            <input type="date" formControlName="Dateeffective" class="form-control">
+                                        </div>
+                                    </div>
 
 
 
-                    <div class="form-group">
-                      <label class="col-sm-2 col-sm-2 control-label">Status:</label>
-                      <div class="col-md-10">
-                      
-                   <select id="inputState"  name="Priorite"formControlName="Status" class="form-control" >
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-sm-2 control-label">Status:</label>
+                                        <div class="col-md-10">
+
+                                            <select id="inputState" name="Priorite" formControlName="Status" class="form-control">
                       <option value="0">0</option>
                       <option value="1">1</option>
 
                    </select>
-                      </div>
-                    </div>
+                                        </div>
+                                    </div>
 
-                    <div class="form-group">
-                      <label class="col-sm-2 col-sm-2 control-label" >Efficacite:</label>
-                      <div class="col-md-10">
-                        <select id="inputState"  name="Efficacite"formControlName="Efficacite" class="form-control" >
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-sm-2 control-label">Efficacite:</label>
+                                        <div class="col-md-10">
+                                            <select id="inputState" name="Efficacite" formControlName="Efficacite" class="form-control">
                           <option selected></option>
                           <option selected>ACTION EFFICACE</option>
                           <option selected>ACTION NON EFFICACE</option>
                           <option selected>ACTION A SURVEILLER</option>
                        </select>
-                
-                      </div>
-                    </div>
-                    
-                    <div class="form-group">
-                      <label class="col-sm-2 col-sm-2 control-label"  >Comment:</label>
-                      <div class="col-md-10">
-                        
-                    <input type="text" formControlName="Commentaire" class="form-control">
-                      </div>
-                    </div>
-             
-                    <button style="background:red;" class="btn btn-primary "(click)="removePas(i)">Supprimer</button>
-                  </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-sm-2 control-label">Comment:</label>
+                                        <div class="col-md-10">
+
+                                            <input type="text" formControlName="Commentaire" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <button style="background:red;" class="btn btn-primary " (click)="removePas(i)">Supprimer</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p>
+                            <button class="btn btn-primary" type="submit">Enregistrer le PA</button>
+                        </p>
+
+                    </form>
+                    <p>
+                        <button class="btn btn-primary" style="background: orange;" type="button" (click)="addPas()">Ajouter un Plan d'action</button>
+                    </p>
+
+
                 </div>
-              </div>
-             
-              <p>
-                <button class="btn btn-primary" type="submit">Enregistrer le PA</button>
-              </p>
-             
-            </form>
-            <p>
-            <button class="btn btn-primary" style="background: orange;" type="button" (click)="addPas()">Ajouter un Plan d'action</button>
-          </p>
-          
-          
-          </div>
+            </div>
+            <!-- col-lg-12-->
         </div>
-        <!-- col-lg-12-->
-      </div>
-  </section>
+    </section>
 </section>

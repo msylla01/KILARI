@@ -43,12 +43,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-     'rest_framework',
-      #RAI applicatio
+    'rest_framework',
+      #RAI applicatio AuthConfig
     'rai.apps.RaiConfig',
-     'corsheaders',
-
-
+    'corsheaders',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -120,8 +118,8 @@ WSGI_APPLICATION = 'api.wsgi.application'
 DATABASES = {
     'default': {
     'ENGINE': 'django.db.backends.mysql',
-    'NAME': 'Kila',
-    'USER': 'root',
+    'NAME': 'Kilari',
+    'USER': 'Root',
     'PASSWORD':'',
     'HOST': '127.0.0.1',
     'PORT': '3306',

@@ -4,7 +4,6 @@ from django.urls.resolvers import URLPattern
 from rai import views
 
 
-
 from django.urls import path, include  # Ensure `include` is imported
 from rest_framework import routers
 from rai.views import *

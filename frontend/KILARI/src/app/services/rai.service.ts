@@ -36,33 +36,33 @@ getAllTocpro(): Observable<Tocprobleme> {
     .pipe(
       catchError(this.errorHandler)
     )
-  }  
+  }
   createtocpro(tocpro: any): Observable<Tocprobleme> {
     return this.httpClient.post<Tocprobleme>(this.baseURL + '/tocprobleme/', JSON.stringify(tocpro), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
-  }  
+  }
   find(id: number): Observable<any> {
     return this.httpClient.get<any>(this.baseURL + '/toc/' + id + '/')
     .pipe(
       catchError(this.errorHandler)
     )
   }
-    findrai(id: number): Observable<any> {
+  findrai(id: number): Observable<any> {
     return this.httpClient.get<any>(this.baseURL + '/rai/' + id + '/')
     .pipe(
       catchError(this.errorHandler)
     )
   }
 
-      findtocpro(id: number): Observable<any> {
+  findtocpro(id: number): Observable<any> {
     return this.httpClient.get<any>(this.baseURL + '/tocprobleme/' + id + '/')
     .pipe(
       catchError(this.errorHandler)
     )
   }
-    
+
   update(id: number, post: any): Observable<Toc> {
     return this.httpClient.put<Toc>(this.baseURL + '/toc/' + id+'/', JSON.stringify(post), this.httpOptions)
     .pipe(
@@ -82,13 +82,14 @@ getAllTocpro(): Observable<Tocprobleme> {
       catchError(this.errorHandler)
     )
   }
-    
+
   delete(id: number){
     return this.httpClient.delete<Toc>(this.baseURL + '/toc/' + id, this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
   }
+
   errorHandler(error: { error: { message: string; }; status: any; message: any; }) {
     let errorMessage = '';
     if(error.error instanceof ErrorEvent) {

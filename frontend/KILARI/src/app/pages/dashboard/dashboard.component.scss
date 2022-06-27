@@ -1,0 +1,279 @@
+.dashboard-container {
+    h1 {
+        color: black;
+    }
+    #chart-pie,
+    #chart-column,
+    #chart-line {
+        display: block;
+        width: 100%;
+        height: 250px;
+        margin: 0 auto;
+    }
+    .number-dashboard {
+        display: flex;
+        gap: 1.6rem;
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 1.3rem;
+        .content-user {
+            width: 100%;
+            background: white;
+            padding: 1rem 1rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            .user-valide {
+                display: flex;
+                /* flex-direction: column; */
+                border: 1px solid gainsboro;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0.6rem;
+                font-size: 19px;
+                font-weight: 600;
+                color: black;
+                border-radius: 8px;
+                .round {}
+                p {}
+            }
+            .user-invalide {
+                display: flex;
+                /* flex-direction: column; */
+                border: 1px solid gainsboro;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0.6rem;
+                font-size: 19px;
+                font-weight: 600;
+                color: black;
+                border-radius: 8px;
+                .round {}
+                p {}
+            }
+        }
+        .content-bqt {
+            width: 100%;
+            background: white;
+            padding: 1rem 1rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            .bqt-valide {
+                display: flex;
+                /* flex-direction: column; */
+                border: 1px solid gainsboro;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0.6rem;
+                font-size: 19px;
+                font-weight: 600;
+                color: black;
+                border-radius: 8px;
+                .round {}
+                p {}
+            }
+            .bqt-invalide {
+                display: flex;
+                /* flex-direction: column; */
+                border: 1px solid gainsboro;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0.6rem;
+                font-size: 19px;
+                font-weight: 600;
+                color: black;
+                border-radius: 8px;
+                .round {}
+                p {}
+            }
+        }
+        .content-rai {
+            width: 100%;
+            background: white;
+            padding: 1rem 1rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            .rai-valide {
+                display: flex;
+                /* flex-direction: column; */
+                border: 1px solid gainsboro;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0.6rem;
+                font-size: 19px;
+                font-weight: 600;
+                color: black;
+                border-radius: 8px;
+                .round {}
+                p {}
+            }
+            .rai-invalide {
+                display: flex;
+                /* flex-direction: column; */
+                border: 1px solid gainsboro;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0.6rem;
+                font-size: 19px;
+                font-weight: 600;
+                color: black;
+                border-radius: 8px;
+                .round {}
+                p {}
+            }
+        }
+        .small-round {
+            width: 196px;
+            display: flex;
+            gap: 0.4rem;
+            .round {
+                height: 14px;
+                width: 14px;
+                border-radius: 20px;
+                display: inline-block;
+                &.orange {
+                    background: #ff7900;
+                }
+                &.noir {
+                    background: black;
+                }
+            }
+        }
+    }
+    .number-dashboard-part1 {
+        display: flex;
+        gap: 1.6rem;
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 1.3rem;
+        .content-user {
+            width: 100%;
+            background: white;
+            padding: 1rem 1rem 1rem;
+            display: flex;
+            // flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            gap: 0.6rem;
+            i {
+                font-size: 5rem;
+                color: #ff7900;
+            }
+            .user-valide {
+                color: black;
+                border-radius: 8px;
+                font-size: 1.4rem;
+                font-weight: 600;
+            }
+        }
+        .content-bqt {
+            width: 100%;
+            background: white;
+            padding: 1rem 1rem 1rem;
+            display: flex;
+            // flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            gap: 0.6rem;
+            i {
+                font-size: 5rem;
+                color: #ff7900;
+            }
+            .bqt-invalide {
+                color: black;
+                border-radius: 8px;
+                font-size: 1.4rem;
+                font-weight: 600;
+            }
+        }
+        .content-rai {
+            width: 100%;
+            background: white;
+            padding: 1rem 1rem 1rem;
+            display: flex;
+            // flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            gap: 0.6rem;
+            i {
+                font-size: 5rem;
+                color: #ff7900;
+            }
+            .rai-invalide {
+                color: black;
+                border-radius: 8px;
+                font-size: 1.4rem;
+                font-weight: 600;
+            }
+        }
+    }
+    .number-dashboard-part2 {
+        display: flex;
+        gap: 1.6rem;
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 1rem;
+        .content-user {
+            width: 100%;
+            background: white;
+            padding: 1rem 1rem 1rem;
+            display: flex;
+            // flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            gap: 0.6rem;
+            i {
+                font-size: 5rem;
+                color: #ff7900;
+            }
+            .user-valide {
+                color: black;
+                border-radius: 8px;
+                font-size: 1.4rem;
+                font-weight: 600;
+            }
+        }
+        .content-bqt {
+            width: 100%;
+            background: white;
+            padding: 1rem 1rem 1rem;
+            display: flex;
+            // flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            gap: 0.6rem;
+            i {
+                font-size: 5rem;
+                color: #ff7900;
+            }
+            .bqt-invalide {
+                color: black;
+                border-radius: 8px;
+                font-size: 1.4rem;
+                font-weight: 600;
+            }
+        }
+        .content-rai {
+            width: 100%;
+            background: white;
+            padding: 1rem 1rem 1rem;
+            display: flex;
+            // flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            gap: 0.6rem;
+            i {
+                font-size: 5rem;
+                color: #ff7900;
+            }
+            .rai-invalide {
+                color: black;
+                border-radius: 8px;
+                font-size: 1.4rem;
+                font-weight: 600;
+            }
+        }
+    }
+}

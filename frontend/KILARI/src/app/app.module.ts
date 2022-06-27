@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http'
 import { AppRoutingModule } from './app-routing.module';
@@ -17,16 +17,26 @@ import { PlanactionraiModule } from './planactionrai/planactionrai.module';
 import { PlanactionraiRoutingModule } from './planactionrai/planactionrai-routing.module';
 
 
+import { ToastrModule } from 'ngx-toastr';
+
+
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+// Import library module
+
+
+import { HighchartsChartModule } from 'highcharts-angular';
+import { NgxSpinnerModule } from "ngx-spinner";
+import { LoyoutGlobalComponent } from './loyout-global/loyout-global.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     FullComponent,
     HomepageComponent ,
-
-
-
-  ],
+      LoyoutGlobalComponent
+   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -37,9 +47,10 @@ import { PlanactionraiRoutingModule } from './planactionrai/planactionrai-routin
     SharedModule,
     ReactiveFormsModule,
     HttpClientModule,
-    
-    
-    
+    BrowserAnimationsModule,
+    NgxSpinnerModule,
+    HighchartsChartModule,
+    ToastrModule.forRoot(),
   ],
   providers: [RaiModule,PlanactionraiModule,TocService,DatePipe,],
   bootstrap: [AppComponent]

@@ -12,7 +12,8 @@ class Critere(models.Model):
 class Status(models.Model):
 
     Libelle = models.CharField(max_length=200,blank=False, default='')
-
+    def __str__(self):
+        return self.Libelle
 class Statusrapport(models.Model):
 
     Libelle = models.CharField(max_length=200,blank=False, default='')
@@ -20,19 +21,24 @@ class Statusrapport(models.Model):
 class Priorite(models.Model):
 
     Libelle = models.CharField(max_length=200,blank=False, default='')
-
+    def __str__(self):
+        return self.Libelle
 class Pays(models.Model):
 
     Libelle = models.CharField(max_length=200,blank=False, default='')
-
+    def __str__(self):
+        return self.Libelle
 class Service(models.Model):
 
     Libelle = models.CharField(max_length=200,blank=False, default='')
+    def __str__(self):
+        return self.Libelle
 
 class Platform(models.Model):
 
     Libelle = models.CharField(max_length=200,blank=False, default='')
-
+    def __str__(self):
+        return self.Libelle
 class Typrobleme(models.Model):
 
     Libelle = models.CharField(max_length=200,blank=False, default='')
@@ -41,20 +47,26 @@ class Role(models.Model):
 
     Libelle = models.CharField(max_length=200,blank=False, default='')
 
+    def __str__(self):
+        return self.Libelle
 class Statusbqt(models.Model):
 
     Libelle = models.CharField(max_length=200,blank=False, default='')
 
-
+    def __str__(self):
+        return self.Libelle
 class Mois(models.Model):
 
     Libelle = models.CharField(max_length=200,blank=False, default='')
+    def __str__(self):
+        return self.Libelle
 
 class Periode(models.Model):
 
     mois = models.ForeignKey(Mois, on_delete=models.CASCADE,related_name='periode',blank=True)
     Libelle = models.CharField(max_length=200,blank=False, default='')
-
+    def __str__(self):
+        return self.Libelle
 
 class Bqt(models.Model):
 
@@ -63,6 +75,8 @@ class Bqt(models.Model):
     statusbqt = models.ForeignKey(Statusbqt, on_delete=models.CASCADE,related_name='bqt',blank=True)
     periode = models.ForeignKey(Periode, on_delete=models.CASCADE,related_name='bqt',blank=True)
     datebqt = models.DateField()
+    def __str__(self):
+        return self.service
 
 class Planactionbqt(models.Model):
 
@@ -123,8 +137,6 @@ class Planactions(models.Model):
     Efficacite = models.CharField(max_length=50,blank=False, default='')
     Commentaire = models.CharField(max_length=500,blank=False, default='')
 
-
-
 class Evaluation(models.Model):
     
 
@@ -151,6 +163,8 @@ class User(models.Model):
     username =  models.CharField(max_length=100,null=True)
     password =  models.CharField(max_length=50,null=True)
 
+    def __str__(self):
+        return self.Nom
 
 class UserConnect(models.Model):
 
@@ -171,7 +185,8 @@ class Impact(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE,related_name='Impact',blank=True)
     Platform = models.ForeignKey(Platform, on_delete=models.CASCADE,related_name='Impact',blank=True)
     Libelle = models.CharField(max_length=500,blank=False, default='')
-
+    def __str__(self):
+        return self.Libelle
 
 class Declenchement(models.Model):
 

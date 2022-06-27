@@ -20,14 +20,14 @@ export class TocService {
     .pipe(
       catchError(this.errorHandler)
     )
-  } 
+  }
 
   createTocN(toc: any): Observable<Toctik> {
     return this.httpClient.post<Toctik>(this.baseURL + '/tocticket/', JSON.stringify(toc), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )
-  } 
+  }
 
 
   getAllTick(): Observable<Toctik> {
@@ -43,6 +43,8 @@ export class TocService {
       catchError(this.errorHandler)
     )
   }
+
+
 
   errorHandler(error: { error: { message: string; }; status: any; message: any; }) {
     let errorMessage = '';

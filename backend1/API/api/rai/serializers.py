@@ -13,11 +13,6 @@ class StatusrapportSerializers(serializers.ModelSerializer):
         fields = '__all__'
 
 
-
-
-
-
-
 class EvaluationbqtSerializers(serializers.ModelSerializer):
     class Meta: 
         model = Evaluationbqt

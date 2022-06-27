@@ -1,0 +1,318 @@
+<div class="rai-content">
+    <p class="liste-rai">Liste des rai</p>
+    <div class="btn-search-rai">
+        <div class="imput-search-btn">
+            <small> Filtrer par Toc:</small>
+            <form action="#">
+                <input type="search" name="searchToc" (change)="filterTicket($event)" class="form-control" placeholder="Rechercher par ticket" autocomplete="off">
+                <button type="submit" class="btn btn-secondary"><i class="fas fa-search"></i></button>
+            </form>
+        </div>
+        <button type="button" (click)="open(content)" class=" btn btn-primary plus "> <i class="fa-solid fa-plus "></i> Créer une RAI</button>
+    </div>
+    <div class="content-tableau ">
+        <table class="table table-hover">
+            <thead>
+                <tr style="text-align: center;">
+                    <th scope="col">#</th>
+                    <th scope="col">Toc</th>
+                    <th scope="col">Priorité</th>
+                    <th scope="col">Toc problème</th>
+                    <th scope="col">Porteur</th>
+                    <th scope="col">Status TOc problème</th>
+                    <th scope="col">Cloture toc problème</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="text-align: center;" *ngFor="let item of ListTickOcean">
+                    <th scope="row">#</th>
+                    <td>{{item.Numero}}</td>
+                    <td>{{item.toc[0].priorite}}</td>
+                    <td>{{item.toc[0].tocpro[0]?.Numerotocpro}}</td>
+                    <td>{{item.toc[0].tocpro[0]?.Porteur}}</td>
+                    <td>Pas Bon</td>
+                    <td>Bon</td>
+                    <td class="">
+                        <button type="button" class="btn btn-secondary" style="    margin-right: 0.6rem;">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                      </button>
+                        <button style="    margin-right: 0.6rem;" type="button" class="btn btn-danger" (click)="open(content, item)">
+                        <i class="fa fa-edit" aria-hidden="true"></i>
+                      </button>
+                        <button type="button" class="btn btn-success" (click)="openView(content, item)">
+                        <i class="fa fa-eye" aria-hidden="true"></i>
+                      </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<ng-template #content let-modal class="content-modal">
+    <div class="modal-header ">
+        <h5 class="modal-title " id="exampleModalLabel ">Création d'une RAI <i class="fa fa-tasks " style=" font-size:1rem ; margin-left: 1rem; color: #ff7900; " aria-hidden="true "></i></h5>
+        <button type="button " style="outline: none; " class="btn-close " (click)="deleStorageAndClose() "><span class="visually-hidden ">Close</span></button>
+    </div>
+    <div class="modal-body ">
+        <div class="step-line ">
+            <div class="step1 background1 background3 " id="step1 " [ngClass]="{ 'background3': background1} ">
+                <span class="badge bg-secondary ">1</span>
+                <small>Etape</small>
+            </div>
+            <div class="step2 background1 background3 " id="step2 " [ngClass]="{ 'background1': background1, 'background3': background2} ">
+                <span class="badge bg-secondary ">2</span>
+                <small>Etape</small>
+            </div>
+            <div class="step3 background1 " id="step3 " [ngClass]="{ 'background1': background2} ">
+                <span class="badge bg-secondary ">3</span>
+                <small>Etape</small>
+            </div>
+        </div>
+
+        <div id="imput-content-step1 " *ngIf="groundStep1 ">
+            <div class="imput-content-step1 ">
+                <div class="content ">
+                    <div class="content-left ">
+                        <div class="toc ">
+                            <label for="toc ">Toc</label>
+                            <input type="text " [disabled]="disableChamp" class="form-control " name="numeroToc " [(ngModel)]="numeroToc ">
+                        </div>
+                        <div class="pays ">
+                            <label for="pays ">Pays</label>
+                            <select class="form-select " name="pays " [(ngModel)]="step1.pays " [disabled]="disableChamp" aria-label="Default select example ">
+                              <option selected>Selectionner le pays</option>
+                              <option *ngFor="let item of Pays " [value]="item.value ">{{item.value}}</option>
+                            </select>
+                        </div>
+                        <div class="heure-incident ">
+                            <label for="heure-incident ">Heure incident</label>
+                            <input type="time" name="heurD " [(ngModel)]="step1.heurD" [disabled]="disableChamp" class="form-control ">
+                        </div>
+                        <div class="heure-retablissement ">
+                            <label for="heure-retablissement ">Heure retablissement</label>
+                            <input type="time" class="form-control " name="heurF" [disabled]="disableChamp" [(ngModel)]="step1.heurF ">
+                        </div>
+                    </div>
+                    <div class="content-right ">
+                        <div class="propriete ">
+                            <label for="propriete ">Priorité</label>
+                            <select class="form-select " name="priorite " [(ngModel)]="step1.priorite " [disabled]="disableChamp" aria-label="Default select example ">
+                              <option selected>Selectionner la priorité</option>
+                              <option *ngFor="let item of Priorite " [value]="item.value ">{{item.value}}</option>
+                            </select>
+                        </div>
+                        <div class="plateforme ">
+                            <label for="plateforme ">Plateforme /  Service</label>
+                            <select class="form-select " name="SerPlat " [(ngModel)]="step1.SerPlat " [disabled]="disableChamp" aria-label="Default select example ">
+                              <option selected>Selectionner la plateforme</option>
+                              <option *ngFor="let item of Plateforme " [value]="item.value ">{{item.value}}</option>
+                            </select>
+                        </div>
+                        <div class="date-incident ">
+                            <label for="date-incident ">Date incident</label>
+                            <input type="date" class="form-control " name="Datedebut " [disabled]="disableChamp" [(ngModel)]="step1.Datedebut ">
+                        </div>
+
+                        <div class="retablissement ">
+                            <label for="retablissement ">Retablissement</label>
+                            <input type="date" class="form-control " name="Datefin" [disabled]="disableChamp" [(ngModel)]="step1.Datefin ">
+                        </div>
+                    </div>
+                </div>
+                <div class="description ">
+                    <label for="description ">Description</label>
+                    <textarea name="description " id="description " cols="30 " rows="4 " [(ngModel)]="step1.Description " [disabled]="disableChamp"></textarea>
+                </div>
+                <div class="footer-step1 ">
+                    <button *ngIf="!step1.id && !disableChamp" type="button " class="btn btn-primary " (click)="nextStep1() ">
+                      <span *ngIf="!loading ">Enregistrer et passé a l'etape suivant</span>
+                      <span *ngIf="loading " class="spinner-border spinner-border-sm " role="status " aria-hidden="true "></span>
+                      <span *ngIf="loading " style="margin-left: 0.2rem; ">Loading...</span>
+                    </button>
+                    <button *ngIf="step1.id && !disableChamp" type="button " class="btn btn-primary " (click)="updateStep1() ">
+                      <span *ngIf="!loading ">Modifier et passé a l'etape suivant</span>
+                      <span *ngIf="loading " class="spinner-border spinner-border-sm " role="status " aria-hidden="true "></span>
+                      <span *ngIf="loading " style="margin-left: 0.2rem; ">Loading...</span>
+                    </button>
+                    <button *ngIf="disableChamp" type="button" class="btn btn-primary" (click)="viewStep1()">
+                      <span>Etape suivante</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="imput-content-step2 " *ngIf="groundStep2 ">
+            <div class="imput-content-step2 ">
+                <div class="top-problem ">
+                    <label for="toc-problem ">Toc</label>
+                    <input type="text " class="form-control " [disabled]="disableChamp" [(ngModel)]="step2.Numerotocpro " name="Numerotocpro ">
+                </div>
+                <div class="porteur ">
+                    <label for="porteur ">Porteur</label>
+                    <select class="form-select " name="Porteur " [(ngModel)]="step2.Porteur " [disabled]="disableChamp" aria-label="Default select example ">
+                      <option selected>Selectionner le porteur....</option>
+                      <option *ngFor="let item of Porteur " [value]="item.value ">{{item.value}}</option>
+                    </select>
+                </div>
+                <div class="type ">
+                    <label for="type ">Type</label>
+                    <select class="form-select " name="typeproblem " [(ngModel)]="step2.typeproblem " [disabled]="disableChamp" aria-label="Default select example ">
+                      <option selected>Selectionner le type...</option>
+                      <option *ngFor="let item of TypeProbleme " [value]="item.value ">{{item.value}}</option>
+                    </select>
+                </div>
+                <div class="footer-stpe2 ">
+                    <button *ngIf="!step2.id && !disableChamp" type="button " class="btn btn-primary " (click)="nextStep2() ">
+                      <span *ngIf="!loading1 ">Enregistrer et passé a l'etape suivant</span>
+                      <span *ngIf="loading1 " class="spinner-border spinner-border-sm " role="status " aria-hidden="true "></span>
+                      <span *ngIf="loading1 " style="margin-left: 0.2rem; ">Loading...</span>
+                    </button>
+                    <button *ngIf="step2.id && !disableChamp" type="button " class="btn btn-primary " (click)="updateStep2() ">
+                      <span *ngIf="!loading1 ">Modifier et passé a l'etape suivant</span>
+                      <span *ngIf="loading1 " class="spinner-border spinner-border-sm " role="status " aria-hidden="true "></span>
+                      <span *ngIf="loading1 " style="margin-left: 0.2rem; ">Loading...</span>
+                    </button>
+                    <button *ngIf="disableChamp" type="button " class="btn btn-primary" (click)="viewStep2()">
+                      <span>Etape suivante</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="imput-content-step3 " *ngIf="groundStep3 ">
+            <div class="imput-content-step3 ">
+                <div class="content ">
+                    <div class="content-left ">
+                        <div class="statut-rai ">
+                            <label for="statut-rai ">STATUS RAI</label>
+                            <select id="inputState " class="form-control " name="status " [(ngModel)]="step3.status " [disabled]="disableChamp">
+                                <option selected>Réalisé</option>
+                                <option selected>Planifié</option>
+                                <option selected>Annulé</option>
+                                <option selected>Reporté</option>
+                                <option selected>Non tenu</option>
+                              </select>
+                        </div>
+                        <div class="rai-recu ">
+                            <label for="rai-recu ">RI Recu</label>
+                            <select id="inputState " class="form-control " name="Rairecu " [(ngModel)]="step3.Rairecu " [disabled]="disableChamp">
+                              <option selected>OUI</option>
+                              <option selected>NON </option>
+                              <option selected>N/A</option>
+                            </select>
+                        </div>
+                        <div class="e ">
+                            <label for="rapport-redige ">Rapports Rédigés</label>
+                            <select id="inputState " class="form-control " name="Rapportredige " [(ngModel)]="step3.Rapportredige " [disabled]="disableChamp">
+                              <option selected>OUI</option>
+                              <option selected>NON </option>
+                              <option selected>N/A</option>
+                            </select>
+                        </div>
+                        <div class="rapport-partage ">
+                            <label for="rapport-partage ">Rapports Partagés</label>
+                            <select id="inputState " class="form-control " name="Rapportpartage " [(ngModel)]="step3.Rapportpartage " [disabled]="disableChamp">
+                              <option selected>OUI</option>
+                              <option selected>NON </option>
+                              <option selected>N/A</option>
+                            </select>
+                        </div>
+                        <div class="compte-rendu ">
+                            <label for="rcompte-rendu ">Compte rendus</label>
+                            <select id="inputState " class="form-control " name="Comptrendus " [(ngModel)]="step3.Comptrendus " [disabled]="disableChamp">
+                              <option selected>OUI</option>
+                              <option selected>NON </option>
+                              <option selected>N/A</option>
+                            </select>
+                        </div>
+
+                        <div class="jointoc ">
+                            <label for="jointoc ">Joint au Toc</label>
+                            <select id="inputState " class="form-control " name="jointoc " [(ngModel)]="step3.jointoc " [disabled]="disableChamp">
+                              <option selected>OUI</option>
+                              <option selected>NON </option>
+                              <option selected>N/A</option>
+                            </select>
+                        </div>
+
+                        <div class="declenchement ">
+                            <label for="declenchement ">Déclenchement RAI</label>
+                            <select id="inputState " class="form-control " name="declenchement " [(ngModel)]="step3.declenchement " [disabled]="disableChamp">
+                              <option selected>1</option>
+                              <option selected>2 </option>
+                              <option selected>3</option>
+                              <option selected>4 </option>
+                              <option selected>5</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="content-right ">
+                        <div class="date-rai ">
+                            <label for="date-rai ">Date RAI </label>
+                            <input name="Datecritere " [(ngModel)]="step3.Datecritere " type="date " class="form-control " [disabled]="disableChamp">
+                        </div>
+                        <div class="date-reception-rai ">
+                            <label for="date-reception-rai ">Date reception RAI </label>
+                            <input name="DateRept " [(ngModel)]="step3.DateRept " type="date " class="form-control " [disabled]="disableChamp">
+                        </div>
+                        <div class="cause ">
+                            <label for="cause ">Cause</label>
+                            <textarea name="Cause " [(ngModel)]="step3.Cause " id=" " cols="30 " rows="2 " [disabled]="disableChamp"></textarea>
+
+                        </div>
+
+                        <div class="root-cause ">
+                            <label for="root-cause ">Root Cause</label>
+                            <textarea name="Rootcause " [(ngModel)]="step3.Rootcause " id=" " cols="30 " rows="2 " [disabled]="disableChamp"></textarea>
+                        </div>
+
+                        <div class="form-group stat-root-cause ">
+                            <label for="stat-root-cause ">STAT ROOT CAUSE</label>
+                            <select class="form-select " aria-label="Default select example " [disabled]="disableChamp" name="Statrootcause " [(ngModel)]="step3.Statrootcause ">
+                              <option selected>Selectionner le statut</option>
+                              <option  value="1 ">Ok</option>
+                              <option  value="2 ">NOK </option>
+                            </select>
+                        </div>
+
+                        <div class="action ">
+                            <label for="action ">Action de rétablissement</label>
+                            <textarea name="Actionretablissement " [(ngModel)]="step3.Actionretablissement " id=" " cols="30 " rows="2 " [disabled]="disableChamp"></textarea>
+                        </div>
+                        <div class="type-solution ">
+                            <label for="type-solution ">Types de solution</label>
+                            <select id="Typesolution " name="Typesolution " [(ngModel)]="step3.Typesolution " class="form-control " [disabled]="disableChamp">
+                              <option selected>DEFINITIVE</option>
+                              <option selected>Contournement </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="commentaires ">
+                    <label for="commentaires ">Commentaires</label>
+                    <textarea name="Commentaire " [(ngModel)]="step3.Commentaire " id=" " cols="30 " rows="6 " [disabled]="disableChamp"></textarea>
+                </div>
+                <div class="footer-finale ">
+                    <button type="button " *ngIf="!disableChamp" class="btn btn-secondary " (click)="deleStorageAndClose() ">Annuler</button>
+                    <button *ngIf="!step3.id && !disableChamp" type="button " class="btn btn-primary " (click)="finalStep() ">
+                      <span *ngIf="!loading2 " style="margin-left: 0.2rem; ">Sauvegarder</span>
+                      <span *ngIf="loading2 " class="spinner-border spinner-border-sm " role="status " aria-hidden="true "></span>
+                      <span *ngIf="loading2 " style="margin-left: 0.2rem; ">Loading...</span>
+                    </button>
+                    <button *ngIf="step3.id && !disableChamp" type="button " class="btn btn-primary " (click)="editRAI() ">
+                      <span *ngIf="!loading2 " style="margin-left: 0.2rem; ">Sauvegarder la modification</span>
+                      <span *ngIf="loading2 " class="spinner-border spinner-border-sm " role="status " aria-hidden="true "></span>
+                      <span *ngIf="loading2 " style="margin-left: 0.2rem; ">Loading...</span>
+                    </button>
+                    <button *ngIf="disableChamp" type="button " class="btn btn-primary" (click)="deleStorageAndClose()">
+                      <span>Fermer le modal</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</ng-template>
