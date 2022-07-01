@@ -9,7 +9,7 @@
             <circle id="Ellipse_6" data-name="Ellipse 6" cx="4.946" cy="4.946" r="4.946" transform="translate(13.371)" fill="#dc181a"/>
           </svg>
 
-            <p class="profile-name">Sylla Mohamed</p>
+            <p class="profile-name">{{userConnecter.Nom}}</p>
             <img src="assets/menu1/images/user.png" class="nav-avatar profile-image" />
         </div>
     </nav>
@@ -55,12 +55,12 @@
                 <div class="sidebar-menu">
                     <div class="menu-side-link">
                         <i class="icon-inbox"></i>
-                        <p>BQT <span class="badge bg-primary">10</span></p>
+                        <p>BQT <span class="badge bg-primary">{{ListBQT?.length}}</span></p>
                     </div>
                 </div>
             </a>
 
-            <a class="link-active" style="text-decoration: none;" routerLinkActive="sidebar__link" [routerLinkActiveOptions]="  {exact: true}" routerLink="#">
+            <a class="link-active" style="text-decoration: none;" routerLinkActive="sidebar__link" [routerLinkActiveOptions]="{exact: true}">
 
                 <div class="sidebar-menu">
                     <div class="menu-side-link" style="overflow-x: hidden;">
@@ -96,7 +96,7 @@
                 </div>
             </a>
 
-            <a class="link-active-bottom" style="text-decoration:none">
+            <a class="link-active-bottom" style="text-decoration:none;cursor: pointer;outline: none;" (click)="logout()">
                 <div class="sidebar-menu-bottom">
                     <div class="menu-side-link-bottom">
                         <svg xmlns="http://www.w3.org/2000/svg" width="23.016" height="19.556" viewBox="0 0 23.016 19.556">

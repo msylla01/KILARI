@@ -4,74 +4,90 @@
         <div class="imput-search-btn">
             <small> Filtrer par Service:</small>
             <form action="#">
-                <input type="search" class="search" class="form-control">
+                <input type="search" class="search" name="search" [(ngModel)]="search" (change)="filterItem($event)" class="form-control">
                 <button type="submit" class="btn btn-secondary"><i class="fas fa-search"></i></button>
             </form>
         </div>
-        <button type="button" class="btn btn-primary plus"><i class="fa-solid fa-plus "></i> Créer une BQT</button>
+        <button type="button" (click)="open(content, {})" class="btn btn-primary plus"><i class="fa-solid fa-plus "></i> Créer une BQT</button>
     </div>
     <div class="content-list-bqt">
         <table class="table table-hover">
             <thead>
                 <tr style="text-align: center;">
                     <th scope="col">#</th>
-                    <th scope="col">Service</th>
-                    <th scope="col">Plateforme</th>
+                    <th scope="col">Libéllé BQT</th>
+                    <th scope="col">Date BQT</th>
                     <th scope="col">Statut BQT</th>
-                    <th scope="col">Période BQT</th>
-                    <th scope="col"> Date BQT</th>
+                    <th scope="col"> Commentaire BQT</th>
                     <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <tr style="text-align: center;">
+                <tr style="text-align: center;" *ngFor="let item of ListBQT">
                     <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    <td>@mdo</td>
-                    <td>@mdo</td>
+                    <td>{{item.Libelle}}</td>
+                    <td>{{item.Status}}</td>
+                    <td>{{item.datebqt}}</td>
+                    <td>{{item.ComptRendus}}</td>
                     <td class="">
-                        <button type="button" class="btn btn-secondary" style="    margin-right: 0.6rem;">
-                  <i class="fa fa-trash" aria-hidden="true"></i>
-                </button>
-                        <button type="button" class="btn btn-danger">
-                  <i class="fa fa-edit" aria-hidden="true"></i>
-                </button>
-                    </td>
-                </tr>
-                <tr style="text-align: center;">
-                    <th scope="row">2</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    <td>@mdo</td>
-                    <td>@mdo</td>
-                    <td>
-                        <button type="button" class="btn btn-secondary" style="    margin-right: 0.6rem;">
-                  <i class="fa fa-trash" aria-hidden="true"></i>
-                </button>
-                        <button type="button" class="btn btn-danger">
-                  <i class="fa fa-edit" aria-hidden="true"></i>
-                </button>
-                    </td>
-                </tr>
-                <tr style="text-align: center;">
-                    <th scope="row">2</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    <td>@mdo</td>
-                    <td>@mdo</td>
-                    <td>
-                        <button type="button" class="btn btn-secondary" style="    margin-right: 0.6rem;">
-                  <i class="fa fa-trash" aria-hidden="true"></i>
-                </button>
-                        <button type="button" class="btn btn-danger">
-                  <i class="fa fa-edit" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-success" (click)="ViewBQT(content, item)" style=" margin-right: 0.6rem; " (click)="open(content, item) ">
+                          <i class="fa fa-eye" aria-hidden="true "></i>
+                        </button>
+                        <button type="button " class="btn btn-danger " (click)="openEdit(content, item) ">
+                          <i class="fa fa-edit " aria-hidden="true "></i>
+                        </button>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
+
+<ng-template #content let-modal class="content-modal ">
+    <div class="modal-header ">
+        <h5 class="modal-title " id="exampleModalLabel " style=" font-size: 1.4rem; ">Création d'une BQT <i class="icon-inbox " style=" font-size:1rem ; margin-left: 1rem; color: #ff7900; " aria-hidden="true "></i></h5>
+        <button type="button " style="outline: none; " class="btn-close " (click)="deleStorageAndClose()"><span class="visually-hidden ">Close</span></button>
+    </div>
+    <div class="modal-body mt-3 ">
+        <div class="imput-content-step1 ">
+            <div class="content ">
+                <div class="content-left ">
+                    <div class="libelle-bqt ">
+                        <label for="libelle-rai ">Libéllé BQT </label>
+                        <input name="Libelle " autocomplete="off " [(ngModel)]="elementBQT.Libelle " type="text " class="form-control " [disabled]="disableChamp ">
+                    </div>
+                    <div class="statut-bqt ">
+                        <label for="statut-bqt ">STATUS BQT</label>
+                        <select id="inputState " class="form-control " name="Status " [(ngModel)]="elementBQT.Status " [disabled]="disableChamp ">
+                        <option selected>OK</option>
+                        <option selected>Non OK</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="content-right ">
+                    <div class="bqt-date ">
+                        <label for="bqt-date">Date BQT</label>
+                        <input name="datebqt " [(ngModel)]="elementBQT.datebqt " type="date" class="form-control " [disabled]="disableChamp ">
+                    </div>
+                    <div class="compte-bqt ">
+                        <label for="compte-bqt ">Compte rendu BQT </label>
+                        <textarea [disabled]="disableChamp " name="ComptRendus " [(ngModel)]="elementBQT.ComptRendus " id=" " cols="50 " rows="5 "></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-finale m-3 ">
+                <button type="button " class="btn btn-secondary " (click)="deleStorageAndClose()">Annuler</button>
+                <button [disabled]="disableChamp " *ngIf="!shoEdit" type="button " class="btn btn-primary " (click)="SauveBQT() " style="float: right; ">
+                  <span *ngIf="loading " style="margin-left: 0.2rem; ">Sauvegarder</span>
+                  <span *ngIf="!loading " class="spinner-border spinner-border-sm " role="status " aria-hidden="true "></span>
+                  <span *ngIf="!loading " style="margin-left: 0.2rem; ">Loading...</span>
+                </button>
+                <button [disabled]="disableChamp" *ngIf="shoEdit" type="button " class="btn btn-primary " (click)="updateBQT() " style="float: right; ">
+                  <span *ngIf="loading " style="margin-left: 0.2rem; ">Modification</span>
+                  <span *ngIf="!loading " class="spinner-border spinner-border-sm " role="status " aria-hidden="true "></span>
+                  <span *ngIf="!loading " style="margin-left: 0.2rem; ">Loading...</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</ng-template>

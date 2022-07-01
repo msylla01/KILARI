@@ -40,3 +40,45 @@
     }
     .content-list-bqt {}
 }
+
+.imput-content-step1 {
+    .content {
+        display: flex;
+        gap: 2rem;
+        // flex-direction: column;
+        justify-content: space-between;
+        .content-left {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            .libelle-bqt {
+                display: flex;
+                flex-direction: column;
+                gap: 0.3rem;
+            }
+            .statut-bqt {
+                display: flex;
+                flex-direction: column;
+                gap: 0.3rem;
+            }
+        }
+        .content-right {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            .bqt-date {
+                display: flex;
+                flex-direction: column;
+                gap: 0.3rem;
+            }
+            .compte-bqt {
+                display: flex;
+                flex-direction: column;
+                gap: 0.3rem;
+            }
+        }
+    }
+    .footer-finale {}
+}

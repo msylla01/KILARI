@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../services/api.service'
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-loyout-global',
@@ -8,14 +9,21 @@ import { ApiService } from '../services/api.service'
 })
 export class LoyoutGlobalComponent implements OnInit {
 
-  ListTickOcean:any;
+  ListTickOcean:any =[];
+  ListBQT:any = [];
+  userConnecter:any={};
 
-  constructor(private ApiService:ApiService , ) { }
+  constructor(private ApiService:ApiService ,private userService: UserService ) { }
 
   ngOnInit() {
     this.getNumbTicket();
+    this.getAllBQT();
+    this.userConnecter = this.userService.getUserSession()
   }
 
+  logout(){
+    this.userService.logout()
+  }
 
   getNumbTicket(){
     let endPoint = "tocticket"
@@ -28,6 +36,19 @@ export class LoyoutGlobalComponent implements OnInit {
           console.log('error',error);
         }
       );
+  }
+
+  getAllBQT(){
+    let endPoint = "bqt"
+    this.ApiService.get(endPoint).subscribe(
+      (response:any) => {
+        this.ListBQT = response;
+        console.log('ListBQT', this.ListBQT);
+      },
+      (error:any) => {
+        console.log('error',error);
+      }
+    );
   }
 
 }

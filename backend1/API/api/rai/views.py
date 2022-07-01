@@ -78,9 +78,6 @@ class PeriodeViewSet(viewsets.ModelViewSet):
     queryset = Periode.objects.all()
 
 
-class BqtViewSet(viewsets.ModelViewSet):
-    serializer_class = BqtSerializers
-    queryset = Bqt.objects.all()
 
 
 class PlanactionbqtViewSet(viewsets.ModelViewSet):
@@ -120,6 +117,10 @@ class RaiViewSet(viewsets.ModelViewSet):
 class TocproblemeViewSet(viewsets.ModelViewSet):
     serializer_class = TocproblemeSerializers
     queryset = Tocprobleme.objects.all()
+
+class BqtViewSet(viewsets.ModelViewSet):
+    serializer_class = BqtSerializers
+    queryset = Bqt.objects.all()
 
 class DeclenchementViewSet(viewsets.ModelViewSet):
     serializer_class = DeclenchementSerializers

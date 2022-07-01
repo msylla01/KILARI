@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { LoyoutGlobalComponent } from './loyout-global/loyout-global.component';
 import { HomeComponent } from './shared/home/home.component';
+import {AuthGuard} from './services/auth.guard'
 
 const routes: Routes = [
 
@@ -34,23 +35,33 @@ const routes: Routes = [
     {
       path: 'tableau-de-bord',
       loadChildren: () => import('./pages/dashboard/dashboard.module').then(module => module.DashboardModule),
+      canLoad: [AuthGuard]
+
+
     },
     {
       path: 'gestion-rai',
       loadChildren: () => import('./pages/rai/rai.module').then(module => module.RaiModule),
+      canLoad: [AuthGuard]
     },
 
     {
       path: 'gestion-bqt',
       loadChildren: () => import('./pages/Bqt/Bqt.module').then(module => module.BqtModule),
+      canLoad: [AuthGuard]
+
     },
     {
       path: 'plan-action-rai',
       loadChildren: () => import('./pages/plan-rai/plan-rai.module').then(module => module.PlanRaiModule),
+      canLoad: [AuthGuard]
+
     },
     {
       path: 'plan-action-bqt',
       loadChildren: () => import('./pages/Plan-bqt/Plan-bqt.module').then(module => module.PlanBqtModule),
+      canLoad: [AuthGuard]
+
     }
   ]
 },
@@ -70,7 +81,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes,{useHash:true})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

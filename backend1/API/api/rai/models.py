@@ -70,11 +70,12 @@ class Periode(models.Model):
 
 class Bqt(models.Model):
 
-    service = models.ForeignKey(Service, on_delete=models.CASCADE,related_name='bqt',blank=True)
-    platform = models.ForeignKey(Platform, on_delete=models.CASCADE,related_name='bqt',blank=True)
-    statusbqt = models.ForeignKey(Statusbqt, on_delete=models.CASCADE,related_name='bqt',blank=True)
-    periode = models.ForeignKey(Periode, on_delete=models.CASCADE,related_name='bqt',blank=True)
+
+    ComptRendus = models.CharField(max_length=50,blank=False, default='')
+    Status = models.CharField(max_length=50,blank=False, default='')
+    Libelle = models.CharField(max_length=200,blank=False, default='')
     datebqt = models.DateField()
+   
     def __str__(self):
         return self.service
 
@@ -85,7 +86,11 @@ class Planactionbqt(models.Model):
     Porteur = models.CharField(max_length=300,blank=False, default='')
     Dateprevisionel =  models.DateField()
     Dateeffective =  models.DateField()
-    Status = models.CharField(max_length=50,blank=False, default='')
+    Decision = models.CharField(max_length=200,blank=False, default='')
+    Situation =models.CharField(max_length=200,blank=False, default='')
+    Perimetre = models.CharField(max_length=200,blank=False, default='')
+    Status = models.IntegerField()
+    Efficacite = models.CharField(max_length=50,blank=False, default='')
     Commentaire = models.CharField(max_length=500,blank=False, default='')
 
 class TocTicket(models.Model):

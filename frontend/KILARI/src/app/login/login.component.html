@@ -11,12 +11,12 @@
         <form action="#">
             <div class="identifiant">
                 <label for="identifiant" class="form-label"><i class="icon-user"></i>Identifiant</label>
-                <input type="email" class="form-control imput-identifiant" id="identifiant">
+                <input type="email" name="username" [(ngModel)]="user.username" class="form-control imput-identifiant" id="identifiant">
             </div>
 
             <div class="password">
                 <label for="password" class="form-label"><i class="icon-lock"></i> Mot de passe</label>
-                <input type="password" class="form-control imput-password" id="password">
+                <input type="password" name="password" [(ngModel)]="user.password" class="form-control imput-password" id="password">
             </div>
 
             <div class="remember">
@@ -31,7 +31,7 @@
             </div>
 
             <div class="btn-connect">
-                <button type="submit" class="btn btn-primary">Sign in</button>
+                <button type="submit" class="btn btn-primary" (click)="login()">Sign in</button>
             </div>
 
 
@@ -49,12 +49,50 @@
 
 <ng-template #content let-modal class="content-modal">
     <div class="modal-header ">
-        <h5 class="modal-title " id="exampleModalLabel ">Création un compte utilisateur <i class="fa fa-user " style=" font-size:1rem ; margin-left: 1rem; color: #ff7900; " aria-hidden="true "></i></h5>
+        <h5 class="modal-title " id="exampleModalLabel ">Création d'un compte utilisateur <i class="fa fa-user " style=" font-size:1rem ; margin-left: 1rem; color: #ff7900; " aria-hidden="true "></i></h5>
         <button type="button " style="outline: none; " class="btn-close " (click)="deleStorageAndClose() "><span class="visually-hidden ">Close</span></button>
     </div>
     <div class="modal-body ">
+        <div class="content-one">
+            <div class="row1">
+                <div class="nom">
+                    <label class="mb-2" for="toc ">Nom</label>
+                    <input type="text " class="form-control " name="Nom " [(ngModel)]="userCount.Nom ">
+                </div>
+                <div class="prenom">
+                    <label class="mb-2" for="toc ">Prénoms</label>
+                    <input type="text " class="form-control " name="Prenom " [(ngModel)]="userCount.Prenom ">
+                </div>
+            </div>
+            <div class="row2">
+                <div class="email">
+                    <label class="mb-2" for="toc ">Email</label>
+                    <input type="text " class="form-control " name="Email " [(ngModel)]="userCount.Email ">
+                </div>
+                <div class="contact">
+                    <label class="mb-2" for="toc ">Contact</label>
+                    <input type="text " class="form-control " name="Contact " [(ngModel)]="userCount.Contact ">
+                </div>
+            </div>
+            <div class="row3">
+                <div class="username">
+                    <label class="mb-2" for="toc ">Username</label>
+                    <input type="text " class="form-control " name="username " [(ngModel)]="userCount.username ">
+                </div>
+                <div class="password" style="display: flex;align-items: center;gap: 0.7rem;">
+                    <div>
+                        <label class="mb-2" for="toc ">Mot de passe</label>
+                        <input autocomplete="on" type="password" class="form-control " name="password " [(ngModel)]="userCount.password ">
+                    </div>
+                    <div>
+                        <label class="mb-2" for="toc ">Confirmer</label>
+                        <input autocomplete="on" type="password" class="form-control " name="COnfirmPassword" [(ngModel)]="COnfirmPassword ">
+                    </div>
+                </div>
+            </div>
+        </div>
         <button type="button " class="btn btn-secondary " (click)="deleStorageAndClose() ">Annuler</button>
-        <button class="btn btn-primary" style="float: right; background: orange;" (click)="confirmSubmitPwdForgot()">Valider la modification</button>
+        <button class="btn btn-primary" style="float: right; background: orange;" (click)="confirmSubmitCreateUser()">Valider la création de compte</button>
     </div>
 </ng-template>
 
@@ -66,7 +104,13 @@
         <button type="button " style="outline: none; " class="btn-close " (click)="deleStorageAndClose() "><span class="visually-hidden ">Close</span></button>
     </div>
     <div class="modal-body mt-4">
-        <button type="button " class="btn btn-secondary " (click)="deleStorageAndClose() ">Annuler</button>
-        <button class="btn btn-primary" style="float: right; background: orange;" (click)="confirmSubmitPwdForgot()">Valider la modification</button>
+        <div class="pass-forget">
+            <label class="mb-2" for="toc ">Mot de passe oublié</label>
+            <input type="text " class="form-control " name="password " placeholder="Entrez votre email" [(ngModel)]="userCount.password ">
+        </div>
+        <div style="margin-top: 1rem;">
+            <button type="button " class="btn btn-secondary " (click)="deleStorageAndClose() ">Annuler</button>
+            <button class="btn btn-primary" style="float: right; background: orange;" (click)="confirmSubmitPwdForgot()">Valider le mot de passe</button>
+        </div>
     </div>
 </ng-template>

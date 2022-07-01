@@ -12,9 +12,9 @@ export class UserService {
   constructor(private router: Router) {
   }
 
-  public logout() {
+  logout() {
     sessionStorage.removeItem('xyz-token');
-    this.router.navigate(['/accueil/login']);
+    this.router.navigate(['/login-kilari']);
   }
 
   public getUserStorage(): any {
@@ -26,6 +26,18 @@ export class UserService {
     }
     return user;
   }
+
+  public getUser(): any {
+    const user = JSON.parse(sessionStorage.getItem('xyz-token') || '{}' );
+    if (user != null) {
+      user.password = undefined;
+    } else {
+      return;
+    }
+    return user;
+  }
+
+
 
   public getUserSession(): any {
     const user = JSON.parse(sessionStorage.getItem('xyz-token')!);
@@ -73,8 +85,8 @@ export class UserService {
     console.log('check is authenticated');
     const userSession = JSON.parse(sessionStorage.getItem('xyz-token')!);
     console.log('token', userSession)
-    if (userSession == null) {
-      this.router.navigate(['/accueil/login']);
+    if (userSession == null && !userSession) {
+      this.router.navigate(['/login-kilari']);
       return false;
     }
     return true;

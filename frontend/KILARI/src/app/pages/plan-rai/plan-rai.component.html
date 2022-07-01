@@ -65,13 +65,13 @@
                         </table>
                     </td>
                     <td class="">
-                        <button type="button" class="btn btn-secondary" style="    margin-right: 0.6rem;">
+                        <!-- <button type="button" class="btn btn-secondary" style="    margin-right: 0.6rem;">
                       <i class="fa fa-trash" aria-hidden="true"></i>
-                    </button>
+                    </button> -->
                         <button style="    margin-right: 0.6rem;" type="button" class="btn btn-danger" (click)="openEdit(content,toc)">
                       <i class="fa fa-edit" aria-hidden="true"></i>
                     </button>
-                        <button type="button" class="btn btn-success" (click)="open(content)">
+                        <button type="button" class="btn btn-success" (click)="openView(content,toc)">
                       <i class="fa fa-eye" aria-hidden="true"></i>
                     </button>
                     </td>
@@ -83,28 +83,33 @@
 
 <ng-template #content let-modal class="content-modal">
     <div class="modal-header ">
-        <h5 class="modal-title " id="exampleModalLabel ">Création d'un plan d'action rai <i class="fa fa-tasks " style=" font-size:1rem ; margin-left: 1rem; color: #ff7900; " aria-hidden="true "></i></h5>
+        <h5 class="modal-title " style="font-size: 1.4rem;" id="exampleModalLabel ">{{title}} <i class="fa fa-tasks " style=" font-size:1rem ; margin-left: 1rem; color: #ff7900; " aria-hidden="true "></i></h5>
         <button type="button " style="outline: none; " class="btn-close " (click)="deleStorageAndClose() "><span class="visually-hidden ">Close</span></button>
     </div>
     <div id="imput-content-step3">
-        <div class="imput-content-step3 " style="padding: 2rem 1rem 1rem  ">
+        <div class="imput-content-step3 " style="padding: 0rem 1rem 1rem  ">
             <div class="content ">
-                <form class="form-horizontal style-form-control" [formGroup]="PasForm" (ngSubmit)="onSubmit()">
+                <form class="form-horizontal style-form-control" [formGroup]="PasForm" (ngSubmit)="submitValed()">
                     <div formArrayName="pas">
                         <div *ngFor="let skill of pas.controls; let i=index">
                             <div [formGroupName]="i" class="class-form" style="    display: flex;
                             justify-content: space-between;
                             gap: 1rem;">
+
                                 <div class="rigth-div" style="width: 100%;    display: flex;
                                 flex-direction: column;
-                                gap: 0.8rem;">
+                                gap: 0.8rem;    margin-top: 2rem;">
+                                    <p style="    font-size: 1.3rem;
+                                    font-weight: 600;
+                                    margin-bottom: 1rem;
+                                    color: orangered;">Plan d'action N*{{i+1}}</p>
                                     <div class="form-1 control-form" style="                        display: flex;
                                         width: 100%;
                                         gap: 2rem;">
                                         <div class=" form-group-div" style=" width: 100%">
                                             <label for="Priorite" style="    margin-bottom: 0.3rem;">TOC PROBLEMEE </label>
                                             <div class="">
-                                                <select id="inputState" class="form-control" name="tocpr" formControlName="tocpr">
+                                                <select id="inputState" class="form-control" [disabled]="disableChamp" name="tocpr" formControlName="tocpr">
                                                   <option *ngFor="let d of dt " [value]="d.id ">{{d.Numerotocpro}}</option>
                                                 </select>
                                             </div>
@@ -112,7 +117,7 @@
                                         <div class="form-group-div" style=" width: 100%">
                                             <label style="    margin-bottom: 0.3rem;">Libelle:</label>
                                             <div class="">
-                                                <input type="text" formControlName="Libelle" class="form-control">
+                                                <input type="text" [disabled]="disableChamp" formControlName="Libelle" class="form-control">
                                             </div>
                                         </div>
                                     </div>
@@ -122,13 +127,13 @@
                                         <div class="form-group-div" style=" width: 100%">
                                             <label style="    margin-bottom: 0.3rem;">Porteur:</label>
                                             <div class="">
-                                                <input type="text" formControlName="Porteur" class="form-control">
+                                                <input type="text" [disabled]="disableChamp" formControlName="Porteur" class="form-control">
                                             </div>
                                         </div>
                                         <div class="form-group-div" style=" width: 100%">
                                             <label style="    margin-bottom: 0.3rem;">Perimetre:</label>
                                             <div class="">
-                                                <select id="inputState" name="Perimetre" formControlName="Perimetre" class="form-control">
+                                                <select id="inputState" [disabled]="disableChamp" name="Perimetre" formControlName="Perimetre" class="form-control">
                                                     <option selected>Filiale</option>
                                                     <option selected>Applicatif</option>
                                                     <option selected>DBA</option>
@@ -151,13 +156,13 @@
                                             <label style="    margin-bottom: 0.3rem;">Date P:</label>
                                             <div class="">
 
-                                                <input type="date" formControlName="Dateprevisionel" class="form-control">
+                                                <input type="date" [disabled]="disableChamp" formControlName="Dateprevisionel" class="form-control">
                                             </div>
                                         </div>
                                         <div class="form-group-div" style=" width: 100%">
                                             <label style="    margin-bottom: 0.3rem;">Date Ef:</label>
                                             <div class="">
-                                                <input type="date" formControlName="Dateeffective" class="form-control">
+                                                <input type="date" [disabled]="disableChamp" formControlName="Dateeffective" class="form-control">
                                             </div>
                                         </div>
                                     </div>
@@ -167,7 +172,7 @@
                                         <div class="form-group-div" style=" width: 100%">
                                             <label style="    margin-bottom: 0.3rem;">Status:</label>
                                             <div class="">
-                                                <select id="inputState" name="Priorite" formControlName="Status" class="form-control">
+                                                <select id="inputState" [disabled]="disableChamp" name="Priorite" formControlName="Status" class="form-control">
                                                   <option value="0">0</option>
                                                   <option value="1">1</option>
                                               </select>
@@ -177,7 +182,7 @@
                                         <div class="form-group-div" style=" width: 100%">
                                             <label style="    margin-bottom: 0.3rem;">Efficacite:</label>
                                             <div class="">
-                                                <select id="inputState" name="Efficacite" formControlName="Efficacite" class="form-control">
+                                                <select id="inputState" [disabled]="disableChamp" name="Efficacite" formControlName="Efficacite" class="form-control">
                                                     <option selected></option>
                                                     <option selected>ACTION EFFICACE</option>
                                                     <option selected>ACTION NON EFFICACE</option>
@@ -190,13 +195,13 @@
                                         <label style="    margin-bottom: 0.3rem;">Commentaire:</label>
                                         <div class="">
                                             <!-- <input type="text" height="10px" formControlName="Commentaire" class="form-control"> -->
-                                            <textarea formControlName="Commentaire" id=" " cols="30 " style="width: 100%;" rows="5 "></textarea>
+                                            <textarea [disabled]="disableChamp" formControlName="Commentaire" id=" " cols="30 " style="width: 100%;" rows="5 "></textarea>
 
                                         </div>
                                     </div>
                                 </div>
-                                <div style="    margin-top: 1.4rem;white-space: nowrap;">
-                                    <button style="background:red;outline: none;" class="btn btn-primary " (click)="removePas(i)">
+                                <div style="    margin-top: 6.6rem;white-space: nowrap;">
+                                    <button style="background:red;outline: none;" class="btn btn-primary " [disabled]="disableChamp" (click)="removePas(i)">
                                       <i class="fa fa-trash" aria-hidden="true"></i>
                                     </button>
                                 </div>
@@ -204,13 +209,13 @@
                         </div>
                     </div>
                     <div style="float:right ;margin-top: 1em">
-                        <button class="btn btn-primary" [disabled]="disableBtn" type="submit">Enregistrer le PA</button>
+                        <button class="btn btn-primary" [disabled]="disableBtn" type="submit">{{tilreBtn}}</button>
                     </div>
                 </form>
             </div>
 
             <div class="footer-finale " style="display: flex;gap: 1rem;margin-top: 1em">
-                <button class="btn btn-primary" style="background: orange;" (click)="addPas()">Ajouter un Plan d'action</button>
+                <button class="btn btn-primary" [disabled]="disableBtnAdd" style="background: orange;" (click)="addPas()">Ajouter un Plan d'action</button>
                 <button class=" btn btn-secondary" (click)="deleStorageAndClose() ">Annuler</button>
             </div>
         </div>

@@ -14,6 +14,10 @@ import { Router } from '@angular/router';
 })
 export class PlanRaiComponent implements OnInit {
 
+  disableChamp:boolean = true;
+  title:any
+  tilreBtn:any;
+  disableBtnAdd:boolean = false
   dis : any
   modalRef: NgbModalRef | any;
   form!: FormGroup;
@@ -26,9 +30,10 @@ export class PlanRaiComponent implements OnInit {
   disableBtn:boolean = true;
   Numerotocpro:any;
   Idinc! : number
-
+  IdTOc:any;
   objet : any
   dt : any = []
+  updateOrCreate:boolean = false;
 
 
   constructor(private SpinnerService:SpinnerService,private toastr: ToastrService,private router: Router,private ApiService:ApiService ,private modalService: NgbModal,
@@ -84,26 +89,14 @@ export class PlanRaiComponent implements OnInit {
   }
 
   open(content:any, plan_rai?:any) {
-
+    this.title = "Création d'un plan d'action rai";
+    this.tilreBtn =  "Enregistrer le PA"
+this.updateOrCreate = false;
     console.log('item', plan_rai);
     if (!plan_rai) {
       this.PasForm.reset();
     }
     this.addPas()
-
-    // this.form.patchValue({
-    //   Libelle: plan_rai.Libelle,
-    //   Porteur: plan_rai.planrai.Porteur,
-    //   Dateprevisionel: plan_rai.planrai.Dateprevisionel,
-    //   Dateeffective: plan_rai.Dateeffective,
-    //   Perimetre: plan_rai.Perimetre,
-    //   Status: plan_rai.Status,
-    //   Efficacite: plan_rai.Efficacite,
-    //   Commentaire: plan_rai.Commentaire,
-    //   tocpr: plan_rai.Numerotocpro
-    //  });
-
-
     this.modalRef =  this.modalService.open(content, {size  : 'xl'})
     this.modalRef.result.then(
       (result:any) => {
@@ -112,25 +105,33 @@ export class PlanRaiComponent implements OnInit {
   }
 
   openEdit(content:any, item?:any) {
-
-    console.log('item', item);
+    this.title = "Modification d'un plan d'action rai";
+    this.tilreBtn =  "Enregistrer le PA modifier"
+    this.updateOrCreate =  true
+    this.disableBtn =  false;
+    this.disableBtnAdd = true
+    this.IdTOc =  item.id;
+    console.log('item', item,this.IdTOc);
     if (!item) {
       this.PasForm.reset();
     }
-   // this.addPas()
+    for (let index = 0; index < item.planrai.length; index++) {
+      const element = item.planrai[index];
+      console.log('element',element);
 
-    // this.form.patchValue({
-    //   Libelle: item.Libelle,
-    //   Porteur: item.planrai.Porteur,
-    //   Dateprevisionel: item.planrai.Dateprevisionel,
-    //   Dateeffective: item.Dateeffective,
-    //   Perimetre: item.Perimetre,
-    //   Status: item.Status,
-    //   Efficacite: item.Efficacite,
-    //   Commentaire: item.Commentaire,
-    //   tocpr: item.Numerotocpro
-    //  });
-
+      const res = new FormGroup({
+          Libelle: new FormControl(element.Libelle),
+          Porteur: new FormControl(element.Porteur),
+          Dateprevisionel: new FormControl(element.Dateprevisionel),
+          Dateeffective: new FormControl(element.Dateeffective),
+          Perimetre: new FormControl(element.Perimetre),
+          Efficacite: new FormControl(element.Efficacite),
+          Status: new FormControl(element.Status),
+          Commentaire: new FormControl(element.Commentaire),
+          tocpr: new FormControl(element.tocpr),
+        });
+        this.pas.push(res);
+    }
 
     this.modalRef =  this.modalService.open(content, {size  : 'xl'})
     this.modalRef.result.then(
@@ -138,15 +139,46 @@ export class PlanRaiComponent implements OnInit {
         console.log('oooook',result);
     });
 
-    console.log(' item.planrai', item.planrai);
+  }
 
-    item.planrai.forEach((t:any) => {
-      var rai: FormGroup = this.PasForm;
-      this.pas.push(rai);
-      rai.patchValue(t)
+  openView(content:any, item?:any) {
+    this.disableChamp = false
+    console.log('this.disableChamp ',this.disableChamp );
+
+    this.title = "Modification d'un plan d'action rai";
+    this.tilreBtn =  "Enregistrer le PA modifier"
+    this.updateOrCreate = true
+    this.disableBtn =  false;
+    this.disableBtnAdd = true
+    this.IdTOc =  item.id;
+    console.log('item', item,this.IdTOc);
+    if (!item) {
+      this.PasForm.reset();
+    }
+    for (let index = 0; index < item.planrai.length; index++) {
+      const element = item.planrai[index];
+      console.log('element',element);
+
+      const res = new FormGroup({
+          Libelle: new FormControl(element.Libelle),
+          Porteur: new FormControl(element.Porteur),
+          Dateprevisionel: new FormControl(element.Dateprevisionel),
+          Dateeffective: new FormControl(element.Dateeffective),
+          Perimetre: new FormControl(element.Perimetre),
+          Efficacite: new FormControl(element.Efficacite),
+          Status: new FormControl(element.Status),
+          Commentaire: new FormControl(element.Commentaire),
+          tocpr: new FormControl(element.tocpr),
+        });
+        this.pas.push(res);
+    }
+
+    this.modalRef =  this.modalService.open(content, {size  : 'xl'})
+    this.modalRef.result.then(
+      (result:any) => {
+        console.log('oooook',result);
     });
 
-    this.form.patchValue(item);
   }
 
 
@@ -185,15 +217,9 @@ export class PlanRaiComponent implements OnInit {
     this.pas.removeAt(i);
   }
 
-
-
-
-
      get f(){
       return this.form1.controls;
     }
-
-
 
     getIncident(){
       let endPoint = "incident"
@@ -207,6 +233,7 @@ export class PlanRaiComponent implements OnInit {
         }
       );
     }
+
 
     getTocProbleme(){
       let endPoint = "tocprobleme";
@@ -227,14 +254,22 @@ export class PlanRaiComponent implements OnInit {
       );
     }
 
+
+
+    submitValed(){
+      if (!this.updateOrCreate) {
+        this.onSubmit();
+      }
+      else{
+        this.updatePlanAction();
+      }
+    }
+
     onSubmit() {
       let endPoint =  'planaction';
-      console.log(this.PasForm.value,'he',this.form.value);
+      console.log('create mode',this.PasForm.value);
       this.objet = this.PasForm.value;
       for(let i=0; i<this.pas.value.length; i++){
-        // if (condition) {
-
-        // }
           this.pas.value[i].Status= Number(this.pas.value[i].Status)
           this.pas.value[i].tocpr= Number(this.pas.value[i].tocpr)
           console.log('planaction  objet :',this.pas.value[i]);
@@ -248,6 +283,27 @@ export class PlanRaiComponent implements OnInit {
             }),
             (error: any) => {
               this.showDanger('La création a échouée')
+            }
+          }
+      }
+
+      updatePlanAction(){
+        let endPoint =  'planaction';
+        console.log('Edit mode',this.PasForm.value,'he',this.form.value);
+          for(let i=0; i<this.pas.value.length; i++){
+            this.pas.value[i].Status= Number(this.pas.value[i].Status)
+            this.pas.value[i].tocpr= Number(this.pas.value[i].tocpr)
+            console.log('planaction  objet :',this.pas.value[i]);
+            this.ApiService.put(endPoint,this.IdTOc,this.pas.value[i]).subscribe(
+            (res:any) => {
+              console.log('res planification update====>',res);
+            this.showSuccess('La mise çà jour bien effectuée')
+            this.getTocProbleme()
+            this.deleStorageAndClose();
+            console.log('planaction  objet :created successfully!',);
+            }),
+            (error: any) => {
+              this.showDanger('La mise à jour a échoué')
             }
           }
       }

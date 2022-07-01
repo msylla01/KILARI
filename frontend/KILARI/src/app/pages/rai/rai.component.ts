@@ -259,6 +259,8 @@ export class RaiComponent implements OnInit {
       this.background1 = true;
       this.background2 = false;
       this.step2 =  {...this.step2Update}
+    this.disableChamp = true;
+    // this.step2.disableChamp = true;
     }
   }
 
@@ -339,9 +341,6 @@ export class RaiComponent implements OnInit {
       );
   }
 
-btnsled(){
-  this.router.navigate(['plan-action-rai']);
-}
 
   nextStep2(){
     const hideDistinataire = JSON.parse(localStorage.getItem('hideExpe') || '{}');
@@ -442,6 +441,7 @@ btnsled(){
   }
 
   viewStep2(){
+
     const hideDistinataire = JSON.parse(localStorage.getItem('hideExpe') || '{}');
     const hideTrasaction = JSON.parse(localStorage.getItem('hideTranc') || '{}');
     const hideExpediteur = JSON.parse(localStorage.getItem('hideExpe') || '{}');
@@ -452,6 +452,9 @@ btnsled(){
       this.background1 = true;
       this.background2 = true;
       this.step3 =  {...this.step3Update}
+      // this.step3.disableChamp =  true
+    this.disableChamp = true;
+
     }
   }
 
@@ -563,6 +566,7 @@ btnsled(){
       this.ApiService.get(endPoint).subscribe(
         (response:any) => {
           this.ListTickOcean = response;
+    this.SpinnerService.hideSpinner();
           console.log('ListTickOcean', this.ListTickOcean);
         },
         (error:any) => {
@@ -641,6 +645,7 @@ btnsled(){
         console.log('data toc ====>',data)
         this.idGobal = data
           this.step1 = data;
+          // this.step1.disableChamp = rai.disableChamp
           console.log('step1====>', this.step1);
           this.idTocStep1 =  data.id
           this.idtocpro =data.tocpro[0].id;
@@ -666,6 +671,7 @@ btnsled(){
     if (rai != undefined ) {
       console.log('++++rai',rai)
       this.numeroToc =  rai.Numero;
+      // rai.disableChamp = true
       this.findEdit(rai)
     }
     localStorage.setItem('hideDest', JSON.stringify(true));

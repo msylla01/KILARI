@@ -25,45 +25,26 @@ class EvaluationSerializers(serializers.ModelSerializer):
         fields = '__all__'
         extra_kwargs = {'Planaction': {'required': False}}
 
-class PlanactionbqtSerializers(serializers.ModelSerializer):
-    role = EvaluationbqtSerializers(many=True, read_only=True)
-    class Meta: 
-        model = Planactionbqt
-        fields = '__all__'
-        extra_kwargs = {'bqt': {'required': False}}
-
-class BqtSerializers(serializers.ModelSerializer):
-    planbqt = EvaluationbqtSerializers(many=True, read_only=True)
-    class Meta: 
-        model = Bqt
-        fields = '__all__'
-        extra_kwargs = {'service': {'required': False},'platform': {'required': False},'statusbqt': {'required': False},'periode': {'required': False}}
-        
+     
 class StatusbqtSerializers(serializers.ModelSerializer):
-    planbqt = BqtSerializers(many=True, read_only=True)
+    # planbqt = BqtSerializers(many=True, read_only=True)
     class Meta: 
         model = Statusbqt
         fields = '__all__'
 
 class PeriodeSerializers(serializers.ModelSerializer):
-    planbqt = BqtSerializers(many=True, read_only=True)
+    # planbqt = PlanactionbqtSerializers(many=True, read_only=True)
     class Meta: 
         model = Periode
         fields = '__all__'
         extra_kwargs = {'mois': {'required': False}}
 
 class MoisSerializers(serializers.ModelSerializer):
-    periode = BqtSerializers(many=True, read_only=True)
+    periode = PeriodeSerializers(many=True, read_only=True)
     class Meta: 
         model = Mois
         fields = '__all__'
 
-class PlanactionsSerializers(serializers.ModelSerializer):   
-    class Meta: 
-        model = Planactions
-        fields = '__all__'
-        extra_kwargs = {'tocpr': {'required': False},}
-        
 
 
         
@@ -90,14 +71,14 @@ class ImpactSerializers(serializers.ModelSerializer):
 
 class ServiceSerializers(serializers.ModelSerializer):
     Impact = ImpactSerializers(many=True, read_only=True)
-    planbqt = BqtSerializers(many=True, read_only=True)
+    # planbqt = PlanactionbqtSerializers(many=True, read_only=True)
     class Meta: 
         model = Service
         fields = '__all__'
 
 class PlatformSerializers(serializers.ModelSerializer):
     Impact = ImpactSerializers(many=True, read_only=True)
-    planbqt = BqtSerializers(many=True, read_only=True)
+    # planbqt = BqtSerializers(many=True, read_only=True)
     class Meta: 
         model = Platform
         fields = '__all__'
@@ -110,6 +91,12 @@ class RaiSerializers(serializers.ModelSerializer):
         fields = '__all__'
         extra_kwargs = {'tocprobleme': {'required': False}, 'declenchement': {'required': False},'status': {'required': False},'critere': {'required': False},}
 
+class PlanactionsSerializers(serializers.ModelSerializer):   
+    class Meta: 
+        model = Planactions
+        fields = '__all__'
+        extra_kwargs = {'tocpr': {'required': False},}
+        
 
 class TocproblemeSerializers(serializers.ModelSerializer):
     rai = RaiSerializers(many=True, read_only=True)
@@ -118,6 +105,23 @@ class TocproblemeSerializers(serializers.ModelSerializer):
         model = Tocprobleme
         fields = '__all__'
         extra_kwargs = {'typeproblem': {'required': False},'toc': {'required': False}}
+
+
+class PlanactionbqtSerializers(serializers.ModelSerializer):
+    # role = EvaluationbqtSerializers(many=True, read_only=True)
+    class Meta: 
+        model = Planactionbqt
+        fields = '__all__'
+        extra_kwargs = {'bqt': {'required': False}}
+
+class BqtSerializers(serializers.ModelSerializer):
+    planbqt = PlanactionbqtSerializers(many=True, read_only=True)
+    class Meta: 
+        model = Bqt
+        fields = '__all__'
+        extra_kwargs = {'service': {'required': False},'platform': {'required': False},'statusbqt': {'required': False},'periode': {'required': False}}
+   
+
 
 class TocSerializers(serializers.ModelSerializer):
     Impact = ImpactSerializers(many=True, read_only=True)

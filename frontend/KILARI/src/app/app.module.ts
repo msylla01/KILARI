@@ -15,6 +15,7 @@ import { TocService } from './services/toc.service';
 import { DatePipe } from '@angular/common';
 import { PlanactionraiModule } from './planactionrai/planactionrai.module';
 import { PlanactionraiRoutingModule } from './planactionrai/planactionrai-routing.module';
+import {AuthGuard} from './services/auth.guard'
 
 
 import { ToastrModule } from 'ngx-toastr';
@@ -52,7 +53,7 @@ import { LoyoutGlobalComponent } from './loyout-global/loyout-global.component';
     HighchartsChartModule,
     ToastrModule.forRoot(),
   ],
-  providers: [RaiModule,PlanactionraiModule,TocService,DatePipe,],
+  providers: [AuthGuard,RaiModule,PlanactionraiModule,TocService,DatePipe,],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
