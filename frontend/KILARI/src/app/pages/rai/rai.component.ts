@@ -38,7 +38,7 @@ export class RaiComponent implements OnInit {
   listPriorite:any = [];
   ListTickOcean:any = [];
   NewListTickOcean:any = [];
-
+  values:any = [];
 
   headerModal:string = '';
   hideSPan:boolean = false;
@@ -127,6 +127,22 @@ export class RaiComponent implements OnInit {
   showDanger(msg:any){
     this.toastr.error(msg);
   }
+  onKey(event: any) { // without type info
+      if (event.target.value && event.target.value !== undefined && event.target.value !== null) {
+          this.values.push(event.target.value);
+          console.log('this.values',this.values);
+          this.numeroToc = "";
+      }
+      return
+  }
+  remove(item:any,ind?:number){
+    const index = this.values.indexOf(item);
+    if (index > -1) {
+      this.values.splice(index, 1);
+      console.log('this.values delete',this.values);
+    }
+  }
+
 
   nextStep1(){
     localStorage.setItem('hideTranc', JSON.stringify(true));
@@ -135,61 +151,70 @@ export class RaiComponent implements OnInit {
     if (hideDistinataire && hideExpediteur && this.numeroToc && this.step1.pays &&  this.step1.priorite &&  this.step1.heurD
       && this.step1.Datedebut && this.step1.Datefin && this.step1.heurF && this.step1.heurD && this.step1.Datedebut && this.step1.Datedebut
       && this.step1.Description && this.step1.SerPlat) {
-      this.groundStep1 = false;
-      this.groundStep2 = true;
-      this.groundStep3 = false;
+      // this.groundStep1 = false;
+      // this.groundStep2 = true;
+      // this.groundStep3 = false;
 
-      this.background1 = true;
-      this.background2 = false;
+      // this.background1 = true;
+      // this.background2 = false;
 
 
     }else{
-      if (!this.numeroToc) {
-        this.toastr.error('Renseigner le Ticket oceane SVP');
-          return;
-        }
+      // if (!this.numeroToc) {
+      //   this.toastr.error('Renseigner le Ticket oceane SVP');
+      //     return;
+      //   }
 
-      if (!this.step1.pays) {
-        this.toastr.error('Selectionner le pays SVP');
-        return;
-        }
+      // if (!this.step1.pays) {
+      //   this.toastr.error('Selectionner le pays SVP');
+      //   return;
+      //   }
 
-      if (!this.step1.priorite) {
-        this.toastr.error('renseigner priorité SVP');
-          return;
-        }
+      // if (!this.step1.priorite) {
+      //   this.toastr.error('renseigner priorité SVP');
+      //     return;
+      //   }
 
-        if (!this.step1.Datedebut) {
-        this.toastr.error('renseigner la date de debut SVP');
-            return;
-          }
+      //   if (!this.step1.Datedebut) {
+      //   this.toastr.error('renseigner la date de debut SVP');
+      //       return;
+      //     }
 
-          if (!this.step1.heurD) {
-        this.toastr.error('renseigner l\'heure de debut SVP');
-              return;
-            }
+      //     if (!this.step1.heurD) {
+      //   this.toastr.error('renseigner l\'heure de debut SVP');
+      //         return;
+      //       }
 
-          if (!this.step1.Datefin) {
-        this.toastr.error('renseigner la date retablissement SVP');
-              return;
-            }
+      //     if (!this.step1.Datefin) {
+      //   this.toastr.error('renseigner la date retablissement SVP');
+      //         return;
+      //       }
 
-            if (!this.step1.heurF) {
-        this.toastr.error('renseigner l\'heure de retablissement SVP');
-                return;
-              }
+      //       if (!this.step1.heurF) {
+      //   this.toastr.error('renseigner l\'heure de retablissement SVP');
+      //           return;
+      //         }
 
-            if (!this.step1.Description) {
-        this.toastr.error('renseigner la description SVP');
-                return;
-              }
+      //       if (!this.step1.Description) {
+      //   this.toastr.error('renseigner la description SVP');
+      //           return;
+      //         }
 
-              if (!this.step1.SerPlat) {
-                this.toastr.error('renseigner la description SVP');
-                        return;
-                      }
+      //         if (!this.step1.SerPlat) {
+      //           this.toastr.error('renseigner la description SVP');
+      //                   return;
+      //                 }
 
     }
+
+//     Datedebut: "2022-08-23"
+// Datefin: "2022-08-22"
+// Description: "azert"
+// SerPlat: "Service A"
+// heurD: "12:52"
+// heurF: "12:12"
+// pays: "Sénégal"
+// priorite: "P2"
 
       let endPoint = 'tocticket';
       let data =
@@ -197,8 +222,8 @@ export class RaiComponent implements OnInit {
         Numero: this.numeroToc
       }
 
-      console.log('data ticket ocean ajout', data,endPoint);
-
+      console.log('data ticket ocean ajout', data,endPoint,this.step1.Datedebut);
+return
       this.ApiService.post(endPoint, data).subscribe(
         (res: any) => {
           console.log('data res rai ticket', res);
@@ -223,10 +248,8 @@ export class RaiComponent implements OnInit {
       this.groundStep1 = false;
       this.groundStep2 = true;
       this.groundStep3 = false;
-
       this.background1 = true;
       this.background2 = false;
-
     }
     let endPoint = 'tocticket';
     let data =
@@ -540,8 +563,8 @@ export class RaiComponent implements OnInit {
         }
       );
     }
-
   }
+
 
   viewStep3(){
 
@@ -560,6 +583,7 @@ export class RaiComponent implements OnInit {
       );
   }
 
+
   getNumbTicket(){
     let endPoint = "tocticket"
     this.SpinnerService.showSpinner();
@@ -575,9 +599,9 @@ export class RaiComponent implements OnInit {
       );
   }
 
+
   filterTicket(event:any){
     console.log('event===>',event);
-
     if (event) {
        this.ListTickOcean.map( (el:any)=>{
         console.log('el===>', el,this.searchToc);
@@ -619,7 +643,6 @@ export class RaiComponent implements OnInit {
         }
       );
   }
-
 
   getPlateforme(){
     let endPoint = "platform"

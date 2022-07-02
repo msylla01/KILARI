@@ -148,8 +148,18 @@
                 }
                 .plateforme {
                     display: flex;
-                    flex-direction: column;
+                    // flex-direction: column;
                     gap: 0.3rem;
+                    .platforme {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 0.3rem;
+                    }
+                    .service {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 0.3rem;
+                    }
                 }
             }
         }

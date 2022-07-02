@@ -70,14 +70,19 @@
                 <small>Etape</small>
             </div>
         </div>
-
-        <div id="imput-content-step1 " *ngIf="groundStep1 ">
+        <!-- * -->
+        <div id="imput-content-step1 ">
             <div class="imput-content-step1 ">
                 <div class="content ">
                     <div class="content-left ">
                         <div class="toc ">
-                            <label for="toc ">Toc</label>
-                            <input type="text " [disabled]="disableChamp" class="form-control " name="numeroToc " [(ngModel)]="numeroToc ">
+                            <label for="toc ">Ticket incident</label>
+                            <input type="text " [disabled]="disableChamp" class="form-control " name="numeroToc " [(ngModel)]="numeroToc " (keyup.enter)="onKey($event)">
+                            <div class="item-sup">
+                                <span style="background: gray;
+                                padding: 0.1rem 0.4rem;
+                                border-radius: 9px;margin-right: 0.3rem;" *ngFor="let item of values">{{item}} <small (click)="remove(item)" style="color: orangered;cursor: pointer;">X</small></span>
+                            </div>
                         </div>
                         <div class="pays ">
                             <label for="pays ">Pays</label>
@@ -103,12 +108,21 @@
                               <option *ngFor="let item of Priorite " [value]="item.value ">{{item.value}}</option>
                             </select>
                         </div>
-                        <div class="plateforme ">
-                            <label for="plateforme ">Plateforme /  Service</label>
-                            <select class="form-select " name="SerPlat " [(ngModel)]="step1.SerPlat " [disabled]="disableChamp" aria-label="Default select example ">
-                              <option selected>Selectionner la plateforme</option>
-                              <option *ngFor="let item of Plateforme " [value]="item.value ">{{item.value}}</option>
-                            </select>
+                        <div class="plateforme">
+                            <div class="platforme">
+                                <label for="platforme">Plateforme</label>
+                                <select class="form-select " name="priorite " [(ngModel)]="step1.priorite " [disabled]="disableChamp" aria-label="Default select example ">
+                                    <option selected>Selectionner la plateforme</option>
+                                    <option *ngFor="let item of Plateforme " [value]="item.value ">{{item.value}}</option>
+                                </select>
+                            </div>
+                            <div class="service">
+                                <label for="service">Services</label>
+                                <select class="form-select " name="priorite " [(ngModel)]="step1.priorite " [disabled]="disableChamp" aria-label="Default select example ">
+                                    <option selected>Selectionner le service</option>
+                                    <option *ngFor="let item of Plateforme " [value]="item.value ">{{item.value}}</option>
+                              </select>
+                            </div>
                         </div>
                         <div class="date-incident ">
                             <label for="date-incident ">Date incident</label>
@@ -142,21 +156,23 @@
                 </div>
             </div>
         </div>
+
         <div id="imput-content-step2 " *ngIf="groundStep2 ">
             <div class="imput-content-step2 ">
                 <div class="top-problem ">
-                    <label for="toc-problem ">Toc</label>
+                    <label for="toc-problem ">Ticket problème</label>
                     <input type="text " class="form-control " [disabled]="disableChamp" [(ngModel)]="step2.Numerotocpro " name="Numerotocpro ">
                 </div>
                 <div class="porteur ">
                     <label for="porteur ">Porteur</label>
                     <select class="form-select " name="Porteur " [(ngModel)]="step2.Porteur " [disabled]="disableChamp" aria-label="Default select example ">
                       <option selected>Selectionner le porteur....</option>
+                      <option></option>
                       <option *ngFor="let item of Porteur " [value]="item.value ">{{item.value}}</option>
                     </select>
                 </div>
                 <div class="type ">
-                    <label for="type ">Type</label>
+                    <label for="type ">Type problème</label>
                     <select class="form-select " name="typeproblem " [(ngModel)]="step2.typeproblem " [disabled]="disableChamp" aria-label="Default select example ">
                       <option selected>Selectionner le type...</option>
                       <option *ngFor="let item of TypeProbleme " [value]="item.value ">{{item.value}}</option>
