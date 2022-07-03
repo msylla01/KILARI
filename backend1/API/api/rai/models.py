@@ -229,6 +229,7 @@ class Rai(models.Model):
     Rirecu = models.CharField(max_length=5,blank=False, default='')
     JoinToc = models.CharField(max_length=5,blank=False, default='')
     uploadedFile = models.FileField(upload_to = "Uploaded Files/")
+    
     dateTimeOfUpload = models.DateTimeField(auto_now = True)
 
 
