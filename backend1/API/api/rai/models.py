@@ -72,9 +72,9 @@ class Bqt(models.Model):
 
 
     ComptRendus = models.CharField(max_length=50,blank=False, default='')
-    uploadedFileCompteR = models.FileField(upload_to = "Uploaded Files/")
+    uploadedFileCompteR = models.FileField(upload_to = "Uploaded Files/",null=True)
     dateTimeOfUploadCompteR = models.DateTimeField(auto_now = True)
-    uploadedFilePword = models.FileField(upload_to = "Uploaded Files/")
+    uploadedFilePword = models.FileField(upload_to = "Uploaded Files/",null=True)
     dateTimeOfUploadPowrd = models.DateTimeField(auto_now = True)
     Status = models.CharField(max_length=50,blank=False, default='')
     Libelle = models.CharField(max_length=200,blank=False, default='')
@@ -168,7 +168,7 @@ class User(models.Model):
     Prenom = models.CharField(max_length=300,blank=False, default='')
     Poste =  models.CharField(max_length=100,blank=False, default='')
     Rang =  models.CharField(max_length=100,blank=False, default='')
-    Pictur = models.ImageField(upload_to='images/')
+    Pictur = models.ImageField(upload_to='images/',null=True)
     Email = models.EmailField(max_length=50)
     Contact = models.IntegerField()
     username =  models.CharField(max_length=100,null=True)
@@ -228,8 +228,8 @@ class Rai(models.Model):
     DateRept = models.DateField( )
     Rirecu = models.CharField(max_length=5,blank=False, default='')
     JoinToc = models.CharField(max_length=5,blank=False, default='')
-    uploadedFile = models.FileField(upload_to = "Uploaded Files/")
-    
+    uploadedFile = models.FileField(upload_to = "Uploaded Files/",null=True)
+
     dateTimeOfUpload = models.DateTimeField(auto_now = True)
 
 
