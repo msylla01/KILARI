@@ -72,6 +72,10 @@ class Bqt(models.Model):
 
 
     ComptRendus = models.CharField(max_length=50,blank=False, default='')
+    uploadedFileCompteR = models.FileField(upload_to = "Uploaded Files/")
+    dateTimeOfUploadCompteR = models.DateTimeField(auto_now = True)
+    uploadedFilePword = models.FileField(upload_to = "Uploaded Files/")
+    dateTimeOfUploadPowrd = models.DateTimeField(auto_now = True)
     Status = models.CharField(max_length=50,blank=False, default='')
     Libelle = models.CharField(max_length=200,blank=False, default='')
     datebqt = models.DateField()
@@ -95,6 +99,7 @@ class Planactionbqt(models.Model):
 
 class TocTicket(models.Model):
     Numero = models.CharField(max_length=50)
+
 
 class Toc(models.Model):
     #Numerotoc = models.CharField(max_length=50)
@@ -163,6 +168,7 @@ class User(models.Model):
     Prenom = models.CharField(max_length=300,blank=False, default='')
     Poste =  models.CharField(max_length=100,blank=False, default='')
     Rang =  models.CharField(max_length=100,blank=False, default='')
+    Pictur = models.ImageField(upload_to='images/')
     Email = models.EmailField(max_length=50)
     Contact = models.IntegerField()
     username =  models.CharField(max_length=100,null=True)
@@ -222,7 +228,8 @@ class Rai(models.Model):
     DateRept = models.DateField( )
     Rirecu = models.CharField(max_length=5,blank=False, default='')
     JoinToc = models.CharField(max_length=5,blank=False, default='')
-
+    uploadedFile = models.FileField(upload_to = "Uploaded Files/")
+    dateTimeOfUpload = models.DateTimeField(auto_now = True)
 
 
 ######

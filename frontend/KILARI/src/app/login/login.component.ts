@@ -227,6 +227,7 @@ const url:any =  this.router.navigate(['/login-kilari'])
         // this.userService.setUserSession(res);
         this.deleStorageAndClose()
         this.router.navigate(['/login-kilari']);
+        this.getUsers()
     // window.location.href = "/login-kilari";
       }else{
         console.log('erreur');
