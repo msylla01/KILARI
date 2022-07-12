@@ -1,3 +1,4 @@
+from pyexpat import model
 from django.db import models
 from django.db.models.fields import DateField
 from datetime import datetime
@@ -72,9 +73,9 @@ class Bqt(models.Model):
 
 
     ComptRendus = models.CharField(max_length=50,blank=False, default='')
-    uploadedFileCompteR = models.FileField(upload_to = "Uploaded Files/",null=True)
+    uploadedFileCompteR = models.FileField(upload_to="Uploaded Files/",null=True,verbose_name='bqt doc')
     dateTimeOfUploadCompteR = models.DateTimeField(auto_now = True)
-    uploadedFilePword = models.FileField(upload_to = "Uploaded Files/",null=True)
+    uploadedFilePword = models.FileField(upload_to="Uploaded Files/",null=True,verbose_name='bqt doc')
     dateTimeOfUploadPowrd = models.DateTimeField(auto_now = True)
     Status = models.CharField(max_length=50,blank=False, default='')
     Libelle = models.CharField(max_length=200,blank=False, default='')
@@ -173,6 +174,7 @@ class User(models.Model):
     Contact = models.IntegerField()
     username =  models.CharField(max_length=100,null=True)
     password =  models.CharField(max_length=50,null=True)
+    Statut = models.IntegerField(max_length=1,null=True)
 
     def __str__(self):
         return self.Nom

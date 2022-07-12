@@ -37,6 +37,7 @@
                                   <th><i></i> PRIORITE</th>
                                   <th><i ></i> STATUT TOC PROBLEME</th>
                                   <th><i ></i>CLOTURE TOC PRO</th>
+                                   <th><i ></i>SLA RAI</th>
                                   <th></th>
                                 </tr>
                               </thead>
@@ -49,6 +50,7 @@
                                     <td *ngIf=" toc.toc[0].tocpro[0].rai[0].declenchement >=4 "  style="background-color: orange;" >P2</td>
                                   <td>{{ "NAN" }}</td>
                                   <td>{{ "NAN" }}</td>
+                                  <td>dayDiff(01/03/2022, 01/11/2022)</td>
                                   <td>
                                     <button  [routerLink]="['/rai/', toc.id, 'view']" class="btn btn-success btn-xs" ><i class="fa fa-check"></i></button>
                                     <button [routerLink]="['/rai/', toc.id, 'edit']"class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>

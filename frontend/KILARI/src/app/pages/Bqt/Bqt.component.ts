@@ -21,6 +21,7 @@ export class BqtComponent implements OnInit {
   disableChamp:boolean = false;
   filteredItems:any = [];
   IdBQT:any;
+  filzChange: any;
 
   constructor(private router: Router,private toastr: ToastrService,private modalService: NgbModal, private SpinnerService:SpinnerService,private ApiService:ApiService , private ToastService:ToastService) { }
 
@@ -39,7 +40,13 @@ export class BqtComponent implements OnInit {
   showDanger(msg:any){
     this.toastr.error(msg);
   }
+  Filechange(event:any){
+    
+    this.elementBQT.uploadedFilePword = event.target.file[0]
+    let varr = this.elementBQT.uploadedFilePword
 
+    console.log('File Varrr', varr)
+  }
   getAllBQT(){
     let endPoint = "bqt"
     this.SpinnerService.showSpinner()
@@ -116,12 +123,20 @@ export class BqtComponent implements OnInit {
         }
 
     let endPoint = 'bqt';
+    let path1 ="http://127.0.0.1:8000/upload/Uploaded%20Files/"
+    var path = "C:\\fakepath\\abc.pdf";
+    var array = path.split("\\");
+    console.log('ttttt',array[array.length-1]);
+    let varrr = this.elementBQT.uploadedFilePword
+    let varrrr = varrr.replace('C:\\fakepath\\','')
+    console.log(varrr)
     let data =
     {
       Libelle: this.elementBQT.Libelle,
       Status: this.elementBQT.Status,
       datebqt: this.elementBQT.datebqt,
       ComptRendus: this.elementBQT.ComptRendus,
+      uploadedFilePword: array[array.length-1].toString()
     }
 
     console.log('data bqt ajout', data,endPoint);

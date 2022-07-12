@@ -57,4 +57,19 @@ export class IndexComponent implements OnInit {
         this.tocs = this.tocs.filter((val: any) => val.name.toLowerCase().includes(value));
         this.collectionSize = this.dt.length;
       }
+
+        dayDiff(d1:Date, d2:Date)
+      {
+        var diff = Math.abs(d1.getTime() - d2.getTime());
+        var diffDays = Math.ceil(diff / (1000 * 3600 * 24)); 
+        return diffDays;
+      }
+  
+
+
+      statprobleme(){
+        if (true) {
+
+        }
+      }
     }

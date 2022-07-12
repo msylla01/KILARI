@@ -59,7 +59,8 @@ export class RaiComponent implements OnInit {
   background1: any;
   background2: any;
   background3: any;
-
+  d1 = new Date(Date.now())
+  d2 = new Date(Date.now())
   Pays:any = [
     {id:1, value:"Côte d'ivoire"},
     {id:2, value:"Sénégal"},
@@ -103,8 +104,22 @@ export class RaiComponent implements OnInit {
     this.getPriorite();
     this.getRAI();
     this.getNumbTicket();
+    
+    /*this.dayDiff(this.d1 = new Date(Date.now()),this.d2 = new Date(Date.now()))*/
+    let startDate: string = "2021-04-01";
+    let date1: Date = new Date();
+    let date2: Date = new Date(startDate);
+    let timeInMilisec: number = date1.getTime() - date2.getTime();
+    let daysBetweenDates: number = Math.ceil(timeInMilisec / (1000*60));
+    let hour = Math.floor(timeInMilisec / 60); //1h
+    let minutes = timeInMilisec - (hour * 60); //30m
+    console.log(hour,'h:',minutes,'m:')
   }
 
+
+  statusProb(){
+    
+  }
   deleStorageAndClose(){
     this.modalRef.dismiss( 'Close click') ;
     localStorage.removeItem('hideDest');
@@ -213,6 +228,26 @@ export class RaiComponent implements OnInit {
 
       }
 
+
+
+
+  dayDiff(date1:Date, date2:Date)
+      {
+      
+      date2 = this.addDays(date2,3)
+      console.log('date1',date1,'date2',date2)
+      let timeInMilisec: number = date2.getTime() - date1.getTime();
+      let daysBetweenDates: number = Math.ceil(timeInMilisec / (1000 * 60 * 60 * 24));
+      console.log('SLA RAI',daysBetweenDates)
+
+      }
+
+ addDays(date: string | number | Date, days: number) {
+  var result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+}
+      
   updateStep1(){
     localStorage.setItem('hideTranc', JSON.stringify(true));
     const hideDistinataire = JSON.parse(localStorage.getItem('hideDest') || '{}');

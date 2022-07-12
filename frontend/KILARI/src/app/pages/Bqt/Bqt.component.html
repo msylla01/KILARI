@@ -74,6 +74,7 @@
                         <textarea [disabled]="disableChamp " name="ComptRendus " [(ngModel)]="elementBQT.ComptRendus " id=" " cols="50 " rows="5 "></textarea>
                     </div>
                 </div>
+                <input  type="file"  (change)="Filechange($event)" name="uploadedFilePword" [(ngModel)]="elementBQT.uploadedFilePword" enctype="multipart/form-data">
             </div>
             <div class="footer-finale m-3 ">
                 <button type="button " class="btn btn-secondary " (click)="deleStorageAndClose()">Annuler</button>
