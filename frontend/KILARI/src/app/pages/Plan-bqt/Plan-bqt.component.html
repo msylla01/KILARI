@@ -8,7 +8,7 @@
                 <button type="submit" class="btn btn-secondary"><i class="fas fa-search"></i></button>
             </form>
         </div>
-        <button type="button" (click)="open(content,{})" class=" btn btn-primary plus "> <i class="fa-solid fa-plus "></i> Créer un Plan-bqt</button>
+        <!-- <button type="button" (click)="open(content,{})" class=" btn btn-primary plus "> <i class="fa-solid fa-plus "></i> Créer un Plan-bqt</button> -->
     </div>
     <div class="content-tableau ">
         <table class="table table-hover" style="border: 1px solid #cccccc">
@@ -25,8 +25,6 @@
                     <th scope="col">Situation</th>
                     <th scope="col">Decision</th>
                     <th scope="col">Commentaire</th>
-                    <th scope="col">Date Effective</th>
-                    <th scope="col">Date Prévisionnelel</th>
                     <th scope="col">Actions</th>
                 </tr>
             </thead>
@@ -78,25 +76,14 @@
                             </tr>
                         </table>
                     </td>
-                    <td style="border: 1px solid #cccccc;    padding: 0.4rem 0">
-                        <table class="table partiale" style="border: 0px solid #cccccc">
-                            <tr *ngFor="let t1 of toc.planbqt">
-                                <td>{{t1.Dateeffective}}</td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td style="border: 1px solid #cccccc;    padding: 0.4rem 0">
-                        <table class="table partiale" style="border: 0px solid #cccccc">
-                            <tr *ngFor="let t1 of toc.planbqt">
-                                <td>{{t1.Dateprevisionel}}</td>
-                            </tr>
-                        </table>
-                    </td>
                     <td class="">
+                        <button style="margin-right: 0.6rem;" type="button" class="btn btn-secondary" (click)="open(content,toc)">
+                        <i class="fa-solid fa-plus"></i>
+                      </button>
                         <button style="    margin-right: 0.6rem;" type="button" class="btn btn-danger" (click)="openEdit(content,toc)">
                     <i class="fa fa-edit" aria-hidden="true"></i>
                   </button>
-                        <button type="button" class="btn btn-success" (click)="openView(content,toc)">
+                        <button type="button" class="btn btn-success" (click)="openView(contentView,toc)">
                     <i class="fa fa-eye" aria-hidden="true"></i>
                   </button>
                     </td>
@@ -108,7 +95,8 @@
 
 <ng-template #content let-modal class="content-modal">
     <div class="modal-header ">
-        <h5 class="modal-title " style="font-size: 1.4rem;" id="exampleModalLabel ">{{title}} <i class="fa fa-tasks " style=" font-size:1rem ; margin-left: 1rem; color: #ff7900; " aria-hidden="true "></i></h5>
+        <h5 class="modal-title " style="font-size: 25px;
+        font-weight: 600;" id="exampleModalLabel ">{{title}} : <span style="color: rgb(171, 171, 247);">{{defaultString}}</span> <i class="fa fa-archive " style=" font-size:1rem ; margin-left: 1rem; color: #ff7900; " aria-hidden="true "></i></h5>
         <button type="button " style="outline: none; " class="btn-close " (click)="deleStorageAndClose() "><span class="visually-hidden ">Close</span></button>
     </div>
     <div id="imput-content-step3">
@@ -134,7 +122,7 @@
                                         <div class=" form-group-div" style=" width: 100%">
                                             <label for="Priorite" style="    margin-bottom: 0.3rem;">Bqt </label>
                                             <div class="">
-                                                <select id="inputState" class="form-control" [disabled]="!disableChamp" name="bqt" formControlName="bqt">
+                                                <select class="form-control" [disabled]="!disableChamp" name="bqt" formControlName="bqt">
                                                 <option *ngFor="let d of ListBQT " [value]="d.id ">{{d.Libelle}}</option>
                                               </select>
                                             </div>
@@ -152,12 +140,16 @@
                                         <div class="form-group-div" style=" width: 100%">
                                             <label style="    margin-bottom: 0.3rem;">Porteur:</label>
                                             <div class="">
-                                                <input type="text" autocomplete="off" [disabled]="disableChamp" name="Porteur" formControlName="Porteur" class="form-control">
+                                                <select class="form-select " autocomplete="off" name="Porteur " formControlName="Porteur">
+                                                <option></option>
+                                                <option *ngFor="let item of Porteur " [value]="item.value ">{{item.value}}</option>
+                                              </select>
+                                                <!-- <input type="text" autocomplete="off" [disabled]="disableChamp" name="Porteur" formControlName="Porteur" class="form-control"> -->
                                             </div>
                                         </div>
 
                                         <div class="form-group-div" style=" width: 100%">
-                                            <label style="    margin-bottom: 0.3rem;">Perimetre:</label>
+                                            <label style="    margin-bottom: 0.3rem;">Périmetre:</label>
                                             <div class="">
                                                 <select id="inputState" name="Perimetre" formControlName="Perimetre" class="form-control" [disabled]="disableChamp">
                                                   <option selected>Filiale</option>
@@ -242,7 +234,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div style="    margin-top: 6.6rem;white-space: nowrap;">
+                                <div style="    margin-top: 7.6rem;white-space: nowrap;">
                                     <button style="background:red;outline: none;" class="btn btn-primary " [disabled]="disableChamp" (click)="removePas(i)">
                                     <i class="fa fa-trash" aria-hidden="true  "></i>
                                   </button>
@@ -262,4 +254,94 @@
             </div>
         </div>
     </div>
+</ng-template>
+
+<ng-template #contentView let-modal class="content-modal">
+    <div class="modal-header ">
+        <h5 class="modal-title " id="exampleModalLabel " style="    font-size: 25px;
+    font-weight: 600;">{{title}} du ticket: <span style="color: rgb(171, 171, 247);">{{defaultString}}</span> <i class="fa fa-tasks " style=" font-size:1rem ; margin-left: 1rem; color: #ff7900; " aria-hidden="true "></i></h5>
+        <button type="button " style="outline: none; " class="btn-close " (click)="deleStorageAndClose() "><span class="visually-hidden ">Close</span></button>
+    </div>
+    <div class="modal-body " style="padding: 2rem 1.25rem;">
+        <div>
+            <div>
+                <table style="width:100%">
+                    <tr style="border-bottom: solid 0.5px #e2e2e2;    font-size: 16px;
+                font-weight: 700;">
+                        <td style="text-align: left;">Nom de la bqt:</td>
+                        <td style="text-align: right;">{{elementView.Libelle}}</td>
+                    </tr>
+                    <tr style="border-bottom: solid 0.5px #e2e2e2;    font-size: 16px;
+                font-weight: 700;">
+                        <td style="text-align: left;">Status:</td>
+                        <td style="text-align: right;">{{elementView?.Status}}</td>
+                    </tr>
+                    <tr style="border-bottom: solid 0.5px #e2e2e2;    font-size: 16px;
+                font-weight: 700;">
+                        <td style="text-align: left;">Date de la BQT:</td>
+                        <td style="text-align: right;">{{elementView?.datebqt}}</td>
+                    </tr>
+                    <table style="    margin-top: 1rem;
+                  width: 100%;    margin-right: 12rem;
+  margin-left: 8rem;
+  margin-top: 1rem;" *ngFor="let item of elementView.planbqt ; let i=index">
+
+                        <small style="margin-bottom: 0.6rem;    color: red;
+                      font-size: 1rem;
+                      font-weight: 700;
+                      margin-left: -8rem;">Corrurence N* {{i+1}}</small>
+
+                        <tr style="border-bottom: solid 0.5px #e2e2e2; font-size: 16px;font-weight: 700; ">
+                            <td style="text-align: left; ">Commentaire:</td>
+                            <td style="text-align: right;color: red; ">{{item.Commentaire}}</td>
+                        </tr>
+
+                        <tr style="border-bottom: solid 0.5px #e2e2e2; font-size: 16px;font-weight: 700; ">
+                            <td style="text-align: left; ">Libelle:</td>
+                            <td style="text-align: right;color: red; ">{{item.Libelle}}</td>
+                        </tr>
+
+                        <tr style="border-bottom: solid 0.5px #e2e2e2; font-size: 16px;font-weight: 700; ">
+                            <td style="text-align: left; ">Status:</td>
+                            <td style="text-align: right;color: red; ">{{item.Status}}</td>
+                        </tr>
+
+                        <tr style="border-bottom: solid 0.5px #e2e2e2; font-size: 16px;font-weight: 700; ">
+                            <td style="text-align: left; ">Situation:</td>
+                            <td style="text-align: right;color: red; ">{{item.Situation}}</td>
+                        </tr>
+
+                        <tr style="border-bottom: solid 0.5px #e2e2e2; font-size: 16px;font-weight: 700; ">
+                            <td style="text-align: left; ">Périmetre:</td>
+                            <td style="text-align: right;color: red; ">{{item.Perimetre}}</td>
+                        </tr>
+                        <tr style="border-bottom: solid 0.5px #e2e2e2; font-size: 16px;font-weight: 700; ">
+                            <td style="text-align: left; ">Porteur:</td>
+                            <td style="text-align: right;color: red; ">{{item.Porteur}}</td>
+                        </tr>
+                        <tr style="border-bottom: solid 0.5px #e2e2e2; font-size: 16px;font-weight: 700; ">
+                            <td style="text-align: left; ">Date éfficacité:</td>
+                            <td style="text-align: right;color: red; ">{{item.Dateeffective}}</td>
+                        </tr>
+                        <tr style="border-bottom: solid 0.5px #e2e2e2; font-size: 16px;font-weight: 700; ">
+                            <td style="text-align: left; ">Date prévionnelle:</td>
+                            <td style="text-align: right;color: red; ">{{item.Dateprevisionel}}</td>
+                        </tr>
+                        <tr style="border-bottom: solid 0.5px #e2e2e2; font-size: 16px;font-weight: 700; ">
+                            <td style="text-align: left; ">Décision:</td>
+                            <td style="text-align: right;color: red; ">{{item.Decision}}</td>
+                        </tr>
+                    </table>
+                    <div *ngIf="elementView.planbqt.length===0" style="text-align: center;color: red;font-size: 1.4rem;font-weight:600;margin-top: 1rem;">
+                        Aucun plan d'action est rattaché à ce Ticket !!
+                    </div>
+                </table>
+                <!-- <div>
+                  <button (click)="createPDF() " type="button " class="btn btn-secondary " style="margin-top: 0.7rem; ">
+                  <i class="fa-solid fa-print " style="margin-right: 1rem; "></i>Edition des détails</button>
+              </div> -->
+            </div>
+        </div>
+    </div>
+
 </ng-template>

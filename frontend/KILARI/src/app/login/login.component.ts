@@ -54,17 +54,33 @@ const url:any =  this.router.navigate(['/login-kilari'])
   ngOnInit() {
     this.getUsers();
 
-    // const endPoint = "user";
+    // const Platforme:any = [
+    //   {id:1, value:"SDP"},
+    //   {id:2, value:"USSD SHOP"},
+    //   {id:2, value:"OTAP"},
+    //   {id:2, value:"EME"},
+    //   {id:2, value:"OBA"},
+    //   {id:2, value:"ESM"},
+    //   {id:2, value:"OTRS"},
+    //   {id:2, value:"ARCSIGHT"},
+    //   {id:2, value:"KMC"},
+    // ]
+    // Platforme.forEach(element => {
 
+    // const endPoint = "user";
     // const data =
     // {
-    //   role: 1,
-    //   Nom: "N'Guessan",
-    //   Prenom: "Kadjo Léon Narcisse 12",
-    //   Email: "leonkadjo@hotmail.com",
-    //   Contact: "0102030204",
-    //   username: "admin12",
-    //   password: "admin12"
+    //   role: 3,
+    //   Nom: 'Mohamed',
+    //   Prenom :'sylle',
+    //   // Poste :
+    //   // Rang:
+    //   // Pictur
+    //   Email:'narcisse@gestion.com',
+    //   Contact :'0578898684',
+    //   username:'sylla',
+    //   password : 'sylla'
+    //   // Statut =
     // };
     // this.ApiService.post(endPoint, data).subscribe(
     //   (res: any) => {
@@ -74,8 +90,10 @@ const url:any =  this.router.navigate(['/login-kilari'])
     //     this.showDanger('La création a échoué')
     //   }
     // );
-
   }
+    // );
+
+  // }
 
   showSuccess(msg:any) {
     this.toastr.success(msg);
@@ -213,7 +231,7 @@ const url:any =  this.router.navigate(['/login-kilari'])
         Prenom: this.userCount.Prenom,
         Contact: this.userCount.Contact,
         username: this.userCount.username,
-        role: 1,
+        role: 5,
       };
     console.log('data CreateeCount',data)
     this.SpinnerService.showSpinner();

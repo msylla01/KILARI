@@ -52,7 +52,7 @@ export class PlanactionraiService {
 
 
   update(id: number, post: any): Observable<Toc> {
-    return this.httpClient.put<Toc>(this.baseURL + '/toc/' + id+'/', JSON.stringify(post), this.httpOptions)
+    return this.httpClient.put<Toc>(this.baseURL + '/ /' + id+'/', JSON.stringify(post), this.httpOptions)
     .pipe(
       catchError(this.errorHandler)
     )

@@ -9,7 +9,7 @@
             <circle id="Ellipse_6" data-name="Ellipse 6" cx="4.946" cy="4.946" r="4.946" transform="translate(13.371)" fill="#dc181a"/>
           </svg>
 
-            <p class="profile-name">{{userConnecter.Nom}}</p>
+            <p class="profile-name">{{userConnecter?.Nom}}</p>
             <img src="assets/menu1/images/user.png" class="nav-avatar profile-image" />
         </div>
     </nav>
@@ -42,7 +42,8 @@
                     </div>
                 </div>
             </a>
-            <a class="link-active" routerLinkActive=" sidebar__link" [routerLinkActiveOptions]="{exact: true}" routerLink="gestion-rai" style="text-decoration: none;">
+            <a class="link-active" routerLinkActive=" sidebar__link" [routerLinkActiveOptions]="{exact: true}" routerLink="gestion-rai" style="text-decoration: none;" *ngIf="
+            userConnecter?.role===1 || userConnecter?.role===2">
                 <div class="sidebar-menu">
                     <div class="menu-side-link">
                         <i class="fa fa-tasks" aria-hidden="true"></i>
@@ -51,7 +52,8 @@
                 </div>
             </a>
 
-            <a class="link-active" routerLinkActive=" sidebar__link" [routerLinkActiveOptions]="{exact: true}" routerLink="gestion-bqt" style="text-decoration: none;">
+            <a class="link-active" routerLinkActive=" sidebar__link" [routerLinkActiveOptions]="{exact: true}" routerLink="gestion-bqt" style="text-decoration: none;" *ngIf="
+            userConnecter?.role===1 || userConnecter?.role===2">
                 <div class="sidebar-menu">
                     <div class="menu-side-link">
                         <i class="icon-inbox"></i>
@@ -60,13 +62,16 @@
                 </div>
             </a>
 
-            <a class="link-active" style="text-decoration: none;" routerLinkActive="sidebar__link" [routerLinkActiveOptions]="{exact: true}">
+            <a class="link-active" style="text-decoration: none;" routerLinkActive="sidebar__link" [routerLinkActiveOptions]="{exact: true}" *ngIf="
+            userConnecter?.role===1 || userConnecter?.role===2">
 
                 <div class="sidebar-menu">
                     <div class="menu-side-link" style="overflow-x: hidden;">
 
                         <ul id="menu-accordeon">
-                            <i class="fa fa-cog" aria-hidden="true"></i>
+                            <!-- <i class="fa fa-cog" aria-hidden="true"></i> -->
+                            <!-- <i class="fas fa-tasks"></i> -->
+                            <i class="fa fa-archive" aria-hidden="true"></i>
                             <li>
                                 <a style="text-decoration: none;">PLANS D'ACTIONS</a>
                                 <ul class="ul-hover">
@@ -79,11 +84,48 @@
                 </div>
 
             </a>
+            <a class="link-active" style="text-decoration: none;" routerLinkActive="sidebar__link" [routerLinkActiveOptions]="{exact: true}" *ngIf="
+            userConnecter?.role===1">
+
+                <div class="sidebar-menu">
+                    <div class="menu-side-link" style="overflow-x: hidden;">
+
+                        <ul id="menu-accordeon">
+                            <!-- <i class="fa fa-cog" aria-hidden="true"></i> -->
+                            <!-- <i class="fas fa-tasks"></i> -->
+                            <!-- <i class="fas fa-users" style="font-size: 15px;"></i>
+
+                            <i class="fas fa-desktop"></i>
+                            <i class="fas fa-unity"></i>
+                            <i class="fas fa-flag"></i> -->
+                            <i class="fa fa-cog" aria-hidden="true"></i>
+                            <li>
+                                <a style="text-decoration: none;">PAREMÈTRE</a>
+                                <ul class="ul-hover">
+                                    <li>
+                                        <a style="text-align: left;margin-left: 0.7rem;" routerLink="gestion-user"> Gestion User</a>
+                                    </li>
+                                    <li>
+                                        <a style="text-align: left;margin-left: 0.7rem;" routerLink="gestion-plate-forme">Gestion Plateforme</a>
+                                    </li>
+                                    <li>
+                                        <a style="text-align: left;margin-left: 0.7rem;" routerLink="gestion-servce">Gestion Service</a>
+                                    </li>
+                                    <li>
+                                        <a style="text-align: left;margin-left: 0.7rem;" routerLink="gestion-pays"> Gestion Pays</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </a>
         </div>
 
         <div class="foote-sidebar">
 
-            <a class="link-active-bottom" style="text-decoration:none">
+            <!-- <a class="link-active-bottom" style="text-decoration:none">
                 <div class="sidebar-menu-bottom">
                     <div class="menu-side-link-bottom">
                         <svg xmlns="http://www.w3.org/2000/svg" width="13.493" height="19.012" viewBox="0 0 13.493 19.012">
@@ -94,7 +136,7 @@
                         <p class="verrouiller">Verrouiller la session </p>
                     </div>
                 </div>
-            </a>
+            </a> -->
 
             <a class="link-active-bottom" style="text-decoration:none;cursor: pointer;outline: none;" (click)="logout()">
                 <div class="sidebar-menu-bottom">

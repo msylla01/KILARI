@@ -15,6 +15,7 @@ export class PlanBqtComponent implements OnInit {
 
   disableChamp:boolean = false;
   title:any
+  elementView:any;
   res:any = {};
   tilreBtn:any;
   disableBtnAdd:boolean = false
@@ -31,8 +32,15 @@ export class PlanBqtComponent implements OnInit {
   IdTOc:any;
   objet : any
   dt : any = []
+  default:any;
+  defaultString:any;
   updateOrCreate:boolean = false;
 
+  Porteur:any = [
+    {id:1, value:"Charles Modeste KAMBO"},
+    {id:2, value:"Roland AMON"},
+    {id:2, value:"Elodie TUHE LOU"},
+  ]
 
   constructor(private SpinnerService:SpinnerService,private toastr: ToastrService,private router: Router,private ApiService:ApiService ,private modalService: NgbModal,
     private fb: FormBuilder) {
@@ -90,12 +98,14 @@ export class PlanBqtComponent implements OnInit {
     this.pas.clear()
   }
 
-  open(content:any, plan_rai?:any) {
-    this.title = "Création d'un plan d'action rai";
+  open(content:any, plan_bqt?:any) {
+    this.title = "Création d'un plan d'action bqt";
     this.tilreBtn =  "Enregistrer le PA"
-this.updateOrCreate = false;
-    console.log('item', plan_rai);
-    if (!plan_rai) {
+    this.updateOrCreate = false;
+    this.default = plan_bqt.id
+    this.defaultString = plan_bqt.Libelle
+    console.log('item', plan_bqt);
+    if (!plan_bqt) {
       this.PasForm.reset();
     }
     this.addPas()
@@ -110,7 +120,7 @@ this.updateOrCreate = false;
     this.title = "Modification d'un plan d'action bqt";
     this.tilreBtn =  "Enregistrer le PA modifier"
     this.updateOrCreate =  true
-    this.disableBtn =  true;
+    // this.disableBtn =  true;
     this.disableBtnAdd = true
     this.IdTOc =  item.id;
     console.log('item', item,this.IdTOc);
@@ -145,14 +155,16 @@ this.updateOrCreate = false;
 
   }
 
-  openView(content:any, item?:any) {
+  openView(contentView:any, item?:any) {
     console.log('this.disableChamp ',this.disableChamp );
 
     this.title = "Modification d'un plan d'action bqt";
     this.tilreBtn =  "Enregistrer le PA modifier"
     this.updateOrCreate = true
     this.disableBtn =  true;
-    this.disableBtnAdd = true
+    this.defaultString = item.Libelle
+    this.disableBtnAdd = true;
+    this.elementView = {...item};
     this.IdTOc =  item.id;
     console.log('item', item,this.IdTOc);
     if (!item) {
@@ -181,7 +193,7 @@ console.log('=====>res form', this.res);
         this.pas.push(this.res);
     }
 
-    this.modalRef =  this.modalService.open(content, {size  : 'xl'})
+    this.modalRef =  this.modalService.open(contentView, {size  : 'xl'})
     this.modalRef.result.then(
       (result:any) => {
         console.log('oooook',result);
@@ -206,7 +218,7 @@ console.log('=====>res form', this.res);
     Situation: '',
     Efficacite: '',
     Commentaire: '',
-    bqt: '',
+    bqt:  new FormControl(this.default),
     })
   }
 
@@ -297,8 +309,8 @@ getplanactionbqt(){
       console.log('create mode',this.PasForm.value);
       this.objet = this.PasForm.value;
       for(let i=0; i<this.pas.value.length; i++){
-          this.pas.value[i].Status= Number(this.pas.value[i].Status)
-          this.pas.value[i].bqt= Number(this.pas.value[i].bqt)
+          // this.pas.value[i].Status= Number(this.pas.value[i].Status)
+          // this.pas.value[i].bqt= Number(this.pas.value[i].bqt)
           console.log('bqt  objet :',this.pas.value[i]);
           this.ApiService.post(endPoint,this.pas.value[i]).subscribe(
             (res:any) => {
@@ -317,11 +329,13 @@ getplanactionbqt(){
       updatePlanAction(){
         let endPoint =  'planactionbqt';
         console.log('Edit mode',this.PasForm.value,'he',this.form.value);
+
+
           for(let i=0; i<this.pas.value.length; i++){
             this.pas.value[i].Status= Number(this.pas.value[i].Status)
             this.pas.value[i].bqt= Number(this.pas.value[i].bqt)
             console.log('bqt  objet :',this.pas.value[i]);
-            this.ApiService.put(endPoint,this.IdTOc,this.pas.value[i]).subscribe(
+            this.ApiService.put(endPoint,this.pas.value[i].id,this.pas.value[i]).subscribe(
             (res:any) => {
               console.log('res planification update====>',res);
             this.showSuccess('La mise çà jour bien effectuée')

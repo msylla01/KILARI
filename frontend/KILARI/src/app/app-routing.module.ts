@@ -36,8 +36,6 @@ const routes: Routes = [
       path: 'tableau-de-bord',
       loadChildren: () => import('./pages/dashboard/dashboard.module').then(module => module.DashboardModule),
       canLoad: [AuthGuard]
-
-
     },
     {
       path: 'gestion-rai',
@@ -49,19 +47,36 @@ const routes: Routes = [
       path: 'gestion-bqt',
       loadChildren: () => import('./pages/Bqt/Bqt.module').then(module => module.BqtModule),
       canLoad: [AuthGuard]
-
     },
     {
       path: 'plan-action-rai',
       loadChildren: () => import('./pages/plan-rai/plan-rai.module').then(module => module.PlanRaiModule),
       canLoad: [AuthGuard]
-
     },
     {
       path: 'plan-action-bqt',
       loadChildren: () => import('./pages/Plan-bqt/Plan-bqt.module').then(module => module.PlanBqtModule),
       canLoad: [AuthGuard]
-
+    },
+    {
+      path: 'gestion-user',
+      loadChildren: () => import('./pages/gestion-user/gestion-user.module').then(module => module.GestionUserModule),
+      canLoad: [AuthGuard]
+    },
+    {
+      path: 'gestion-plate-forme',
+      loadChildren: () => import('./pages/gestion-plateforme/gestion-plateforme.module').then(module => module.GestionPlateformeModule),
+      canLoad: [AuthGuard]
+    },
+    {
+      path: 'gestion-servce',
+      loadChildren: () => import('./pages/gestion-service/gestion-service.module').then(module => module.GestionServiceModule),
+      canLoad: [AuthGuard]
+    },
+    {
+      path: 'gestion-pays',
+      loadChildren: () => import('./pages/gestion-pays/gestion-pays.module').then(module => module.GestionPaysModule),
+      canLoad: [AuthGuard]
     }
   ]
 },

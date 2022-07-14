@@ -82,3 +82,43 @@
     }
     .footer-finale {}
 }
+
+input[type="file"] {
+    display: none;
+}
+
+.uploadedFilePword {
+    border-radius: 14px;
+    color: white;
+    height: 41px;
+    width: 203px;
+    background-color: gray;
+    // margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    font-size: 13px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Courier New", Courier, monospace;
+}
+
+.uploadedFileCompteR {
+    border-radius: 14px;
+    color: white;
+    height: 41px;
+    width: 203px;
+    background-color: gray;
+    // margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    font-size: 13px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Courier New", Courier, monospace;
+}

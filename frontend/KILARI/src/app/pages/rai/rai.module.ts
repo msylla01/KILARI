@@ -3,6 +3,22 @@ import { CommonModule } from '@angular/common';
 import { RaiComponent } from './rai.component';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DemoNgZorroAntdModule } from '../../DemoNgZorroAntdModule';
+
+
+import { NZ_ICONS } from 'ng-zorro-antd/icon';
+import { NZ_I18N, en_US } from 'ng-zorro-antd/i18n';
+import { IconDefinition } from '@ant-design/icons-angular';
+import * as AllIcons from '@ant-design/icons-angular/icons';
+
+
+
+const antDesignIcons = AllIcons as {
+  [key: string]: IconDefinition;
+};
+const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesignIcons[key])
+
+
 
 const routes: Routes = [
   { path: '',
@@ -12,11 +28,13 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
+    DemoNgZorroAntdModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes),
     CommonModule,
   ],
-  declarations: [RaiComponent]
+  declarations: [RaiComponent],
+  providers: [ { provide: NZ_I18N, useValue: en_US }, { provide: NZ_ICONS, useValue: icons } ]
 })
 export class RaiModule { }

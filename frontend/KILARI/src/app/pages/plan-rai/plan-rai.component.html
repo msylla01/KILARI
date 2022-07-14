@@ -8,7 +8,7 @@
                 <button type="submit" class="btn btn-secondary"><i class="fas fa-search"></i></button>
             </form>
         </div>
-        <button type="button" (click)="open(content,{})" class=" btn btn-primary plus "> <i class="fa-solid fa-plus "></i> Créer une PLan-rai</button>
+        <!-- <button type="button" class=" btn btn-primary plus "> <i class="fa-solid fa-plus "></i> Créer une PLan-rai</button> -->
     </div>
     <div class="content-tableau ">
         <table class="table table-hover" style="border: 1px solid #cccccc">
@@ -68,10 +68,13 @@
                         <!-- <button type="button" class="btn btn-secondary" style="    margin-right: 0.6rem;">
                       <i class="fa fa-trash" aria-hidden="true"></i>
                     </button> -->
+                        <button style="margin-right: 0.6rem;" type="button" class="btn btn-secondary" (click)="open(content,toc)">
+                      <i class="fa-solid fa-plus"></i>
+                    </button>
                         <button style="    margin-right: 0.6rem;" type="button" class="btn btn-danger" (click)="openEdit(content,toc)">
                       <i class="fa fa-edit" aria-hidden="true"></i>
                     </button>
-                        <button type="button" class="btn btn-success" (click)="openView(content,toc)">
+                        <button type="button" class="btn btn-success" (click)="openView(contentView,toc)">
                       <i class="fa fa-eye" aria-hidden="true"></i>
                     </button>
                     </td>
@@ -83,7 +86,8 @@
 
 <ng-template #content let-modal class="content-modal">
     <div class="modal-header ">
-        <h5 class="modal-title " style="font-size: 1.4rem;" id="exampleModalLabel ">{{title}} <i class="fa fa-tasks " style=" font-size:1rem ; margin-left: 1rem; color: #ff7900; " aria-hidden="true "></i></h5>
+        <h5 class="modal-title " style="font-size: 25px;
+        font-weight: 600;" id="exampleModalLabel ">{{title}} du ticket: <span style="color: rgb(171, 171, 247);">{{defaultString}}</span><i class="fa fa-tasks " style=" font-size:1rem ; margin-left: 1rem; color: #ff7900; " aria-hidden="true "></i></h5>
         <button type="button " style="outline: none; " class="btn-close " (click)="deleStorageAndClose() "><span class="visually-hidden ">Close</span></button>
     </div>
     <div id="imput-content-step3">
@@ -107,12 +111,10 @@
                                         width: 100%;
                                         gap: 2rem;">
                                         <div class=" form-group-div" style=" width: 100%">
-                                            <label for="Priorite" style="    margin-bottom: 0.3rem;">TOC PROBLEMEE </label>
-                                            <div class="">
-                                                <select id="inputState" class="form-control" [disabled]="disableChamp" name="tocpr" formControlName="tocpr">
-                                                  <option *ngFor="let d of dt " [value]="d.id ">{{d.Numerotocpro}}</option>
-                                                </select>
-                                            </div>
+                                            <label for="tocpr" style="    margin-bottom: 0.3rem;">Ticket oceane problème </label>
+                                            <select id="inputState" class="form-control" formControlName="tocpr" name="tocpr">
+                                              <option *ngFor="let d of ListTocProbleme" [value]="d.id ">{{d.Numerotocpro}}</option>
+                                            </select>
                                         </div>
                                         <div class="form-group-div" style=" width: 100%">
                                             <label style="    margin-bottom: 0.3rem;">Libelle:</label>
@@ -127,11 +129,15 @@
                                         <div class="form-group-div" style=" width: 100%">
                                             <label style="    margin-bottom: 0.3rem;">Porteur:</label>
                                             <div class="">
-                                                <input type="text" [disabled]="disableChamp" formControlName="Porteur" class="form-control">
+                                                <select class="form-select " name="Porteur " formControlName="Porteur">
+                                                <option></option>
+                                                <option *ngFor="let item of Porteur " [value]="item.value ">{{item.value}}</option>
+                                              </select>
+                                                <!-- <input type="text" [disabled]="disableChamp"  class="form-control"> -->
                                             </div>
                                         </div>
                                         <div class="form-group-div" style=" width: 100%">
-                                            <label style="    margin-bottom: 0.3rem;">Perimetre:</label>
+                                            <label style="    margin-bottom: 0.3rem;">Périmetre:</label>
                                             <div class="">
                                                 <select id="inputState" [disabled]="disableChamp" name="Perimetre" formControlName="Perimetre" class="form-control">
                                                     <option selected>Filiale</option>
@@ -153,14 +159,14 @@
                                           width: 100%;
                                           gap: 2rem;">
                                         <div class="form-group-div" style=" width: 100%">
-                                            <label style="    margin-bottom: 0.3rem;">Date P:</label>
+                                            <label style="    margin-bottom: 0.3rem;">Date de planification:</label>
                                             <div class="">
 
                                                 <input type="date" [disabled]="disableChamp" formControlName="Dateprevisionel" class="form-control">
                                             </div>
                                         </div>
                                         <div class="form-group-div" style=" width: 100%">
-                                            <label style="    margin-bottom: 0.3rem;">Date Ef:</label>
+                                            <label style="    margin-bottom: 0.3rem;">Date f'efficacité:</label>
                                             <div class="">
                                                 <input type="date" [disabled]="disableChamp" formControlName="Dateeffective" class="form-control">
                                             </div>
@@ -200,16 +206,19 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div style="    margin-top: 6.6rem;white-space: nowrap;">
+                                <div style="    margin-top: 7.5rem;white-space: nowrap;">
                                     <button style="background:red;outline: none;" class="btn btn-primary " [disabled]="disableChamp" (click)="removePas(i)">
                                       <i class="fa fa-trash" aria-hidden="true"></i>
                                     </button>
                                 </div>
                             </div>
                         </div>
+                        <!-- <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
+                          <div *ngIf="f.title.errors.required">Title is required</div>
+                      </div> -->
                     </div>
                     <div style="float:right ;margin-top: 1em">
-                        <button class="btn btn-primary" [disabled]="disableBtn" type="submit">{{tilreBtn}}</button>
+                        <button class="btn btn-primary" [disabled]="PasForm.invalid" type="submit">{{tilreBtn}}</button>
                     </div>
                 </form>
             </div>
@@ -220,4 +229,79 @@
             </div>
         </div>
     </div>
+</ng-template>
+
+<ng-template #contentView let-modal class="content-modal">
+    <div class="modal-header ">
+        <h5 class="modal-title " id="exampleModalLabel " style="    font-size: 25px;
+      font-weight: 600;">{{title}} du ticket: <span style="color: rgb(171, 171, 247);">{{defaultString}}</span> <i class="fa fa-tasks " style=" font-size:1rem ; margin-left: 1rem; color: #ff7900; " aria-hidden="true "></i></h5>
+        <button type="button " style="outline: none; " class="btn-close " (click)="deleStorageAndClose() "><span class="visually-hidden ">Close</span></button>
+    </div>
+    <div class="modal-body " style="padding: 2rem 1.25rem;">
+        <div>
+            <div>
+                <table style="width:100%">
+                    <tr style="border-bottom: solid 0.5px #e2e2e2;    font-size: 16px;
+                  font-weight: 700;">
+                        <td style="text-align: left;">Numéro ticket incident:</td>
+                        <td style="text-align: right;">{{elementView.Numerotocpro}}</td>
+                    </tr>
+                    <tr style="border-bottom: solid 0.5px #e2e2e2;    font-size: 16px;
+                  font-weight: 700;">
+                        <td style="text-align: left;">Porteurr:</td>
+                        <td style="text-align: right;">{{elementView?.Porteur}}</td>
+                    </tr>
+                    <tr style="border-bottom: solid 0.5px #e2e2e2;    font-size: 16px;
+                  font-weight: 700;">
+                        <td style="text-align: left;">Type de problème:</td>
+                        <td style="text-align: right;">{{elementView?.typeproblem}}</td>
+                    </tr>
+                    <table style="    margin-top: 1rem;
+                    width: 100%;    margin-right: 12rem;
+    margin-left: 8rem;
+    margin-top: 1rem;" *ngFor="let item of elementView.planrai ; let i=index">
+
+                        <small style="margin-bottom: 0.6rem;    color: red;
+                        font-size: 1rem;
+                        font-weight: 700;
+                        margin-left: -8rem;">Corrurence N* {{i+1}}</small>
+
+                        <tr style="border-bottom: solid 0.5px #e2e2e2; font-size: 16px;font-weight: 700; ">
+                            <td style="text-align: left; ">Libelle:</td>
+                            <td style="text-align: right;color: red; ">{{item.Libelle}}</td>
+                        </tr>
+
+                        <tr style="border-bottom: solid 0.5px #e2e2e2; font-size: 16px;font-weight: 700; ">
+                            <td style="text-align: left; ">Périmetre:</td>
+                            <td style="text-align: right;color: red; ">{{item.Perimetre}}</td>
+                        </tr>
+                        <tr style="border-bottom: solid 0.5px #e2e2e2; font-size: 16px;font-weight: 700; ">
+                            <td style="text-align: left; ">Porteur:</td>
+                            <td style="text-align: right;color: red; ">{{item.Porteur}}</td>
+                        </tr>
+                        <tr style="border-bottom: solid 0.5px #e2e2e2; font-size: 16px;font-weight: 700; ">
+                            <td style="text-align: left; ">Date éfficacité:</td>
+                            <td style="text-align: right;color: red; ">{{item.Dateeffective}}</td>
+                        </tr>
+                        <tr style="border-bottom: solid 0.5px #e2e2e2; font-size: 16px;font-weight: 700; ">
+                            <td style="text-align: left; ">Date prévionnelle:</td>
+                            <td style="text-align: right;color: red; ">{{item.Dateprevisionel}}</td>
+                        </tr>
+                        <tr style="border-bottom: solid 0.5px #e2e2e2; font-size: 16px;font-weight: 700; ">
+                            <td style="text-align: left; ">Status:</td>
+                            <td style="text-align: right;color: red; ">{{item.Status}}</td>
+                        </tr>
+                    </table>
+                    <div *ngIf="elementView.planrai.length===0" style="text-align: center;color: red;font-size: 1.4rem;font-weight:600;margin-top: 1rem;">
+                        Aucun plan d'action est rattaché à ce Ticket !!
+                    </div>
+                </table>
+                <!-- <div>
+                    <button (click)="createPDF() " type="button " class="btn btn-secondary " style="margin-top: 0.7rem; ">
+                    <i class="fa-solid fa-print " style="margin-right: 1rem; "></i>Edition des détails</button>
+                </div> -->
+            </div>
+        </div>
+    </div>
+
 </ng-template>

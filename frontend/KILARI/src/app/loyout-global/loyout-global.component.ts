@@ -18,7 +18,9 @@ export class LoyoutGlobalComponent implements OnInit {
   ngOnInit() {
     this.getNumbTicket();
     this.getAllBQT();
-    this.userConnecter = this.userService.getUserSession()
+    this.userConnecter = this.userService.getUserSession();
+    console.log('userConnecter',this.userConnecter);
+
   }
 
   logout(){

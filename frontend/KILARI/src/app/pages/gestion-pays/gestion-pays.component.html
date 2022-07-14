@@ -1,0 +1,96 @@
+<div class="rai-content">
+    <p class="liste-rai">Liste des pays</p>
+    <div class="btn-search-rai">
+        <div class="imput-search-btn">
+            <small> Filtrer par nom:</small>
+            <form action="#">
+                <input type="text*" name="searchToc" [(ngModel)]="searchToc" class="form-control" placeholder="Rechercher par nom" autocomplete="off">
+                <button type="submit" class="btn btn-secondary"><i class="fas fa-search"></i></button>
+            </form>
+        </div>
+        <button type="button" (click)="open(content)" class=" btn btn-primary plus "> <i class="fa-solid fa-plus "></i> Créer un utilisateur</button>
+    </div>
+    <div class="content-tableau ">
+        <nz-table #smallTable nzSize="small" [nzData]="ListPays">
+            <thead>
+                <tr>
+                    <th style="font-size: 14px;font-weight: 600;text-align:center">Identifiant</th>
+                    <th style="font-size: 14px;font-weight: 600;text-align:center">Libelle du pays</th>
+                    <th style="font-size: 14px;font-weight: 600;text-align:right">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of smallTable.data">
+                    <td style="text-align:center ;">{{item.id}}</td>
+                    <td style="text-align:center ;">{{item.Libelle}}</td>
+                    <td class="" style="text-align:right ;">
+                        <button style="    margin-right: 0.6rem;" type="button" class="btn btn-danger" (click)="openEdit(content, item)">
+                      <i class="fa fa-edit" aria-hidden="true"></i>
+                    </button>
+                        <button type="button" class="btn btn-success" (click)="openView(contentView, item)">
+                      <i class="fa fa-eye" aria-hidden="true"></i>
+                    </button>
+                        <button type="button" style="    margin-left: 0.6rem;" class="btn btn-light" (click)="confirmSubmitDeletPays(item)">
+                      <i class="fa fa-trash" aria-hidden="true"></i>
+                    </button>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+</div>
+
+<ng-template #content let-modal class="content-modal">
+    <div class="modal-header ">
+        <h5 class="modal-title " id="exampleModalLabel " style="    font-size: 25px;
+    font-weight: 600;">{{titleModal}} <i class="fa fa-users " style=" font-size:1rem ; margin-left: 1rem; color: #ff7900; " aria-hidden="true "></i></h5>
+        <button type="button " style="outline: none; " class="btn-close " (click)="deleStorageAndClose() "><span class="visually-hidden ">Close</span></button>
+    </div>
+    <div class="modal-body ">
+        <div class="modal-body ">
+            <div class="content-one">
+                <div class="row1">
+                    <div class="nom">
+                        <label class="mb-2" for="toc ">Libelle du pays: <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                        <input type="text " class="form-control " name="Libelle " [(ngModel)]="elementPays.Libelle ">
+                    </div>
+                </div>
+            </div>
+            <button type="button " class="btn btn-secondary " (click)="deleStorageAndClose() ">Annuler</button>
+            <button class="btn btn-primary" style="float: right; background: orange;" (click)="submitValed()">Valider la {{subTitle}} du pays</button>
+        </div>
+    </div>
+
+</ng-template>
+
+
+<ng-template #contentView let-modal class="content-modal">
+    <div class="modal-header ">
+        <h5 class="modal-title " id="exampleModalLabel " style="    font-size: 25px;
+    font-weight: 600;">{{titleModal}} <i class="fa fa-users " style=" font-size:1rem ; margin-left: 1rem; color: #ff7900; " aria-hidden="true "></i></h5>
+        <button type="button " style="outline: none; " class="btn-close " (click)="deleStorageAndClose() "><span class="visually-hidden ">Close</span></button>
+    </div>
+    <div class="modal-body " style="padding: 2rem 1.25rem;">
+        <div>
+            <div>
+                <table style="width:100%">
+                    <tr style="border-bottom: solid 0.5px #e2e2e2;    font-size: 16px;
+                font-weight: 700;">
+                        <td style="text-align: left;">Identifiant:</td>
+                        <td style="text-align: right;">{{stepVIew.id}}</td>
+                    </tr>
+                    <tr style="border-bottom: solid 0.5px #e2e2e2;    font-size: 16px;
+                font-weight: 700;">
+                        <td style="text-align: left;">Libelle du pays:</td>
+                        <td style="text-align: right;">{{stepVIew?.Libelle}}</td>
+                    </tr>
+                </table>
+                <!-- <div>
+                <button (click)="createPDF()" type="button" class="btn btn-secondary" style="margin-top: 0.7rem;">
+                  <i class="fa-solid fa-print" style="margin-right: 1rem;"></i>Edition des détails</button>
+            </div> -->
+            </div>
+        </div>
+    </div>
+
+</ng-template>

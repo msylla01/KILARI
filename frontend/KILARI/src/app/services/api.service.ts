@@ -191,9 +191,9 @@ export class ApiService {
   }
 
 
-  delete(endPoint: string){
+  delete(endpoint: string, id:number){
     return new Observable((observer) => {
-      this.httpClient.delete(environment.BASE_URL + endPoint , this.httpOptions).subscribe(
+      this.httpClient.delete(environment.BASE_URL  + "/" + endpoint + "/" + id + "/").subscribe(
         result => {
           observer.next(result);
         },
