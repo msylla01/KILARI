@@ -17,6 +17,7 @@ import { ThisReceiver } from '@angular/compiler';
 import * as pdfMake from "pdfmake/build/pdfmake";
 import * as pdfFonts from "pdfmake/build/vfs_fonts";
 import { right } from '@popperjs/core';
+import { RaiService } from 'src/app/services/rai.service';
 // // pdfMake.vfs = pdfFronts.pdfFronts.vfs
 (<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;// (<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
 
@@ -242,13 +243,13 @@ changePays:any= [];
     {id:2, value:"RECURRENT"},
   ]
 
-  constructor(private msg: NzMessageService,private router: Router,private toastr: ToastrService,private modalService: NgbModal, private SpinnerService:SpinnerService,private ApiService:ApiService , private ToastService:ToastService) {}
+  constructor(private msg: NzMessageService,public ser : RaiService,private router: Router,private toastr: ToastrService,private modalService: NgbModal, private SpinnerService:SpinnerService,private ApiService:ApiService , private ToastService:ToastService) {}
 
 
   ngOnInit() {      
 
 
-
+   
     localStorage.removeItem('hideDest');
     localStorage.removeItem('hideTranc');
 
@@ -281,6 +282,93 @@ changePays:any= [];
       img.src = url;
     });
   }
+
+
+
+
+  /**
+   * 
+   * ###############################################""""" function boucle sur un tableau"
+   */
+fun1(){
+  let tab = [1,2,3]
+  let id_tock = 2
+for (var val of tab) {
+
+    let dt ={
+      "toc": id_tock,
+      "pays": val
+  }
+/**Tu peux trouver la fonction qui enregistre
+ * 
+ * this.ser.createImpact(dt).subscribe((res:any) => {
+        console.log(' created successfully! Impact',res);
+        
+   })**/
+} 
+}
+fun2(){
+  let tab = [1,2,3]
+  let id_tock = 2
+for (var val of tab) {
+
+    let dt ={
+      "toc": id_tock,
+      "service": val
+  }
+/**Tu peux trouver la fonction qui enregistre
+ * 
+ * this.ser.createImpact(dt).subscribe((res:any) => {
+        console.log(' created successfully! Impact',res);
+        
+   })**/
+
+} 
+}
+
+
+fun3(){
+  let tab = [1,2,3]
+  let id_tock = 2
+for (var val of tab) {
+
+    let dt ={
+      "toc": id_tock,
+      "platform": val
+  }
+/**Tu peux trouver la fonction qui enregistre.
+ * Tu pourrais mettre ta fonction ici qui enregistre
+ * 
+ * 
+ * this.ser.createImpact(dt).subscribe((res:any) => {
+        console.log(' created successfully! Impact',res);
+        
+   })**/
+
+} 
+}
+fun4(){
+  let tab = [1,2,3]
+  let id_tock = 2
+for (var val of tab) {
+
+    let dt ={
+      "toc": id_tock,
+      "tocticket": val
+  }
+/**Tu peux trouver la fonction qui enregistre
+ * 
+ * this.ser.createImpact(dt).subscribe((res:any) => {
+        console.log(' created successfully! Impact',res);
+        
+   })**/
+
+} 
+}
+/**
+ * ############################################################ End Function
+ */
+
 
   onItemSelect(item: any) {
     console.log(item);

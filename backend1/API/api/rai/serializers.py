@@ -70,7 +70,36 @@ class ImpactSerializers(serializers.ModelSerializer):
 
 
 
+class ImpactpsSerializers(serializers.ModelSerializer):
+    class Meta: 
+        model = Impactservice
+        fields = '__all__'
+        extra_kwargs = {'toc': {'required': False},'service': {'required': False}}
 
+class ImpactppSerializers(serializers.ModelSerializer):
+    class Meta: 
+        model = Impactplatf
+        fields = '__all__'
+        extra_kwargs = {'toc': {'required': False},'Platform': {'required': False}}
+
+'''class ImpactpSerializers(serializers.ModelSerializer):
+    class Meta: 
+        model = Impactpays
+        fields = '__all__'
+        extra_kwargs = {'toc': {'required': False},'pays': {'required': False}}
+
+class ImpactpsSerializers(serializers.ModelSerializer):
+    class Meta: 
+        model = Impactservice
+        fields = '__all__'
+        extra_kwargs = {'toc': {'required': False},'service': {'required': False}}
+
+class ImpactppSerializers(serializers.ModelSerializer):
+    class Meta: 
+        model = Impactplatf
+        fields = '__all__'
+        extra_kwargs = {'toc': {'required': False},'Platform': {'required': False}}
+'''
 
 class RaiSerializers(serializers.ModelSerializer):
     
@@ -113,17 +142,19 @@ class BqtSerializers(serializers.ModelSerializer):
 
 
 class ServiceSerializers(serializers.ModelSerializer):
-    Impact = ImpactSerializers(many=True, read_only=True)
-
+    #Impact = ImpactSerializers(many=True, read_only=True)
+    Impactservice = ImpactpsSerializers(many=True, read_only=True)
     # planbqt = PlanactionbqtSerializers(many=True, read_only=True)
     class Meta: 
         model = Service
         fields = '__all__'
         #extract_kwargs = {'tocserv': {'required': False}}
 
-class PlatformSerializers(serializers.ModelSerializer):
-    Impact = ImpactSerializers(many=True, read_only=True)
 
+
+class PlatformSerializers(serializers.ModelSerializer):
+    #Impact = ImpactSerializers(many=True, read_only=True)
+    Impactplat = ImpactppSerializers(many=True, read_only=True)
     # planbqt = BqtSerializers(many=True, read_only=True)
     class Meta: 
         model = Platform
@@ -134,7 +165,8 @@ class PlatformSerializers(serializers.ModelSerializer):
 
 
 class PaysSerializers(serializers.ModelSerializer):
-
+    Impactpays = ImpactSerializers(many=True, read_only=True)
+    #Impact = ImpactpSerializers(many=True, read_only=True)
     
     class Meta: 
         model = Pays
@@ -152,7 +184,9 @@ class TocTicketSerializers(serializers.ModelSerializer):
 
 
 class TocSerializers(serializers.ModelSerializer):
-    Impact = ImpactSerializers(many=True, read_only=True)
+    Impactpays = ImpactSerializers(many=True, read_only=True)
+    Impactservice = ImpactpsSerializers(many=True, read_only=True)
+    Impactplat = ImpactppSerializers(many=True, read_only=True)
     tocpro = TocproblemeSerializers(many=True, read_only=True)
     toc =  TocTicketSerializers(many=True, read_only=True)
     pays =  PaysSerializers(many=True, read_only=True)

@@ -71,3 +71,10 @@ export interface Incident {
 }
 
 
+export interface Impact{
+    id:number,
+    toc: number,
+    service: number,
+    Platform: number,
+    pays:number
+}

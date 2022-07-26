@@ -35,6 +35,31 @@ notes_router.register(
     basename='impact',)
 
 notes_router.register(
+    r'impacts',
+    ImpactpsViewSet,
+    basename='impacts',)
+
+notes_router.register(
+    r'impactpp',
+    ImpactppViewSet,
+    basename='impactp',)
+'''notes_router.register(
+    r'impactp',
+    ImpactpViewSet,
+    basename='impactp',)
+
+notes_router.register(
+    r'impacts',
+    ImpactpsViewSet,
+    basename='impacts',)
+
+notes_router.register(
+    r'impactpp',
+    ImpactppViewSet,
+    basename='impactp',)
+'''
+
+notes_router.register(
     r'evaluationbqt',
     EvaluationbqtViewSet,
     basename='evaluationbqt',)

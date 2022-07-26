@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Toc } from '../model/toc';
-import { Rai, Tocprobleme } from '../model/rai';
+import { Impact, Rai, Tocprobleme } from '../model/rai';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +37,14 @@ getAllTocpro(): Observable<Tocprobleme> {
       catchError(this.errorHandler)
     )
   }
+
+  createImpact(impact: any): Observable<Impact> {
+    return this.httpClient.post<Impact>(this.baseURL + '/impact/', JSON.stringify(impact), this.httpOptions)
+    .pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
   createtocpro(tocpro: any): Observable<Tocprobleme> {
     return this.httpClient.post<Tocprobleme>(this.baseURL + '/tocprobleme/', JSON.stringify(tocpro), this.httpOptions)
     .pipe(

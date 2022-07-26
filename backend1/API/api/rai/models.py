@@ -132,13 +132,44 @@ class Platform(models.Model):
 class Impact(models.Model):
     
 
-    toc = models.ForeignKey(Toc, on_delete=models.CASCADE,related_name='Impact',blank=True)
-    service = models.ForeignKey(Service, on_delete=models.CASCADE,related_name='Impact',blank=True)
-    Platform = models.ForeignKey(Platform, on_delete=models.CASCADE,related_name='Impact',blank=True)
-    pays = models.ForeignKey(Pays, on_delete=models.CASCADE,related_name='Impact',blank=True)
+    toc = models.ForeignKey(Toc, on_delete=models.CASCADE,related_name='Impactpays',blank=True)
+    #service = models.ForeignKey(Service, on_delete=models.CASCADE,related_name='Impact',blank=True,null=True)
+    #Platform = models.ForeignKey(Platform, on_delete=models.CASCADE,related_name='Impact',blank=True,null=True)
+    pays = models.ForeignKey(Pays, on_delete=models.CASCADE,related_name='Impactpays',blank=True,null=True)
    #Libelle = models.CharField(max_length=500,blank=False, default='')
     def __str__(self):
-        return self.Libelle
+        return self.pays
+
+
+class Impactservice(models.Model):
+    toc = models.ForeignKey(Toc, on_delete=models.CASCADE,related_name='Impactservice',blank=True)
+    service = models.ForeignKey(Service, on_delete=models.CASCADE,related_name='Impactservice',blank=True)
+    def __str__(self):
+        return self.service
+
+class Impactplatf(models.Model):
+    toc = models.ForeignKey(Toc, on_delete=models.CASCADE,related_name='Impactplat',blank=True)
+    Platform = models.ForeignKey(Platform, on_delete=models.CASCADE,related_name='Impactplat',blank=True,null=True)
+    def __str__(self):
+        return self.Platform
+'''class Impactpays(models.Model):
+    toc = models.ForeignKey(Toc, on_delete=models.CASCADE,related_name='Impact',blank=True)
+    pays = models.ForeignKey(Pays, on_delete=models.CASCADE,related_name='Impact',blank=True,null=True)
+    def __str__(self):
+        return self.pays
+
+class Impactservice(models.Model):
+    toc = models.ForeignKey(Toc, on_delete=models.CASCADE,related_name='Impact',blank=True)
+    service = models.ForeignKey(Service, on_delete=models.CASCADE,related_name='Impact',blank=True,null=True)
+    def __str__(self):
+        return self.service
+
+
+class Impactplatf(models.Model):
+    toc = models.ForeignKey(Toc, on_delete=models.CASCADE,related_name='Impact',blank=True)
+    Platform = models.ForeignKey(Platform, on_delete=models.CASCADE,related_name='Impact',blank=True,null=True)
+    def __str__(self):
+        return self.Platform'''
 
 
 class Tocprobleme(models.Model):
