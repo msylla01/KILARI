@@ -1,0 +1,66 @@
+.plan-rai-content {
+    .liste-plan-rai {
+        font-size: 2.4rem;
+        font-weight: 600;
+        color: black;
+    }
+    .btn-search-plan-rai {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 1.7rem;
+        .imput-search-btn {
+            display: flex;
+            max-width: 27.4rem;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+            small {
+                font-size: 1rem;
+                font-weight: 600;
+                color: black;
+            }
+            form {
+                display: flex;
+                gap: 0.3rem;
+                .search {}
+                button {
+                    i {}
+                }
+            }
+        }
+        .plus {
+            i {
+                margin-right: 1.04rem;
+            }
+        }
+    }
+    .content-tableau {
+        margin-top: 3rem;
+    }
+}
+
+.content-modal {
+    .imput-content-step3 {
+        .content {
+            .style-form-control {
+                .class-form {
+                    .control-form {
+                        display: flex;
+                        width: 100%;
+                        gap: 2rem;
+                        .form-group-div {
+                            width: 100% !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// table,
+// th,
+// td {
+//     border: 1px solid #cccccc
+// }

@@ -1,0 +1,184 @@
+<app-header></app-header>
+
+<h1>Info RAI : N° TOC {{ post.Numerotoc }}  </h1>
+   
+<a  (click)="Gethome1()" class="btn btn-primary">Retour sur la list Rai</a>
+
+<div>
+
+
+<div class="wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="span">
+                
+            </div>
+
+            <div class="span9">
+                <div class="content">
+                    <div class="container">
+                        <div class="card">
+                            <div class="card-body">
+
+                                <div class="row">
+                                
+                                
+                                    <div class="col-lg-12 col-md-12 col-sm-12"  >
+                                        <h3 class="box-title mt-5">Information General</h3>
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-product">
+                                                <tbody >
+                                                    <tr>
+                                                        <td width="390">TOC</td>
+                                                        <td>{{ post.Numerotoc }}</td>
+                                                    </tr>
+                                                    <tr >
+                                                        <td  >Porteur</td>
+                                                        <td>{{ post.tocpro[0].Porteur}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>TOC PROBLEM</td>
+                                                        <td>{{ post.tocpro[0].Numerotocpro }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>PRIORITE</td>
+                                                        <td>{{ post.priorite }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>STATUT TOC PROBLEME</td>
+                                                        <td>{{ post.tocpro[0].Dtatustocprob }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>CLOTURE TOC PROB</td>
+                                                        <td>{{ post.tocpro[0].Date}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>RI reçus</td>
+                                                        <td>{{ post.tocpro[0].rai[0].Rirecu}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Date incident</td>
+                                                        <td>{{ post.Datedebut }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Rétablissement</td>
+                                                        <td>{{ post.Datefin }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Date réception RAI</td>
+                                                        <td>{{ post.tocpro[0].rai[0].DateRept}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Date RAI</td>
+                                                        <td>{{ post.tocpro[0].rai[0].Datecritere }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Respect SLA RAI</td>
+                                                        <td>{{ post.Datefin-  post.Datefin}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Déclechement RAI</td>
+                                                        <td>{{ post.tocpro[0].rai[0].declenchement }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>TYPE</td>
+                                                        <td>{{ post.tocpro[0].typeproblem }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Statut RAI</td>
+                                                        <td>{{ post.tocpro[0].rai[0].status }}</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>Rapports Rédigés</td>
+                                                        <td>{{ post.tocpro[0].rai[0].Rapportpartage }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Rapports Partagés</td>
+                                                        <td>{{ post.tocpro[0].rai[0].Rapportredige }}</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>Comptes rendus</td>
+                                                        <td>{{ post.tocpro[0].rai[0].Comptrendus }}</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>Joint au TOC</td>
+                                                        <td>{{ post.tocpro[0].rai[0].Comptrendus }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Nbre de PA</td>
+                                                        <td>{{ 'NAN'}}</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>PA exécutés</td>
+                                                        <td>{{ 'NAN' }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Description</td>
+                                                        <td>{{ post.Description }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Pays</td>
+                                                        <td>{{ post.pays }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Plateform/ Service</td>
+                                                        <td >{{ post.SerPlat }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Priorité</td>
+                                                        <td>{{ post.priorite }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Début Incident</td>
+                                                        <td>{{ post.Datedebut }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Rétablissement</td>
+                                                        <td>{{ post.Datefin }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>MTTR</td>
+                                                        <td>{{ 'NAN' }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Cause</td>
+                                                        <td>{{ post.tocpro[0].rai[0].Cause }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Root cause</td>
+                                                        <td>{{ post.tocpro[0].rai[0].Rootcause  }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Stat Root cause</td>
+                                                        <td>{{ post.tocpro[0].rai[0].Statrootcause }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Action de rétablissement</td>
+                                                        <td>{{ post.tocpro[0].rai[0].Actionretablissement }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Types de solution</td>
+                                                        <td>{{ post.tocpro[0].rai[0].Typesolution }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Commentaires</td>
+                                                        <td>{{ post.tocpro[0].rai[0].Commentaire }}</td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
