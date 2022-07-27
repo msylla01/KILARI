@@ -7,8 +7,9 @@
                 <input type="text*" name="searchToc" [(ngModel)]="searchToc" class="form-control" placeholder="Rechercher par ticket" autocomplete="off">
                 <button type="submit" class="btn btn-secondary" (click)="filterTicket()"><i class="fas fa-search"></i></button>
             </form>
+            <!-- (click)="showModal1()" -->
         </div>
-        <button type="button" (click)="open(content)" class=" btn btn-primary plus "> <i class="fa-solid fa-plus "></i> Créer une RAI</button>
+        <button type="button" (click)="showModal1()" class=" btn btn-primary plus "> <i class="fa-solid fa-plus "></i> Créer une RAI</button>
     </div>
     <div class="content-tableau ">
         <nz-table #smallTable nzSize="small" [nzData]="ListTickOcean">
@@ -40,430 +41,402 @@
                     <td>{{item.toc[0]?.tocpro[0]?.typeproblem}}</td>
                     <td>{{item.toc[0]?.tocpro[0]?.rai[0].Typesolution}}</td>
                     <td class="">
-                        <button style="    margin-right: 0.6rem;" type="button" class="btn btn-danger" (click)="open(content, item)">
+                        <!-- (click)="open(content, item)" -->
+                        <button style="    margin-right: 0.6rem;" type="button" class="btn btn-danger">
                   <i class="fa fa-edit" aria-hidden="true"></i>
                 </button>
-                        <button type="button" class="btn btn-success" (click)="openView(contentView, item)">
+                        <button type="button" class="btn btn-success">
                   <i class="fa fa-eye" aria-hidden="true"></i>
                 </button>
                     </td>
+                    <!-- (click)="openView(contentView, item)" -->
                 </tr>
             </tbody>
         </nz-table>
     </div>
 </div>
 
-<ng-template #content let-modal class="content-modal">
-    <div class="modal-header ">
-        <h5 class="modal-title " id="exampleModalLabel " style="    font-size: 25px;
-        font-weight: 600;">{{titleModal}} <i class="fa fa-tasks " style=" font-size:1rem ; margin-left: 1rem; color: #ff7900; " aria-hidden="true "></i></h5>
-        <button type="button " style="outline: none; " class="btn-close " (click)="deleStorageAndClose() "><span class="visually-hidden ">Close</span></button>
-    </div>
-    <div class="modal-body ">
-        <div class="step-line ">
-            <div class="step1 background1 background3 " id="step1 " [ngClass]="{ 'background3': background1} ">
-                <span class="badge bg-secondary ">1</span>
-                <small>Etape</small>
-            </div>
-            <div class="step2 background1 background3 " id="step2 " [ngClass]="{ 'background1': background1, 'background3': background2} ">
-                <span class="badge bg-secondary ">2</span>
-                <small>Etape</small>
-            </div>
-            <div class="step3 background1 " id="step3 " [ngClass]="{ 'background1': background2} ">
-                <span class="badge bg-secondary ">3</span>
-                <small>Etape</small>
-            </div>
+
+<nz-modal [(nzVisible)]="isVisibleReservation" nzWidth="1050px" [style]="{fontSize: '23px',color:'#8D191E',height:'23%'}" [nzTitle]="modalTitle" (nzOnCancel)="handleCancel()">
+
+    <ng-template #modalTitle>
+        <div class="modal-header ">
+            <h5 class="modal-title " id="exampleModalLabel " style="    font-size: 25px;
+font-weight: 600;">{{titleModal}} <i class="fa fa-tasks " style=" font-size:1rem ; margin-left: 1rem; color: #ff7900; " aria-hidden="true "></i></h5>
+            <!-- <button type="button " style="outline: none; " class="btn-close " (click)="deleStorageAndClose() "><span class="visually-hidden ">Close</span></button> -->
         </div>
-        <!-- * -->
-        <!-- -->
-        <div id="imput-content-step1 " *ngIf="groundStep1">
-            <div class="imput-content-step1 ">
-                <div class="content ">
-                    <div class="content-left ">
-                        <div class="toc ">
-                            <label for="toc ">Ticket incident: <small class="red-star" style="color: red;font-size: 20px;">*</small>
-                              <i class="fa-solid fa-circle-info" data-bs-toggle="tooltip" data-bs-placement="top"
-                              data-bs-custom-class="custom-tooltip"
-                              title="Le ticket incident oceanne doit être de cet formet 2204T78856"></i></label>
-                            <input type="text" class="form-control " name="numeroToc " [(ngModel)]="numeroToc " (keyup.enter)="onKeyAddNumber($event)">
-                            <div class="item-sup">
-                                <span title="supprimer" style="background: gray;
-                                padding: 0.1rem 0.4rem;
-                                border-radius: 0px;margin-right: 0.3rem;    font-size: 15px;
-                                font-weight: 700;" *ngFor="let item of values">{{item}} <small (click)="remove(item)" style="color: orangered;cursor: pointer;">X</small></span>
+    </ng-template>
+    <div *nzModalContent>
+        <div class="modal-body ">
+            <div class="step-line ">
+                <div class="step1 background1 " id="step1 " [ngClass]="{ 'background2': backgroundStep1} ">
+                    <span class="badge bg-secondary ">1</span>
+                    <small>Etape</small>
+                </div>
+                <div class="step2 " id="step2 " [ngClass]="{ 'background1': backgroundStep1, 'background2': backgroundStep2} ">
+                    <span class="badge bg-secondary ">2</span>
+                    <small>Etape</small>
+                </div>
+                <div class="step3 " id="step3 " [ngClass]="{ 'background1': backgroundStep2, 'background2': backgroundStep3} ">
+                    <span class="badge bg-secondary ">3</span>
+                    <small>Etape</small>
+                </div>
+                <div class="step3 " id="step3 " [ngClass]="{ 'background1': backgroundSTep4} ">
+                    <span class="badge bg-secondary ">4</span>
+                    <small>Etape</small>
+                </div>
+            </div>
+            <div id="imput-content-step1 " *ngIf="groundStep1">
+                <div class="imput-content-step1 ">
+                    <div class="content ">
+                        <div class="content-left ">
+                            <div class="toc ">
+                                <label for="toc ">Ticket incident: <small class="red-star" style="color: red;font-size: 20px;">*</small>
+                        <i class="fa-solid fa-circle-info" data-bs-toggle="tooltip" data-bs-placement="top"
+                        data-bs-custom-class="custom-tooltip"
+                        title="Le ticket incident oceanne doit être de cet formet 2204T78856"></i></label>
+                                <input type="text" class="form-control " name="numeroToc " [(ngModel)]="numeroToc " (keyup.enter)="onKeyAddNumber($event)">
+                                <div class="item-sup">
+                                    <span title="supprimer" style="background: gray;
+                          padding: 0.1rem 0.4rem;
+                          border-radius: 0px;margin-right: 0.3rem;    font-size: 15px;
+                          font-weight: 700;" *ngFor="let item of values">{{item}} <small (click)="remove(item)" style="color: orangered;cursor: pointer;">X</small></span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="pays ">
-                            <label for="pays ">Pays:<small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                            <select class="form-select " name="pays " [(ngModel)]="step1.pays " aria-label="Default select example ">
-                              <option *ngFor="let item of ListPays" [value]="item.id ">{{item.Libelle}}</option>
-                            </select>
+                            <div class="pays ">
+                                <label for="pays ">Pays:<small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                                <nz-select nzMode="tags" nzPlaceHolder="Selectionner les pays" name="pays" style="width: 100%;" [(ngModel)]="step1.pays">
+                                    <nz-option *ngFor="let option of ListPays" [nzLabel]="option.Libelle" [nzValue]="option.id"></nz-option>
+                                </nz-select>
+                            </div>
+
+                            <div class="date-incident ">
+                                <label for="date-incident ">Date incident:<small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                                <input type="date" class="form-control " name="Datedebut " [(ngModel)]="step1.Datedebut ">
+                            </div>
+
+                            <div class="retablissement ">
+                                <label for="retablissement ">Retablissement:<small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                                <input type="date" class="form-control " name="Datefin" [(ngModel)]="step1.Datefin ">
+                            </div>
 
                         </div>
-                        <div class="heure-incident ">
-                            <label for="heure-incident ">Heure incident:<small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                            <input type="time" name="heurD" [(ngModel)]="step1.heurD" class="form-control ">
-                        </div>
-                        <div class="heure-retablissement">
-                            <label for="heure-retablissement">Heure retablissement:<small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                            <input type="time" class="form-control " name="heurF" [(ngModel)]="step1.heurF ">
+                        <div class="content-right ">
+                            <div class="propriete ">
+                                <label for="propriete">Priorité:<small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                                <select class="form-select" name="priorite" [(ngModel)]="step1.priorite" aria-label="Default select example ">
+                        <option *ngFor="let item of Priorite " [value]="item.value " >{{item.value}}</option>
+                      </select>
+                            </div>
+                            <div class="plateforme">
+                                <div class="platforme" style="width: 100%;">
+                                    <label for="platforme">Plateforme:<small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                                    <nz-select nzMode="tags" nzPlaceHolder="Selectionner les plateformes" name="tags" style="width: 100%;" [(ngModel)]="step1.Platforme">
+                                        <nz-option *ngFor="let option of listPlateforme" [nzLabel]="option.Libelle" [nzValue]="option.id"></nz-option>
+                                    </nz-select>
+                                </div>
+                                <div class="service" style="width: 100%;">
+                                    <label for="service">Services:<small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                                    <!-- <select class="form-select " name="Service " [(ngModel)]="step1.Service " aria-label="Default select example ">
+                                      <option *ngFor="let item of Service " [value]="item.value ">{{item.value}}</option>
+                                    </select> -->
+                                    <nz-select nzMode="tags" nzPlaceHolder="Selectionner les services" name="Service" style="width: 100%;" [(ngModel)]="step1.Service">
+                                        <nz-option *ngFor="let option of listService" [nzLabel]="option.Libelle" [nzValue]="option.id"></nz-option>
+                                    </nz-select>
+                                </div>
+                            </div>
+
+
+                            <div class="heure-incident ">
+                                <label for="heure-incident ">Heure incident:<small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                                <input type="time" name="heurD" [(ngModel)]="step1.heurD" class="form-control ">
+                            </div>
+                            <div class="heure-retablissement">
+                                <label for="heure-retablissement">Heure retablissement:<small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                                <input type="time" class="form-control " name="heurF" [(ngModel)]="step1.heurF ">
+                            </div>
                         </div>
                     </div>
-                    <div class="content-right ">
-                        <div class="propriete ">
-                            <label for="propriete">Priorité:<small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                            <select class="form-select" name="priorite" [(ngModel)]="step1.priorite" aria-label="Default select example ">
-                              <option *ngFor="let item of Priorite " [value]="item.value " >{{item.value}}</option>
-                            </select>
-                        </div>
-                        <div class="plateforme">
-                            <div class="platforme">
-                                <label for="platforme">Plateforme:<small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                                <div class="tag-input" *ngFor="let item of changePays">
-                                    <div class="tag-input__tag">
-                                        <span class="" style="cursor: pointer;">x</span>
-                                    </div>
-                                    {{item}}
-                                </div>
-                                <!-- <input type="text" class="form-select tag-input__select" (change)="getSelect(step1.Platforme)" name="Platforme" [(ngModel)]="step1.Platforme"> -->
-                                <select class="form-select tag-input__select" (click)="getSelect(step1.Platforme)" name="Platforme" [(ngModel)]="step1.Platforme" aria-label="Default select example ">
-                                    <option *ngFor="let item of Platforme " [value]="item.value ">{{item.value}}</option>
-                                </select>
-                                <!-- <nz-select nzMode="multiple" nzPlaceHolder="Inserted are removed" name="Platforme" [(ngModel)]="step1.Platforme">
-                                    <nz-option *ngFor="let option of Platforme" [nzLabel]="option.id" [nzValue]="option.Libelle">{{option.Libelle}}</nz-option>
-                                </nz-select> -->
-
-                                <!-- <nz-select nzMode="tags" nzPlaceHolder="Les centres d'inttérêt du participant" name="tags" style="width: 100%;" [(ngModel)]="particicipant.tags">
-                                    <nz-option *ngFor="let option of Platforme" [nzLabel]="option.label" [nzValue]="option['@id']"></nz-option>
-                                </nz-select> -->
-
-                                <!-- <nz-select name="Platforme" [(ngModel)]="step1.Platforme" nzMode="tags" nzPlaceHolder="automatic tokenization" [style]="{width: 100}">
-                                    <nz-option *ngFor="let option of Platforme" [nzLabel]="option.value" [nzValue]="option.id"></nz-option>
-                                </nz-select> -->
-
-                            </div>
-                            <div class="service">
-                                <label for="service">Services:<small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                                <select class="form-select " name="Service " [(ngModel)]="step1.Service " aria-label="Default select example ">
-                                    <option *ngFor="let item of Service " [value]="item.value ">{{item.value}}</option>
+                    <div class="description ">
+                        <label for="description ">Description:<small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                        <textarea name="description " id="description " cols="30 " rows="4 " [(ngModel)]="step1.Description"></textarea>
+                    </div>
+                    <div class="footer-step1 ">
+                        <button *ngIf="!step1.id && !disableChamp" type="button " class="btn btn-primary " (click)="createRAi() ">
+                <span *ngIf="!loading ">Enregistrer et passé a l'etape suivant</span>
+                <span *ngIf="loading " class="spinner-border spinner-border-sm " role="status " aria-hidden="true "></span>
+                <span *ngIf="loading " style="margin-left: 0.2rem; ">Loading...</span>
+              </button>
+                        <button *ngIf="step1.id && !disableChamp" type="button " class="btn btn-primary " (click)="updateStep1() ">
+                <span *ngIf="!loading ">Modifier et passé a l'etape suivant</span>
+                <span *ngIf="loading " class="spinner-border spinner-border-sm " role="status " aria-hidden="true "></span>
+                <span *ngIf="loading " style="margin-left: 0.2rem; ">Loading...</span>
+              </button>
+                        <!-- <button *ngIf="disableChamp" type="button" class="btn btn-primary" (click)="viewStep1()"> -->
+                        <!-- <span>Etape suivante</span>
+                        </button> -->
+                    </div>
+                </div>
+            </div>
+            <!--  -->
+            <div id="imput-content-step2 " *ngIf="groundStep2">
+                <div class="imput-content-step2 ">
+                    <div class="top-problem ">
+                        <label for="toc-problem ">Ticket problème: <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                        <input type="text " class="form-control " [(ngModel)]="step2.Numerotocpro " name="Numerotocpro ">
+                    </div>
+                    <div class="porteur ">
+                        <label for="porteur ">Porteur: <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                        <select class="form-select " name="Porteur " [(ngModel)]="step2.Porteur " aria-label="Default select example ">
+                          <option></option>
+                          <option *ngFor="let item of Porteur " [value]="item.value ">{{item.value}}</option>
+                        </select>
+                    </div>
+                    <div class="type ">
+                        <label for="type ">Type problème: <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                        <select class="form-select " name="typeproblem " [(ngModel)]="step2.typeproblem " aria-label="Default select example ">
+                          <option *ngFor="let item of TypeProbleme " [value]="item.value ">{{item.value}}</option>
+                        </select>
+                    </div>
+                    <div class="footer-stpe2 ">
+                        <button *ngIf="!step2.id && !disableChamp" type="button " class="btn btn-primary " (click)="nextStep2() ">
+                          <span *ngIf="!loading1 ">Enregistrer et passé a l'etape suivant</span>
+                          <span *ngIf="loading1 " class="spinner-border spinner-border-sm " role="status " aria-hidden="true "></span>
+                          <span *ngIf="loading1 " style="margin-left: 0.2rem; ">Loading...</span>
+                        </button>
+                        <button *ngIf="step2.id && !disableChamp" type="button " class="btn btn-primary " (click)="updateStep2() ">
+                <span *ngIf="!loading1 ">Modifier et passé a l'etape suivant</span>
+                <span *ngIf="loading1 " class="spinner-border spinner-border-sm " role="status " aria-hidden="true "></span>
+                <span *ngIf="loading1 " style="margin-left: 0.2rem; ">Loading...</span>
+              </button>
+                        <!-- <button *ngIf="disableChamp" type="button " class="btn btn-primary" (click)="viewStep2()"> -->
+                        <!-- <span>Etape suivante</span>
+                        </button> -->
+                    </div>
+                </div>
+            </div>
+            <!-- -->
+            <div id="imput-content-step3 " *ngIf="groundStep3">
+                <div class="imput-content-step3 ">
+                    <div class="content ">
+                        <div class="content-left ">
+                            <div class="statut-rai ">
+                                <label for="statut-rai ">Statut Rai : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                                <select id="inputState " class="form-select " name="status " [(ngModel)]="step3.status" (change)="dissabledChampR($event)">
+                                  <option>Selectionner un statut</option>
+                                  <option *ngFor="let item of StatusRAI" [value]="item.value">{{item.value}}</option>
                               </select>
                             </div>
+                            <div class="rai-recu ">
+                                <label for="rai-recu ">Rapport incident Recu : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                                <div style="display: flex;gap:1rem">
+                                    <div class="div1" style="width: 100%;">
+                                        <select id="inputState " class="form-select " name="Rairecu " [(ngModel)]="step3.Rairecu ">
+                                      <option *ngFor="let item of RI_recu" [value]="item.value">{{item.value}}</option>
+                                    </select>
+                                    </div>
+                                    <div class="div1" style=" width: 100%;">
+                                        <input type="file" [disabled]="DisabledRAI" name="uploadedFileRI" id="uploadedFileRI" (change)="fileChangeRI($event)" [(ngModel)]="step3.uploadedFileRI" accept="*/*">
+                                        <label [ngClass]="{ 'pointerFalse': !DisabledRAI, 'pointerTrue': DisabledRAI} " class="uploadedFileRI" for="uploadedFileRI">
+                                            <i class="fas fa-save" style="    margin-right: 1rem;
+                                            font-size: 23px;"></i>
+                                            Joindre un fichier RI
+                                          </label>
+                                        <small style="font-size: 16px;
+                                          font-weight: 600;">{{step3.uploadedFileRI?.name}}</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="e ">
+                                <label for="rapport-redige ">Rapport Rédigé : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                                <select id="inputState " class="form-select " name="Rapportredige " [(ngModel)]="step3.Rapportredige ">
+                                  <option *ngFor="let item of Rediges" [value]="item.value">{{item.value}}</option>
+                                </select>
+                            </div>
+                            <div class="rapport-partage ">
+                                <label for="rapport-partage ">Rapport Partagé : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                                <select id="inputState " class="form-select " name="Rapportpartage " [(ngModel)]="step3.Rapportpartage ">
+                                  <option *ngFor="let item of Partages" [value]="item.value">{{item.value}}</option>
+                                </select>
+                            </div>
+                            <div class="compte-rendu ">
+                                <label for="rcompte-rendu ">Compte rendu : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                                <select id="inputState " class="form-select " name="Comptrendus " [(ngModel)]="step3.Comptrendus ">
+                                  <option *ngFor="let item of Compte_rendu" [value]="item.value">{{item.value}}</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="date-incident ">
-                            <label for="date-incident ">Date incident:<small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                            <input type="date" class="form-control " name="Datedebut " [(ngModel)]="step1.Datedebut ">
-                        </div>
+                        <div class="content-right ">
+                            <div class="date-rai ">
+                                <label for="date-rai ">Date de la Rai : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                                <input name="Datecritere" [(ngModel)]="step3.Datecritere" type="date" class="form-control ">
+                            </div>
+                            <div class="date-reception-rai ">
+                                <label for="date-reception-rai ">Date reception de la Rai : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                                <input type="date" name="DateRept" [(ngModel)]="step3.DateRept" class="form-control ">
+                            </div>
+                            <div class="cause ">
+                                <label for="jointoc ">Joint au ticket oceanne : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                                <select id="inputState " class="form-select " name="Jointoc" [(ngModel)]="step3.Jointoc">
+                                <option *ngFor="let item of Join" [value]="item.value">{{item.value}}</option>
+                              </select>
+                            </div>
 
-                        <div class="retablissement ">
-                            <label for="retablissement ">Retablissement:<small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                            <input type="date" class="form-control " name="Datefin" [(ngModel)]="step1.Datefin ">
+                            <div class="root-cause ">
+                                <label for="declenchement ">Déclenchement Rapport incident : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                                <select id="inputState " class="form-select " name="declenchement " [(ngModel)]="step3.declenchement ">
+                                <option *ngFor="let item of declenchement" [value]="item.value">{{item.value}}</option>
+                              </select>
+                            </div>
+                            <div class="action ">
+                                <label for="action ">Action de rétablissement : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                                <textarea name="Actionretablissement" [(ngModel)]="step3.Actionretablissement" id=" " cols="30 " rows="2 "></textarea>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="description ">
-                    <label for="description ">Description:<small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                    <textarea name="description " id="description " cols="30 " rows="4 " [(ngModel)]="step1.Description"></textarea>
-                </div>
-                <div class="footer-step1 ">
-                    <button *ngIf="!step1.id && !disableChamp" type="button " class="btn btn-primary " (click)="nextStep1() ">
-                      <span *ngIf="!loading ">Enregistrer et passé a l'etape suivant</span>
-                      <span *ngIf="loading " class="spinner-border spinner-border-sm " role="status " aria-hidden="true "></span>
-                      <span *ngIf="loading " style="margin-left: 0.2rem; ">Loading...</span>
-                    </button>
-                    <button *ngIf="step1.id && !disableChamp" type="button " class="btn btn-primary " (click)="updateStep1() ">
-                      <span *ngIf="!loading ">Modifier et passé a l'etape suivant</span>
-                      <span *ngIf="loading " class="spinner-border spinner-border-sm " role="status " aria-hidden="true "></span>
-                      <span *ngIf="loading " style="margin-left: 0.2rem; ">Loading...</span>
-                    </button>
-                    <button *ngIf="disableChamp" type="button" class="btn btn-primary" (click)="viewStep1()">
-                      <span>Etape suivante</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <!--  -->
-        <div id="imput-content-step2 " *ngIf="groundStep2">
-            <div class="imput-content-step2 ">
-                <div class="top-problem ">
-                    <label for="toc-problem ">Ticket problème: <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                    <input type="text " class="form-control " [(ngModel)]="step2.Numerotocpro " name="Numerotocpro ">
-                </div>
-                <div class="porteur ">
-                    <label for="porteur ">Porteur: <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                    <select class="form-select " name="Porteur " [(ngModel)]="step2.Porteur " aria-label="Default select example ">
-                      <option></option>
-                      <option *ngFor="let item of Porteur " [value]="item.value ">{{item.value}}</option>
-                    </select>
-                </div>
-                <div class="type ">
-                    <label for="type ">Type problème: <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                    <select class="form-select " name="typeproblem " [(ngModel)]="step2.typeproblem " aria-label="Default select example ">
-                      <option *ngFor="let item of TypeProbleme " [value]="item.value ">{{item.value}}</option>
-                    </select>
-                </div>
-                <div class="footer-stpe2 ">
-                    <button *ngIf="!step2.id && !disableChamp" type="button " class="btn btn-primary " (click)="nextStep2() ">
-                      <span *ngIf="!loading1 ">Enregistrer et passé a l'etape suivant</span>
-                      <span *ngIf="loading1 " class="spinner-border spinner-border-sm " role="status " aria-hidden="true "></span>
-                      <span *ngIf="loading1 " style="margin-left: 0.2rem; ">Loading...</span>
-                    </button>
-                    <button *ngIf="step2.id && !disableChamp" type="button " class="btn btn-primary " (click)="updateStep2() ">
-                      <span *ngIf="!loading1 ">Modifier et passé a l'etape suivant</span>
-                      <span *ngIf="loading1 " class="spinner-border spinner-border-sm " role="status " aria-hidden="true "></span>
-                      <span *ngIf="loading1 " style="margin-left: 0.2rem; ">Loading...</span>
-                    </button>
-                    <button *ngIf="disableChamp" type="button " class="btn btn-primary" (click)="viewStep2()">
-                      <span>Etape suivante</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <!--  -->
-        <div id="imput-content-step3 " *ngIf="groundStep3">
-            <div class="imput-content-step3 ">
-                <div class="content ">
-                    <div class="content-left ">
-                        <div class="statut-rai ">
-                            <label for="statut-rai ">Statut Rai : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                            <select id="inputState " class="form-control " name="status " [(ngModel)]="step3.status" (change)="dissabledChampR($event)">
-                                <option>Selectionner un statut</option>
-                                <option *ngFor="let item of StatusRAI" [value]="item.value">{{item.value}}</option>
-                            </select>
-                        </div>
-                        <div class="rai-recu ">
-                            <label for="rai-recu ">Rapport incident Recu : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                            <select id="inputState " class="form-control " name="Rairecu " [(ngModel)]="step3.Rairecu ">
-                              <option *ngFor="let item of RI_recu" [value]="item.value">{{item.value}}</option>
-                            </select>
-                        </div>
-                        <div class="e ">
-                            <label for="rapport-redige ">Rapport Rédigé : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                            <select id="inputState " class="form-control " name="Rapportredige " [(ngModel)]="step3.Rapportredige ">
-                              <option *ngFor="let item of Rediges" [value]="item.value">{{item.value}}</option>
-                            </select>
-                        </div>
-                        <div class="rapport-partage ">
-                            <label for="rapport-partage ">Rapport Partagé : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                            <select id="inputState " class="form-control " name="Rapportpartage " [(ngModel)]="step3.Rapportpartage ">
-                              <option *ngFor="let item of Partages" [value]="item.value">{{item.value}}</option>
-                            </select>
-                        </div>
-                        <div class="compte-rendu ">
-                            <label for="rcompte-rendu ">Compte rendu : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                            <select id="inputState " class="form-control " name="Comptrendus " [(ngModel)]="step3.Comptrendus ">
-                              <option *ngFor="let item of Compte_rendu" [value]="item.value">{{item.value}}</option>
-                            </select>
-                        </div>
 
-                        <div class="jointoc ">
-                            <label for="jointoc ">Joint au ticket oceanne : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                            <select id="inputState " class="form-control " name="jointoc " [(ngModel)]="step3.jointoc ">
-                              <option *ngFor="let item of Join" [value]="item.value">{{item.value}}</option>
-                            </select>
-                        </div>
-
-                        <div class="declenchement ">
-                            <label for="declenchement ">Déclenchement Rapport incident : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                            <select id="inputState " class="form-control " name="declenchement " [(ngModel)]="step3.declenchement ">
-                              <option *ngFor="let item of declenchement" [value]="item.value">{{item.value}}</option>
-                            </select>
+                    <div class="commentaires ">
+                        <div style="width: 100%;display: flex;flex-direction: column;">
+                            <label for="cause ">Cause immédiate: <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                            <textarea name="Cause" [(ngModel)]="step3.Cause " id=" " cols="30 " rows="6"></textarea>
                         </div>
                     </div>
-                    <div class="content-right ">
-                        <div class="date-rai ">
-                            <label for="date-rai ">Date de la Rai : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                            <input name="Datecritere" [(ngModel)]="step3.Datecritere " type="date" class="form-control ">
-                        </div>
-                        <div class="date-reception-rai ">
-                            <label for="date-reception-rai ">Date reception de la Rai : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                            <input name="DateRept" [(ngModel)]="step3.DateRept " type="date" class="form-control ">
-                        </div>
-                        <div class="cause ">
-                            <label for="cause ">Cause : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                            <textarea name="Cause" [disabled]="dissabledR" [(ngModel)]="step3.Cause " id=" " cols="30 " rows="2 "></textarea>
-                        </div>
+                    <div class="footer-finale ">
+                        <!-- <button type="button " *ngIf="!disableChamp" class="btn btn-secondary " (click)="handleCancel() ">Annuler</button> -->
+                        <button *ngIf="!step3.id && !disableChamp" type="button " class="btn btn-primary " (click)="finalStep() ">
+                <span *ngIf="!loading2 " style="margin-left: 0.2rem; ">Sauvegarder</span>
+                <span *ngIf="loading2 " class="spinner-border spinner-border-sm " role="status " aria-hidden="true "></span>
+                <span *ngIf="loading2 " style="margin-left: 0.2rem; ">Loading...</span>
+              </button>
+                        <button *ngIf="step3.id && !disableChamp" type="button " class="btn btn-primary " (click)="editRAI() ">
+                <span *ngIf="!loading2 " style="margin-left: 0.2rem; ">Sauvegarder la modification</span>
+                <span *ngIf="loading2 " class="spinner-border spinner-border-sm " role="status " aria-hidden="true "></span>
+                <span *ngIf="loading2 " style="margin-left: 0.2rem; ">Loading...</span>
+              </button>
 
-                        <div class="root-cause ">
-                            <label for="root-cause ">Root cause : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                            <textarea name="Rootcause" [disabled]="dissabledR" [(ngModel)]="step3.Rootcause " id=" " cols="30 " rows="2 "></textarea>
-                        </div>
+                        <button *ngIf="!step3.id && !disableChamp" type="button " class="btn btn-success " (click)="nexStep4() ">
+                <span *ngIf="!loading2 " style="margin-left: 0.2rem; ">Passer à l'étape 4</span>
+                <span *ngIf="loading2 " class="spinner-border spinner-border-sm " role="status " aria-hidden="true "></span>
+                <span *ngIf="loading2 " style="margin-left: 0.2rem; ">Loading...</span>
+              </button>
 
-                        <div class="form-group stat-root-cause ">
-                            <label for="stat-root-cause ">Status root cause : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                            <select class="form-select " aria-label="Default select example " [disabled]="dissabledR" name="Statrootcause " [(ngModel)]="step3.Statrootcause ">
+
+                        <button *ngIf="disableChamp" type="button " class="btn btn-primary" (click)="handleCancel()">
+                <span>Fermer le modal</span>
+              </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="imput-content-step3 " *ngIf="groundStep4">
+                <div class="imput-content-step3 ">
+                    <div class="content ">
+                        <div class="content-left ">
+                            <div class="statut-rai ">
+                                <label for="stat-root-cause ">Status root cause : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                                <select class="form-select " aria-label="Default select example " name="Statrootcause " [(ngModel)]="step3.Statrootcause ">
                               <option *ngFor="let item of Stat_root" [value]="item.value">{{item.value}}</option>
                             </select>
+                            </div>
+                            <div class="rai-recu ">
+                                <label for="root-cause ">Root cause : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                                <textarea name="Rootcause" [(ngModel)]="step3.Rootcause " id=" " cols="30 " rows="6"></textarea>
+                            </div>
                         </div>
-
-                        <div class="action ">
-                            <label for="action ">Action de rétablissement : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                            <textarea name="Actionretablissement " [disabled]="dissabledR" [(ngModel)]="step3.Actionretablissement " id=" " cols="30 " rows="2 "></textarea>
-                        </div>
-                        <div class="type-solution ">
-                            <label for="type-solution ">Types de solution : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                            <select id="Typesolution " name="Typesolution " [(ngModel)]="step3.Typesolution " class="form-control " [disabled]="dissabledR">
+                        <div class="content-right ">
+                            <div class="date-rai ">
+                                <label for="type-solution ">Types de solution : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                                <select id="Typesolution " name="Typesolution " [(ngModel)]="step3.Typesolution " class="form-select ">
                               <option *ngFor="let item of action_solut" [value]="item.value">{{item.value}}</option>
                             </select>
+                            </div>
+                            <div class="date-reception-rai ">
+                                <div style="    width: 100%;">
+                                    <label for="commentaires ">Commentaires : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                                    <textarea name="Commentaire " [(ngModel)]="step3.Commentaire " id=" " cols="30 " rows="6 " style="width: 100%;"></textarea>
+                                </div>
+                                <div class="div1" style=" width: 80%;">
+                                    <input type="file" name="uploadedFileRAI" id="uploadedFileRAI" (change)="fileChangeRAI($event)" [(ngModel)]="step3.uploadedFileRAI" accept="*/*">
+                                    <label class="uploadedFileRAI" for="uploadedFileRAI">
+                                      <i class="fas fa-save" style="    margin-right: 1rem;
+                                      font-size: 21px;"></i>
+                                      Joindre un fichier RAI
+                                    </label>
+                                    <small style="font-size: 16px;
+                                    font-weight: 600;">{{step3.uploadedFileRAI?.name}}</small>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="commentaires ">
-                    <div style="    width: 100%;">
-                        <label for="commentaires ">Commentaires : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                        <textarea name="Commentaire " [(ngModel)]="step3.Commentaire " id=" " cols="30 " rows="6 " [disabled]="dissabledR" style="width: 100%;"></textarea>
+                    <div class="footer-finale ">
+                        <button type="button " *ngIf="!disableChamp" class="btn btn-secondary " (click)="handleCancel() ">Annuler</button>
+                        <button *ngIf="!step3.id && !disableChamp" type="button " class="btn btn-primary " (click)="finalStep2() ">
+                        <span *ngIf="!loading2 " style="margin-left: 0.2rem; ">Sauvegarder</span>
+                        <span *ngIf="loading2 " class="spinner-border spinner-border-sm " role="status " aria-hidden="true "></span>
+                        <span *ngIf="loading2 " style="margin-left: 0.2rem; ">Loading...</span>
+                      </button>
+                        <button *ngIf="step3.id && !disableChamp" type="button " class="btn btn-primary " (click)="editRAI() ">
+                        <span *ngIf="!loading2 " style="margin-left: 0.2rem; ">Sauvegarder la modification</span>
+                        <span *ngIf="loading2 " class="spinner-border spinner-border-sm " role="status " aria-hidden="true "></span>
+                        <span *ngIf="loading2 " style="margin-left: 0.2rem; ">Loading...</span>
+                      </button>
+                        <button *ngIf="disableChamp" type="button " class="btn btn-primary" (click)="handleCancel()">
+                        <span>Fermer le modal</span>
+                      </button>
                     </div>
-                    <div style=" width: 42%;">
-                        <input type="file" name="uploadedFile" id="uploadedFile" (change)="fileChange($event)" [(ngModel)]="step3.uploadedFile" accept="*/*">
-                        <label class="uploadedFile" for="uploadedFile">
-                          <i class="fas fa-save" style="    margin-right: 1rem;"></i>
-                          Joindre un fichier
-                        </label>
-                        <small style="font-size: 16px;
-                        font-weight: 600;">{{step3.uploadedFile?.name}}</small>
-                    </div>
-                </div>
-                <div class="footer-finale ">
-                    <button type="button " *ngIf="!disableChamp" class="btn btn-secondary " (click)="deleStorageAndClose() ">Annuler</button>
-                    <button *ngIf="!step3.id && !disableChamp" type="button " class="btn btn-primary " (click)="finalStep() ">
-                      <span *ngIf="!loading2 " style="margin-left: 0.2rem; ">Sauvegarder</span>
-                      <span *ngIf="loading2 " class="spinner-border spinner-border-sm " role="status " aria-hidden="true "></span>
-                      <span *ngIf="loading2 " style="margin-left: 0.2rem; ">Loading...</span>
-                    </button>
-                    <button *ngIf="step3.id && !disableChamp" type="button " class="btn btn-primary " (click)="editRAI() ">
-                      <span *ngIf="!loading2 " style="margin-left: 0.2rem; ">Sauvegarder la modification</span>
-                      <span *ngIf="loading2 " class="spinner-border spinner-border-sm " role="status " aria-hidden="true "></span>
-                      <span *ngIf="loading2 " style="margin-left: 0.2rem; ">Loading...</span>
-                    </button>
-                    <button *ngIf="disableChamp" type="button " class="btn btn-primary" (click)="deleStorageAndClose()">
-                      <span>Fermer le modal</span>
-                    </button>
                 </div>
             </div>
         </div>
     </div>
-
-</ng-template>
-
-
-<ng-template #contentView let-modal class="content-modal">
-    <div class="modal-header ">
-        <h5 class="modal-title " id="exampleModalLabel " style="    font-size: 25px;
-        font-weight: 600;">{{titleModal}} <i class="fa fa-tasks " style=" font-size:1rem ; margin-left: 1rem; color: #ff7900; " aria-hidden="true "></i></h5>
-        <button type="button " style="outline: none; " class="btn-close " (click)="deleStorageAndClose() "><span class="visually-hidden ">Close</span></button>
+    <div *nzModalFooter [style]="{display:'flex',    padding: '1%', borderTop: 'none',    justifyContent: 'center',textAlign: 'center',
+flexDirection: 'column'}">
+        <!-- <div *ngIf="!customerModif['@id']">
+          <button nz-button nzType="default" (click)="handleCancel()" [style]="{height: '39px',marginRight: '37px', color:'black', background:'white',fontWeight: '300',fontSize: '14px',border: '1px solid #dcd9d9',borderRadius: '5px'}" (click)="retour()">Retour</button>
+          <button nz-button nzType="primary" [nzLoading]="LoadingDraft" [style]="{marginRight: '37px',color:'white', background:'#8D191E',fontWeight: '300',fontSize: '14px',border: 'none',borderRadius: '5px',width: '110px',
+        height: '39px'}" (click)="CreateOrUpdateDraft()">Enregistrer</button>
+          <button nz-button nzType="primary" [nzLoading]="LoadingNoDraft" [style]="{color:'white', background:'#2EE083',fontWeight: '300',fontSize: '14px',border: 'none',borderRadius: '5px',width: '193px',
+        height: '39px'}" (click)="CreateOrUpdateNoDraft()">Confirmer et Reserver</button>
+      </div>
+      <div *ngIf="customerModif['@id']">
+          <button nz-button nzType="primary" [nzLoading]="LoadingNoDraft" [style]="{color:'white', background:'#8D191E',fontWeight: '300',fontSize: '14px',border: 'none',borderRadius: '5px',
+      height: '39px'}" (click)="updateReservation()">Sauvegarder les modifications</button>
+      </div> -->
     </div>
-    <div class="modal-body " style="padding: 2rem 1.25rem;">
-        <div>
-            <div>
-                <table style="width:100%">
-                    <tr style="border-bottom: solid 0.5px #e2e2e2;    font-size: 16px;
-                    font-weight: 700;">
-                        <td style="text-align: left;">Numéro ticket incident:</td>
-                        <td style="text-align: right;">{{numeroToc}}</td>
-                    </tr>
-                    <tr style="border-bottom: solid 0.5px #e2e2e2;    font-size: 16px;
-                    font-weight: 700;">
-                        <td style="text-align: left;">Date d'incident:</td>
-                        <td style="text-align: right;">{{stepVIew?.Datedebut}}</td>
-                    </tr>
-                    <tr style="border-bottom: solid 0.5px #e2e2e2;    font-size: 16px;
-                    font-weight: 700;">
-                        <td style="text-align: left;">Heure d'incident:</td>
-                        <td style="text-align: right;">{{stepVIew?.heurD}}</td>
-                    </tr>
-                    <tr style="border-bottom: solid 0.5px #e2e2e2;    font-size: 16px;
-                    font-weight: 700;">
-                        <td style="text-align: left;">Date de rétablissement:</td>
-                        <td style="text-align: right;">{{stepVIew?.Datefin}}</td>
-                    </tr>
-                    <tr style="border-bottom: solid 0.5px #e2e2e2;    font-size: 16px;
-                    font-weight: 700;">
-                        <td style="text-align: left;">Heure de rétablissement:</td>
-                        <td style="text-align: right;">{{stepVIew?.heurF}}</td>
-                    </tr>
-                    <tr style="border-bottom: solid 0.5px #e2e2e2;    font-size: 16px;
-                    font-weight: 700;">
-                        <td style="text-align: left;">Description:</td>
-                        <td style="text-align: right;">{{stepVIew?.Description}}</td>
-                    </tr>
-                    <tr style="border-bottom: solid 0.5px #e2e2e2;    font-size: 16px;
-                    font-weight: 700;">
-                        <td style="text-align: left;">Plateforme:</td>
-                        <td style="text-align: right;">{{stepVIew?.Platforme}}</td>
-                    </tr>
-                    <tr style="border-bottom: solid 0.5px #e2e2e2;    font-size: 16px;
-                    font-weight: 700;">
-                        <td style="text-align: left;">Service:</td>
-                        <td style="text-align: right;">{{stepVIew?.Service}}</td>
-                    </tr>
-                    <tr style="border-bottom: solid 0.5px #e2e2e2;    font-size: 16px;
-                    font-weight: 700;">
-                        <td style="text-align: left;">Pays concerné:</td>
-                        <td style="text-align: right;">{{stepVIew?.pays}}</td>
-                    </tr>
-                    <tr style="border-bottom: solid 0.5px #e2e2e2;    font-size: 16px;
-                    font-weight: 700;">
-                        <td style="text-align: left;">Priorité:</td>
-                        <td style="text-align: right;">{{stepVIew?.priorite}}</td>
-                    </tr>
-                    <tr style="border-bottom: solid 0.5px #e2e2e2;    font-size: 16px;
-                    font-weight: 700;">
-                        <td style="text-align: left;">Numéro ticket problème:</td>
-                        <td style="text-align: right;">{{stepVIew?.tocpro[0]?.Numerotocpro}}</td>
-                    </tr>
-                    <tr style="border-bottom: solid 0.5px #e2e2e2;    font-size: 16px;
-                    font-weight: 700;">
-                        <td style="text-align: left;">Porteur:</td>
-                        <td style="text-align: right;">{{stepVIew?.tocpro[0]?.Porteur}}</td>
-                    </tr>
-                    <tr style="border-bottom: solid 0.5px #e2e2e2;    font-size: 16px;
-                    font-weight: 700;">
-                        <td style="text-align: left;">Type de problème:</td>
-                        <td style="text-align: right;">{{stepVIew?.tocpro[0]?.typeproblem}}</td>
-                    </tr>
-                    <tr style="border-bottom: solid 0.5px #e2e2e2;    font-size: 16px;
-                    font-weight: 700;">
-                        <td style="text-align: left;">Action rétablemement:</td>
-                        <td style="text-align: right;">{{stepVIew?.tocpro[0]?.rai[0]?.Actionretablissement}}</td>
-                    </tr>
-                    <tr style="border-bottom: solid 0.5px #e2e2e2;    font-size: 16px;
-                    font-weight: 700;">
-                        <td style="text-align: left;">Cause rai:</td>
-                        <td style="text-align: right;">{{stepVIew?.tocpro[0]?.rai[0]?.Cause}}</td>
-                    </tr>
-                    <tr style="border-bottom: solid 0.5px #e2e2e2;    font-size: 16px;
-                    font-weight: 700;">
-                        <td style="text-align: left;">Root cause:</td>
-                        <td style="text-align: right;"> {{stepVIew?.tocpro[0]?.rai[0]?.Rootcause}}</td>
-                    </tr>
-                    <tr style="border-bottom: solid 0.5px #e2e2e2;    font-size: 16px;
-                    font-weight: 700;">
-                        <td style="text-align: left;">Status root cause:</td>
-                        <td style="text-align: right;">{{stepVIew?.tocpro[0]?.rai[0]?.Statrootcause}}</td>
-                    </tr>
-                    <tr style="border-bottom: solid 0.5px #e2e2e2;    font-size: 16px;
-                    font-weight: 700;">
-                        <td style="text-align: left;">Type de solution:</td>
-                        <td style="text-align: right;">{{stepVIew?.tocpro[0]?.rai[0]?.Typesolution}}</td>
-                    </tr>
 
-                    <tr style="border-bottom: solid 0.5px #e2e2e2;    font-size: 16px;
-                    font-weight: 700;">
-                        <td style="text-align: left;">Déclenchement:</td>
-                        <td style="text-align: right;">{{stepVIew?.tocpro[0]?.rai[0]?.declenchement}}</td>
-                    </tr>
-                    <tr style="border-bottom: solid 0.5px #e2e2e2;    font-size: 16px;
-                    font-weight: 700;">
-                        <td style="text-align: left;">Status RAI:</td>
-                        <td style="text-align: right;">{{stepVIew?.tocpro[0]?.rai[0]?.status}}</td>
-                    </tr>
-                </table>
-                <div>
-                    <button (click)="createPDF()" type="button" class="btn btn-secondary" style="margin-top: 0.7rem;">
-                      <i class="fa-solid fa-print" style="margin-right: 1rem;"></i>Edition des détails</button>
-                </div>
-            </div>
+</nz-modal>
+
+
+<nz-modal [(nzVisible)]="isVisibleDetail" nzWidth="1500px" [style]="{fontSize: '23px',color:'#8D191E',height:'23%'}" [nzTitle]="modalTitle" (nzOnCancel)="handleCancel()">
+
+    <ng-template #modalTitle>
+        <div class="modal-header ">
+            <h5 class="modal-title " id="exampleModalLabel " style="    font-size: 25px;
+font-weight: 600;">{{titleModal}} <i class="fa fa-tasks " style=" font-size:1rem ; margin-left: 1rem; color: #ff7900; " aria-hidden="true "></i></h5>
+            <!-- <button type="button " style="outline: none; " class="btn-close " (click)="deleStorageAndClose() "><span class="visually-hidden ">Close</span></button> -->
+        </div>
+    </ng-template>
+    <div *nzModalContent>
+        <div class="ligne1-detail">
+            <div>aaaa</div>
+            <div>bbbb</div>
+            <div>nnnn</div>
         </div>
     </div>
+    <div *nzModalFooter [style]="{display:'flex',    padding: '1%', borderTop: 'none',    justifyContent: 'center',textAlign: 'center',
+flexDirection: 'column'}">
+        <!-- <div *ngIf="!customerModif['@id']">
+        <button nz-button nzType="default" (click)="handleCancel()" [style]="{height: '39px',marginRight: '37px', color:'black', background:'white',fontWeight: '300',fontSize: '14px',border: '1px solid #dcd9d9',borderRadius: '5px'}" (click)="retour()">Retour</button>
+        <button nz-button nzType="primary" [nzLoading]="LoadingDraft" [style]="{marginRight: '37px',color:'white', background:'#8D191E',fontWeight: '300',fontSize: '14px',border: 'none',borderRadius: '5px',width: '110px',
+      height: '39px'}" (click)="CreateOrUpdateDraft()">Enregistrer</button>
+        <button nz-button nzType="primary" [nzLoading]="LoadingNoDraft" [style]="{color:'white', background:'#2EE083',fontWeight: '300',fontSize: '14px',border: 'none',borderRadius: '5px',width: '193px',
+      height: '39px'}" (click)="CreateOrUpdateNoDraft()">Confirmer et Reserver</button>
+    </div>
+    <div *ngIf="customerModif['@id']">
+        <button nz-button nzType="primary" [nzLoading]="LoadingNoDraft" [style]="{color:'white', background:'#8D191E',fontWeight: '300',fontSize: '14px',border: 'none',borderRadius: '5px',
+    height: '39px'}" (click)="updateReservation()">Sauvegarder les modifications</button>
+    </div> -->
 
-</ng-template>
+
+    </div>
+
+</nz-modal>

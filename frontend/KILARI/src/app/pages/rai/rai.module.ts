@@ -19,7 +19,6 @@ const antDesignIcons = AllIcons as {
 const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesignIcons[key])
 
 
-
 const routes: Routes = [
   { path: '',
    component: RaiComponent

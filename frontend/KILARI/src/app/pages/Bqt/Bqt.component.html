@@ -4,11 +4,11 @@
         <div class="imput-search-btn">
             <small> Filtrer par Service:</small>
             <form action="#">
-                <input type="search" class="search" name="search" [(ngModel)]="search" (change)="filterItem($event)" class="form-control">
+                <input type="search" class="search" name="search" class="form-control">
                 <button type="submit" class="btn btn-secondary"><i class="fas fa-search"></i></button>
             </form>
         </div>
-        <button type="button" (click)="open(content, {})" class="btn btn-primary plus"><i class="fa-solid fa-plus "></i> Créer une BQT</button>
+        <button (click)="showModal1()" type="button" class="btn btn-primary plus"><i class="fa-solid fa-plus "></i> Créer une BQT</button>
     </div>
     <div class="content-list-bqt">
         <nz-table #smallTable nzSize="small" [nzData]="ListBQT">
@@ -37,10 +37,10 @@
                     <td *ngIf="item.uploadedFileCompteR"><img src="../../../assets/PDF.png" alt="pdf CR" style="width: 23px;height: 29px;"></td>
                     <td *ngIf="item.uploadedFilePword"><img src="../../../assets/PDF.png" alt="pdf prez" style="width: 23px;height: 29px;"></td>
                     <td class="">
-                        <button type="button" class="btn btn-success" (click)="ViewBQT(contentView, item)" style=" margin-right: 0.6rem; ">
+                        <button (click)="showModal1Detail(item)" type="button" class="btn btn-success" style=" margin-right: 0.6rem; ">
                           <i class="fa fa-eye" aria-hidden="true "></i>
                         </button>
-                        <button type="button " class="btn btn-danger " (click)="openEdit(content, item) ">
+                        <button (click)="showModal1(item)" type="button " class="btn btn-danger ">
                           <i class="fa fa-edit " aria-hidden="true "></i>
                         </button>
                     </td>
@@ -50,7 +50,143 @@
     </div>
 </div>
 
-<ng-template #content let-modal class="content-modal ">
+<nz-modal [(nzVisible)]="isVisibleBQT" nzWidth="1000px" [style]="{fontSize: '23px',color:'#8D191E',height:'23%'}" [nzTitle]="modalTitle" (nzOnCancel)="handleCancel()">
+    <ng-template #modalTitle>
+        <div class="modal-header ">
+            <h5 class="modal-title " id="exampleModalLabel " style="    font-size: 25px;
+font-weight: 600;">{{titleModal}} <i class="fa fa-tasks " style=" font-size:1rem ; margin-left: 1rem; color: #ff7900; " aria-hidden="true "></i></h5>
+            <!-- <button type="button " style="outline: none; " class="btn-close " (click)="deleStorageAndClose() "><span class="visually-hidden ">Close</span></button> -->
+        </div>
+    </ng-template>
+    <div *nzModalContent>
+        <div class="modal-body mt-3 ">
+            <div class="imput-content-step1 ">
+                <div class="content ">
+                    <div class="content-left ">
+                        <div class="libelle-bqt ">
+                            <label for="libelle-rai ">Libéllé BQT :<small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                            <input name="Libelle " autocomplete="off " [(ngModel)]="elementBQT.Libelle " type="text " class="form-control " [disabled]="disableChamp ">
+                        </div>
+                        <div class="statut-bqt ">
+                            <label for="statut-bqt ">Status BQT :<small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                            <select aria-label="Default select example " class="form-select" name="Status " [(ngModel)]="elementBQT.Status " [disabled]="disableChamp ">
+                        <option *ngFor="let item of Status" [value]="item.value " [value]="item.value ">{{item.value}}</option>
+                      </select>
+                        </div>
+                        <div style=" width: 100%;">
+                            <label for="uploadedFilePword">Fichier présentation BQT</label>
+                            <input type="file" name="uploadedFilePword" id="uploadedFilePword" (change)="fileChangeBQT($event)" [(ngModel)]="elementBQT.uploadedFilePword" accept="*/*">
+                            <label class="uploadedFilePword" for="uploadedFilePword">
+                      <i class="fas fa-save" style="    margin-right: 1rem;"></i>
+                      Joindre un fichier
+                    </label>
+                            <small style="font-size: 16px;
+                    font-weight: 600;color: cadetblue;">{{elementBQT.uploadedFilePword?.name}}</small>
+                        </div>
+
+                        <div style=" width: 100%;">
+                            <label for="uploadedFileCompteR" style="margin-bottom: 2px;">Fichier compte rendu</label>
+                            <input type="file" name="uploadedFileCompteR" id="uploadedFileCompteR" (change)="fileChangeRendu($event)" [(ngModel)]="elementBQT.uploadedFileCompteR" accept="*/*">
+                            <label class="uploadedFileCompteR" for="uploadedFileCompteR">
+                    <i class="fas fa-save" style="    margin-right: 1rem;"></i>
+                    Joindre un fichier
+                  </label>
+                            <small style="font-size: 16px;
+                  font-weight: 600;color: cadetblue;">{{elementBQT.uploadedFileCompteR?.name}}</small>
+                        </div>
+                    </div>
+                    <div class="content-right ">
+                        <div class="bqt-date ">
+                            <label for="bqt-date">Date de la BQT :<small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                            <input name="datebqt " [(ngModel)]="elementBQT.datebqt " type="date" class="form-control " [disabled]="disableChamp ">
+                        </div>
+                        <div class="compte-bqt ">
+                            <label for="compte-bqt ">Compte rendu de la BQT :<small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                            <textarea [disabled]="disableChamp " name="ComptRendus " [(ngModel)]="elementBQT.ComptRendus " id=" " cols="50 " rows="9"></textarea>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="footer-finale mt-3 ">
+                    <button type="button " class="btn btn-secondary " (click)="handleCancel()">Annuler</button>
+                    <button [disabled]="disableChamp " *ngIf="!shoEdit" type="button " class="btn btn-primary " (click)="SauveBQT() " style="float: right; ">
+                <span *ngIf="loading " style="margin-left: 0.2rem; ">Sauvegarder</span>
+                <span *ngIf="!loading " class="spinner-border spinner-border-sm " role="status " aria-hidden="true "></span>
+                <span *ngIf="!loading " style="margin-left: 0.2rem; ">Loading...</span>
+              </button>
+                    <button [disabled]="disableChamp" *ngIf="shoEdit" type="button " class="btn btn-primary " (click)="updateBQT() " style="float: right; ">
+                <span *ngIf="loading " style="margin-left: 0.2rem; ">Modification</span>
+                <span *ngIf="!loading " class="spinner-border spinner-border-sm " role="status " aria-hidden="true "></span>
+                <span *ngIf="!loading " style="margin-left: 0.2rem; ">Loading...</span>
+              </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *nzModalFooter [style]="{display:'flex',    padding: '1%', borderTop: 'none',    justifyContent: 'center',textAlign: 'center',
+flexDirection: 'column'}">
+        <!-- <div *ngIf="!customerModif['@id']">
+        <button nz-button nzType="default" (click)="handleCancel()" [style]="{height: '39px',marginRight: '37px', color:'black', background:'white',fontWeight: '300',fontSize: '14px',border: '1px solid #dcd9d9',borderRadius: '5px'}" (click)="retour()">Retour</button>
+        <button nz-button nzType="primary" [nzLoading]="LoadingDraft" [style]="{marginRight: '37px',color:'white', background:'#8D191E',fontWeight: '300',fontSize: '14px',border: 'none',borderRadius: '5px',width: '110px',
+      height: '39px'}" (click)="CreateOrUpdateDraft()">Enregistrer</button>
+        <button nz-button nzType="primary" [nzLoading]="LoadingNoDraft" [style]="{color:'white', background:'#2EE083',fontWeight: '300',fontSize: '14px',border: 'none',borderRadius: '5px',width: '193px',
+      height: '39px'}" (click)="CreateOrUpdateNoDraft()">Confirmer et Reserver</button>
+    </div>
+    <div *ngIf="customerModif['@id']">
+        <button nz-button nzType="primary" [nzLoading]="LoadingNoDraft" [style]="{color:'white', background:'#8D191E',fontWeight: '300',fontSize: '14px',border: 'none',borderRadius: '5px',
+    height: '39px'}" (click)="updateReservation()">Sauvegarder les modifications</button>
+    </div> -->
+    </div>
+</nz-modal>
+
+
+<nz-modal [(nzVisible)]="isVisibleBQTDetail" nzWidth="1300px" [style]="{fontSize: '23px',color:'#8D191E',height:'23%'}" [nzTitle]="modalTitle" (nzOnCancel)="handleCancel()">
+
+    <ng-template #modalTitle>
+        <div class="modal-header ">
+            <h5 class="modal-title " id="exampleModalLabel " style="    font-size: 25px;
+font-weight: 600;">{{titleModal}} <i class="fa fa-tasks " style=" font-size:1rem ; margin-left: 1rem; color: #ff7900; " aria-hidden="true "></i></h5>
+            <!-- <button type="button " style="outline: none; " class="btn-close " (click)="deleStorageAndClose() "><span class="visually-hidden ">Close</span></button> -->
+        </div>
+    </ng-template>
+    <div *nzModalContent>
+        <div class="ligne1-detail">
+            <div style="    width: 100%;font-size: 17px;font-weight: 700;">Compte rendu de la BQT</div>
+            <div style="    width: 100%;">{{elementBQT?.ComptRendus}}</div>
+        </div>
+
+        <div class="ligne1-detail mt-2">
+            <div style="    width: 100%;font-size: 17px;font-weight: 700;">Libéllé de la BQT</div>
+            <div style="    width: 100%;">{{elementBQT?.Libelle}}</div>
+        </div>
+        <div class="ligne1-detail mt-2">
+            <div style="    width: 100%;font-size: 17px;font-weight: 700;">Statut de la BQT</div>
+            <div style="    width: 100%;">{{elementBQT?.Status}}</div>
+        </div>
+        <div class="ligne1-detail mt-2">
+            <div style="    width: 100%;font-size: 17px;font-weight: 700;">Date de la BQT</div>
+            <div style="    width: 100%;">{{elementBQT?.datebqt}}</div>
+        </div>
+    </div>
+    <div *nzModalFooter [style]="{display:'flex',    padding: '1%', borderTop: 'none',    justifyContent: 'center',textAlign: 'center',
+flexDirection: 'column'}">
+        <!-- <div *ngIf="!customerModif['@id']">
+      <button nz-button nzType="default" (click)="handleCancel()" [style]="{height: '39px',marginRight: '37px', color:'black', background:'white',fontWeight: '300',fontSize: '14px',border: '1px solid #dcd9d9',borderRadius: '5px'}" (click)="retour()">Retour</button>
+      <button nz-button nzType="primary" [nzLoading]="LoadingDraft" [style]="{marginRight: '37px',color:'white', background:'#8D191E',fontWeight: '300',fontSize: '14px',border: 'none',borderRadius: '5px',width: '110px',
+    height: '39px'}" (click)="CreateOrUpdateDraft()">Enregistrer</button>
+      <button nz-button nzType="primary" [nzLoading]="LoadingNoDraft" [style]="{color:'white', background:'#2EE083',fontWeight: '300',fontSize: '14px',border: 'none',borderRadius: '5px',width: '193px',
+    height: '39px'}" (click)="CreateOrUpdateNoDraft()">Confirmer et Reserver</button>
+  </div>
+  <div *ngIf="customerModif['@id']">
+      <button nz-button nzType="primary" [nzLoading]="LoadingNoDraft" [style]="{color:'white', background:'#8D191E',fontWeight: '300',fontSize: '14px',border: 'none',borderRadius: '5px',
+  height: '39px'}" (click)="updateReservation()">Sauvegarder les modifications</button>
+  </div> -->
+    </div>
+
+</nz-modal>
+
+
+<!-- <ng-template #content let-modal class="content-modal ">
     <div class="modal-header ">
         <h5 class="modal-title " id="exampleModalLabel " style="font-size: 25px;
         font-weight: 600;">{{titleModal}}<i class="icon-inbox " style=" font-size:1rem ; margin-left: 1rem; color: #ff7900; " aria-hidden="true "></i></h5>
@@ -119,9 +255,9 @@
             </div>
         </div>
     </div>
-</ng-template>
+</ng-template> -->
 
-<ng-template #contentView let-modal class="content-modal">
+<!-- <ng-template #contentView let-modal class="content-modal">
     <div class="modal-header ">
         <h5 class="modal-title " id="exampleModalLabel " style="    font-size: 25px;
       font-weight: 600;">{{titleModal}} <i class="fa fa-tasks " style=" font-size:1rem ; margin-left: 1rem; color: #ff7900; " aria-hidden="true "></i></h5>
@@ -166,11 +302,10 @@
                     </tr>
                 </table>
                 <div>
-                    <!-- (click)="createPDF()"  -->
                     <button type="button" class="btn btn-secondary" style="margin-top: 0.7rem;">
                     <i class="fa-solid fa-print" style="margin-right: 1rem;"></i>Edition des détails</button>
                 </div>
             </div>
         </div>
     </div>
-</ng-template>
+</ng-template> -->

@@ -109,6 +109,14 @@ class ImpactViewSet(viewsets.ModelViewSet):
     serializer_class = ImpactSerializers
     queryset = Impact.objects.all()
 
+class ImpactpsViewSet(viewsets.ModelViewSet):
+    serializer_class = ImpactpsSerializers
+    queryset = Impact.objects.all()
+
+class ImpactppViewSet(viewsets.ModelViewSet):
+    serializer_class = ImpactppSerializers
+    queryset = Impact.objects.all()
+
 class RaiViewSet(viewsets.ModelViewSet):
     serializer_class = RaiSerializers
     queryset = Rai.objects.all()
@@ -126,4 +134,3 @@ class DeclenchementViewSet(viewsets.ModelViewSet):
     serializer_class = DeclenchementSerializers
     queryset = Declenchement.objects.all()
 # Create your views here.
-

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbModal, ModalDismissReasons,NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+// import { NgbModal, ModalDismissReasons,NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { SpinnerService } from '../../services/Spinner.service'
 import { ApiService } from '../../services/api.service'
@@ -13,6 +13,10 @@ import { Router } from '@angular/router';
 })
 export class PlanBqtComponent implements OnInit {
 
+
+  // ngOnInit(){
+
+  // }
   disableChamp:boolean = false;
   title:any
   elementView:any;
@@ -20,7 +24,7 @@ export class PlanBqtComponent implements OnInit {
   tilreBtn:any;
   disableBtnAdd:boolean = false
   dis : any
-  modalRef: NgbModalRef | any;
+  // modalRef: NgbModalRef | any;
   form!: FormGroup;
   form2!: FormGroup;
   PasForm: FormGroup;
@@ -42,7 +46,7 @@ export class PlanBqtComponent implements OnInit {
     {id:2, value:"Elodie TUHE LOU"},
   ]
 
-  constructor(private SpinnerService:SpinnerService,private toastr: ToastrService,private router: Router,private ApiService:ApiService ,private modalService: NgbModal,
+  constructor(private SpinnerService:SpinnerService,private toastr: ToastrService,private router: Router,private ApiService:ApiService ,
     private fb: FormBuilder) {
 
     this.PasForm = this.fb.group({
@@ -61,10 +65,10 @@ export class PlanBqtComponent implements OnInit {
 
   ngOnInit() {
   // this.Numerotocpro = JSON.parse(localStorage.getItem('Numerotocpro') || '{}');
-    console.log('visigelForm',this.visigelForm);
+    // console.log('visigelForm',this.visigelForm);
     // this.getIncident();
-    this.getAllBQT();
-    this.getplanactionbqt()
+    // this.getAllBQT();
+    // this.getplanactionbqt()
 
     this.form = new FormGroup({
       Libelle: new FormControl(),
@@ -83,178 +87,178 @@ export class PlanBqtComponent implements OnInit {
       });
 
 
-      // this.form1 = new FormGroup({
-      //   NatureIncident: new FormControl(),
-      //   tocprobleme: new FormControl(),
-      // });
+//       // this.form1 = new FormGroup({
+//       //   NatureIncident: new FormControl(),
+//       //   tocprobleme: new FormControl(),
+//       // });
 
-       this.dis = 2
-
-  }
-
-  deleStorageAndClose(){
-    this.modalRef.dismiss( 'Close click') ;
-    // this.PasForm.reset();
-    this.pas.clear()
-  }
-
-  open(content:any, plan_bqt?:any) {
-    this.title = "Création d'un plan d'action bqt";
-    this.tilreBtn =  "Enregistrer le PA"
-    this.updateOrCreate = false;
-    this.default = plan_bqt.id
-    this.defaultString = plan_bqt.Libelle
-    console.log('item', plan_bqt);
-    if (!plan_bqt) {
-      this.PasForm.reset();
-    }
-    this.addPas()
-    this.modalRef =  this.modalService.open(content, {size  : 'xl'})
-    this.modalRef.result.then(
-      (result:any) => {
-        console.log('oooook',result);
-    });
-  }
-
-  openEdit(content:any, item?:any) {
-    this.title = "Modification d'un plan d'action bqt";
-    this.tilreBtn =  "Enregistrer le PA modifier"
-    this.updateOrCreate =  true
-    // this.disableBtn =  true;
-    this.disableBtnAdd = true
-    this.IdTOc =  item.id;
-    console.log('item', item,this.IdTOc);
-    if (!item) {
-      this.PasForm.reset();
-    }
-    for (let index = 0; index < item.planbqt.length; index++) {
-      const element = item.planbqt[index];
-      console.log('element',element);
-
-      const res = new FormGroup({
-          Libelle: new FormControl(element.Libelle),
-          Porteur: new   FormControl(element.Porteur),
-          Dateprevisionel: new FormControl(element.Dateprevisionel),
-          Dateeffective: new FormControl(element.Dateeffective),
-          Perimetre: new FormControl(element.Perimetre),
-          Efficacite: new FormControl(element.Efficacite),
-          Status: new FormControl(element.Status),
-          Decision: new FormControl(element.Decision),
-          Situation: new FormControl(element.Situation),
-          Commentaire: new FormControl(element.Commentaire),
-          bqt: new FormControl(element.bqt),
-        });
-        this.pas.push(res);
-    }
-
-    this.modalRef =  this.modalService.open(content, {size  : 'xl'})
-    this.modalRef.result.then(
-      (result:any) => {
-        console.log('oooook',result);
-    });
+//        this.dis = 2
 
   }
 
-  openView(contentView:any, item?:any) {
-    console.log('this.disableChamp ',this.disableChamp );
+//   deleStorageAndClose(){
+//     this.modalRef.dismiss( 'Close click') ;
+//     // this.PasForm.reset();
+//     this.pas.clear()
+//   }
 
-    this.title = "Modification d'un plan d'action bqt";
-    this.tilreBtn =  "Enregistrer le PA modifier"
-    this.updateOrCreate = true
-    this.disableBtn =  true;
-    this.defaultString = item.Libelle
-    this.disableBtnAdd = true;
-    this.elementView = {...item};
-    this.IdTOc =  item.id;
-    console.log('item', item,this.IdTOc);
-    if (!item) {
-      this.PasForm.reset();
-    }
-    for (let index = 0; index < item.planbqt.length; index++) {
-      const element = item.planbqt[index];
-      console.log('element',element);
-      this.res = new FormGroup({
-          Libelle: new FormControl(element.Libelle),
-          Porteur: new FormControl(element.Porteur),
-          Dateprevisionel: new FormControl(element.Dateprevisionel),
-          Dateeffective: new FormControl(element.Dateeffective),
-          Perimetre: new FormControl(element.Perimetre),
-          Efficacite: new FormControl(element.Efficacite),
-          Status: new FormControl(element.Status),
-          Commentaire: new FormControl(element.Commentaire),
-          Decision: new FormControl(element.Decision),
-          Situation: new FormControl(element.Situation),
-          bqt: new FormControl(element.bqt),
-        });
-        // this.res.disabled = true
-    // this.disableChamp = true
-console.log('=====>res form', this.res);
+//   open(content:any, plan_bqt?:any) {
+//     this.title = "Création d'un plan d'action bqt";
+//     this.tilreBtn =  "Enregistrer le PA"
+//     this.updateOrCreate = false;
+//     this.default = plan_bqt.id
+//     this.defaultString = plan_bqt.Libelle
+//     console.log('item', plan_bqt);
+//     if (!plan_bqt) {
+//       this.PasForm.reset();
+//     }
+//     this.addPas()
+//     this.modalRef =  this.modalService.open(content, {size  : 'xl'})
+//     this.modalRef.result.then(
+//       (result:any) => {
+//         console.log('oooook',result);
+//     });
+//   }
 
-        this.pas.push(this.res);
-    }
+//   openEdit(content:any, item?:any) {
+//     this.title = "Modification d'un plan d'action bqt";
+//     this.tilreBtn =  "Enregistrer le PA modifier"
+//     this.updateOrCreate =  true
+//     // this.disableBtn =  true;
+//     this.disableBtnAdd = true
+//     this.IdTOc =  item.id;
+//     console.log('item', item,this.IdTOc);
+//     if (!item) {
+//       this.PasForm.reset();
+//     }
+//     for (let index = 0; index < item.planbqt.length; index++) {
+//       const element = item.planbqt[index];
+//       console.log('element',element);
 
-    this.modalRef =  this.modalService.open(contentView, {size  : 'xl'})
-    this.modalRef.result.then(
-      (result:any) => {
-        console.log('oooook',result);
-    });
+//       const res = new FormGroup({
+//           Libelle: new FormControl(element.Libelle),
+//           Porteur: new   FormControl(element.Porteur),
+//           Dateprevisionel: new FormControl(element.Dateprevisionel),
+//           Dateeffective: new FormControl(element.Dateeffective),
+//           Perimetre: new FormControl(element.Perimetre),
+//           Efficacite: new FormControl(element.Efficacite),
+//           Status: new FormControl(element.Status),
+//           Decision: new FormControl(element.Decision),
+//           Situation: new FormControl(element.Situation),
+//           Commentaire: new FormControl(element.Commentaire),
+//           bqt: new FormControl(element.bqt),
+//         });
+//         this.pas.push(res);
+//     }
 
-  }
+//     this.modalRef =  this.modalService.open(content, {size  : 'xl'})
+//     this.modalRef.result.then(
+//       (result:any) => {
+//         console.log('oooook',result);
+//     });
+
+//   }
+
+//   openView(contentView:any, item?:any) {
+//     console.log('this.disableChamp ',this.disableChamp );
+
+//     this.title = "Modification d'un plan d'action bqt";
+//     this.tilreBtn =  "Enregistrer le PA modifier"
+//     this.updateOrCreate = true
+//     this.disableBtn =  true;
+//     this.defaultString = item.Libelle
+//     this.disableBtnAdd = true;
+//     this.elementView = {...item};
+//     this.IdTOc =  item.id;
+//     console.log('item', item,this.IdTOc);
+//     if (!item) {
+//       this.PasForm.reset();
+//     }
+//     for (let index = 0; index < item.planbqt.length; index++) {
+//       const element = item.planbqt[index];
+//       console.log('element',element);
+//       this.res = new FormGroup({
+//           Libelle: new FormControl(element.Libelle),
+//           Porteur: new FormControl(element.Porteur),
+//           Dateprevisionel: new FormControl(element.Dateprevisionel),
+//           Dateeffective: new FormControl(element.Dateeffective),
+//           Perimetre: new FormControl(element.Perimetre),
+//           Efficacite: new FormControl(element.Efficacite),
+//           Status: new FormControl(element.Status),
+//           Commentaire: new FormControl(element.Commentaire),
+//           Decision: new FormControl(element.Decision),
+//           Situation: new FormControl(element.Situation),
+//           bqt: new FormControl(element.bqt),
+//         });
+//         // this.res.disabled = true
+//     // this.disableChamp = true
+// console.log('=====>res form', this.res);
+
+//         this.pas.push(this.res);
+//     }
+
+//     this.modalRef =  this.modalService.open(contentView, {size  : 'xl'})
+//     this.modalRef.result.then(
+//       (result:any) => {
+//         console.log('oooook',result);
+//     });
+
+//   }
 
 
-  get pas() : FormArray {
-    return this.PasForm.get("pas") as FormArray
-  }
+//   get pas() : FormArray {
+//     return this.PasForm.get("pas") as FormArray
+//   }
 
-  newPa(): FormGroup {
-    return this.fb.group({
-    Libelle: '',
-    Porteur: '',
-    Dateprevisionel: '',
-    Dateeffective: '',
-    Perimetre: '',
-    Status: '',
-    Decision: '',
-    Situation: '',
-    Efficacite: '',
-    Commentaire: '',
-    bqt:  new FormControl(this.default),
-    })
-  }
+//   newPa(): FormGroup {
+//     return this.fb.group({
+//     Libelle: '',
+//     Porteur: '',
+//     Dateprevisionel: '',
+//     Dateeffective: '',
+//     Perimetre: '',
+//     Status: '',
+//     Decision: '',
+//     Situation: '',
+//     Efficacite: '',
+//     Commentaire: '',
+//     bqt:  new FormControl(this.default),
+//     })
+//   }
 
-  get visigelForm(){
-    return this.PasForm.valid;
-  }
+//   get visigelForm(){
+//     return this.PasForm.valid;
+//   }
 
-  addPas() {
-    // this.disableBtn =  false;
-    console.log('newPa',this.PasForm);
-    console.log('visigelForm',this.visigelForm);
-    console.log('this.fb.array([]).length',this.fb.array([]).length);
+//   addPas() {
+//     // this.disableBtn =  false;
+//     console.log('newPa',this.PasForm);
+//     console.log('visigelForm',this.visigelForm);
+//     console.log('this.fb.array([]).length',this.fb.array([]).length);
 
-    this.pas.push(this.newPa());
-  }
+//     this.pas.push(this.newPa());
+//   }
 
-  removePas(i:number) {
-    this.pas.removeAt(i);
-  }
+//   removePas(i:number) {
+//     this.pas.removeAt(i);
+//   }
 
-    //  get f(){
-    //   return this.form1.controls;
-    // }
+//     //  get f(){
+//     //   return this.form1.controls;
+//     // }
 
-    // getIncident(){
-    //   let endPoint = "incident"
-    //   this.ApiService.get(endPoint).subscribe(
-    //     (response:any) => {
-    //       this.ListIncident = response;
-    //       console.log('ListIncident', this.ListIncident);
-    //     },
-    //     (error:any) => {
-    //       console.log('error',error);
-    //     }
-    //   );
-    // }
+//     // getIncident(){
+//     //   let endPoint = "incident"
+//     //   this.ApiService.get(endPoint).subscribe(
+//     //     (response:any) => {
+//     //       this.ListIncident = response;
+//     //       console.log('ListIncident', this.ListIncident);
+//     //     },
+//     //     (error:any) => {
+//     //       console.log('error',error);
+//     //     }
+//     //   );
+//     // }
 
 getplanactionbqt(){
   let endPoint = "planactionbqt";
@@ -295,58 +299,58 @@ getplanactionbqt(){
 
 
 
-    submitValed(){
-      if (!this.updateOrCreate) {
-        this.onSubmit();
-      }
-      else{
-        this.updatePlanAction();
-      }
-    }
+//     submitValed(){
+//       if (!this.updateOrCreate) {
+//         this.onSubmit();
+//       }
+//       else{
+//         this.updatePlanAction();
+//       }
+//     }
 
-    onSubmit() {
-      let endPoint =  'planactionbqt';
-      console.log('create mode',this.PasForm.value);
-      this.objet = this.PasForm.value;
-      for(let i=0; i<this.pas.value.length; i++){
-          // this.pas.value[i].Status= Number(this.pas.value[i].Status)
-          // this.pas.value[i].bqt= Number(this.pas.value[i].bqt)
-          console.log('bqt  objet :',this.pas.value[i]);
-          this.ApiService.post(endPoint,this.pas.value[i]).subscribe(
-            (res:any) => {
-              console.log('res planification====>',res);
-            this.showSuccess('La création bine effectué')
-            this.getAllBQT()
-            this.deleStorageAndClose();
-            console.log('bqt  objet :',i,'created successfully!',);
-            }),
-            (error: any) => {
-              this.showDanger('La création a échouée')
-            }
-          }
-      }
+//     onSubmit() {
+//       let endPoint =  'planactionbqt';
+//       console.log('create mode',this.PasForm.value);
+//       this.objet = this.PasForm.value;
+//       for(let i=0; i<this.pas.value.length; i++){
+//           // this.pas.value[i].Status= Number(this.pas.value[i].Status)
+//           // this.pas.value[i].bqt= Number(this.pas.value[i].bqt)
+//           console.log('bqt  objet :',this.pas.value[i]);
+//           this.ApiService.post(endPoint,this.pas.value[i]).subscribe(
+//             (res:any) => {
+//               console.log('res planification====>',res);
+//             this.showSuccess('La création bine effectué')
+//             this.getAllBQT()
+//             this.deleStorageAndClose();
+//             console.log('bqt  objet :',i,'created successfully!',);
+//             }),
+//             (error: any) => {
+//               this.showDanger('La création a échouée')
+//             }
+//           }
+//       }
 
-      updatePlanAction(){
-        let endPoint =  'planactionbqt';
-        console.log('Edit mode',this.PasForm.value,'he',this.form.value);
+//       updatePlanAction(){
+//         let endPoint =  'planactionbqt';
+//         console.log('Edit mode',this.PasForm.value,'he',this.form.value);
 
 
-          for(let i=0; i<this.pas.value.length; i++){
-            this.pas.value[i].Status= Number(this.pas.value[i].Status)
-            this.pas.value[i].bqt= Number(this.pas.value[i].bqt)
-            console.log('bqt  objet :',this.pas.value[i]);
-            this.ApiService.put(endPoint,this.pas.value[i].id,this.pas.value[i]).subscribe(
-            (res:any) => {
-              console.log('res planification update====>',res);
-            this.showSuccess('La mise çà jour bien effectuée')
-            this.getAllBQT()
-            this.deleStorageAndClose();
-            console.log('bqt  objet :created successfully!',);
-            }),
-            (error: any) => {
-              this.showDanger('La mise à jour a échoué')
-            }
-          }
-      }
+//           for(let i=0; i<this.pas.value.length; i++){
+//             this.pas.value[i].Status= Number(this.pas.value[i].Status)
+//             this.pas.value[i].bqt= Number(this.pas.value[i].bqt)
+//             console.log('bqt  objet :',this.pas.value[i]);
+//             this.ApiService.put(endPoint,this.pas.value[i].id,this.pas.value[i]).subscribe(
+//             (res:any) => {
+//               console.log('res planification update====>',res);
+//             this.showSuccess('La mise çà jour bien effectuée')
+//             this.getAllBQT()
+//             this.deleStorageAndClose();
+//             console.log('bqt  objet :created successfully!',);
+//             }),
+//             (error: any) => {
+//               this.showDanger('La mise à jour a échoué')
+//             }
+//           }
+//       }
 
 }

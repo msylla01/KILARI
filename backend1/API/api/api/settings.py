@@ -118,7 +118,7 @@ WSGI_APPLICATION = 'api.wsgi.application'
 DATABASES = {
     'default': {
     'ENGINE': 'django.db.backends.mysql',
-    'NAME': 'Kilari',
+    'NAME': 'AllQos',
     'USER': 'Root',
     'PASSWORD':'',
     'HOST': '127.0.0.1',

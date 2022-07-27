@@ -39,7 +39,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HighchartsChartModule } from 'highcharts-angular';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { LoyoutGlobalComponent } from './loyout-global/loyout-global.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+// import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 const antDesignIcons = AllIcons as {
@@ -71,7 +71,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     NgxSpinnerModule,
     HighchartsChartModule,
     ToastrModule.forRoot(),
-    NgbModule,
+    // NgbModule,
   ],
   providers: [AuthGuard,RaiModule,PlanactionraiModule,TocService,DatePipe,
     { provide: NZ_I18N, useValue: en_US }, { provide: NZ_ICONS, useValue: icons } ],

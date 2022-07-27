@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbModal, ModalDismissReasons,NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+// import { NgbModal, ModalDismissReasons,NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SpinnerService } from '../../services/Spinner.service'
 import { ApiService } from '../../services/api.service'
@@ -18,11 +18,11 @@ export class PlanRaiComponent implements OnInit {
   disabledTocpr:boolean = false;
   disableChamp:boolean = false;
   selectedOS:any
-  title:any
+  titleModal:any
   tilreBtn:any;
   disableBtnAdd:boolean = false
   dis : any
-  modalRef: NgbModalRef | any;
+  // modalRef: NgbModalRef | any;
   form!: FormGroup;
   form1!: FormGroup;
   form2!: FormGroup;
@@ -39,7 +39,7 @@ export class PlanRaiComponent implements OnInit {
   defaultString:any
   dt : any = []
   updateOrCreate:boolean = false;
-
+  isVisibleReservation:any = false
 
   Porteur:any = [
     {id:1, value:"Charles Modeste KAMBO"},
@@ -47,7 +47,7 @@ export class PlanRaiComponent implements OnInit {
     {id:2, value:"Elodie TUHE LOU"},
   ]
 
-  constructor(private SpinnerService:SpinnerService,private toastr: ToastrService,private router: Router,private ApiService:ApiService ,private modalService: NgbModal,
+  constructor(private SpinnerService:SpinnerService,private toastr: ToastrService,private router: Router,private ApiService:ApiService ,
     private fb: FormBuilder) {
 
     this.PasForm = this.fb.group({
@@ -55,8 +55,6 @@ export class PlanRaiComponent implements OnInit {
     });
 
    }
-
-
 
    showSuccess(msg:any) {
     this.toastr.success(msg);
@@ -69,122 +67,155 @@ export class PlanRaiComponent implements OnInit {
 
   ngOnInit() {
   this.Numerotocpro = JSON.parse(localStorage.getItem('Numerotocpro') || '{}');
-    console.log('visigelForm',this.visigelForm);
+    // console.log('visigelForm',this.visigelForm);
     this.getIncident();
     this.getTocProbleme();
 
  }
 
-  deleStorageAndClose(){
-    this.modalRef.dismiss( 'Close click') ;
-    // this.PasForm.reset();
-    this.PasForm.reset();
-    this.pas.clear();
-    this.default = "";
-    this.defaultString = "";
-  }
+ showModal1(plan_rai?:any): void {
+  this.isVisibleReservation = true;
 
-  open(content:any, plan_rai?:any) {
-    this.disabledTocpr = true
-    this.default = plan_rai.id
+  this.disabledTocpr = true
+  this.default = plan_rai.id
 this.defaultString = plan_rai.Numerotocpro;
-    this.title = "Création d'un plan d'action rai";
-    this.tilreBtn =  "Enregistrer le PA"
-    this.updateOrCreate = false;
-    console.log('item', plan_rai , this.default);
-    if (!plan_rai) {
-      this.PasForm.reset();
-    }
-
-    this.addPas()
-    this.modalRef =  this.modalService.open(content, {size  : 'xl'})
-    this.modalRef.result.then(
-      (result:any) => {
-        console.log('oooook',result);
-    });
+  this.titleModal = "Création d'un plan d'action rai";
+  this.tilreBtn =  "Enregistrer le PA"
+  this.updateOrCreate = false;
+  console.log('item', plan_rai , this.default);
+  if (!plan_rai) {
+    this.PasForm.reset();
   }
 
-  openEdit(content:any, item?:any) {
-    this.default = item.id
-this.defaultString = item.Numerotocpro;
-console.log('item', item);
-    this.title = "Modification d'un plan d'action rai";
-    this.tilreBtn =  "Enregistrer le PA modifier"
-    this.updateOrCreate =  true
-    this.disableBtn =  false;
-    this.disableBtnAdd = true
-    if (!item) {
+  this.addPas()
+}
+
+showModal1Detail(rai?:any): void {
+  this.titleModal = "Detail de la RAI";
+  // this.isVisibleDetail = true;
+}
+
+
+handleCancel(): void {
+  console.log('handleCancel',);
+  this.isVisibleReservation = false;
+      // this.PasForm.reset();
       this.PasForm.reset();
-    }
-    for (let index = 0; index < item.planrai.length; index++) {
-      const element = item.planrai[index];
-      console.log('element',element);
-      this.IdTOc =  element.id;
-      const res = new FormGroup({
-          Libelle: new FormControl(element.Libelle),
-          Porteur: new FormControl(element.Porteur),
-          Dateprevisionel: new FormControl(element.Dateprevisionel),
-          Dateeffective: new FormControl(element.Dateeffective),
-          Perimetre: new FormControl(element.Perimetre),
-          Efficacite: new FormControl(element.Efficacite),
-          Status: new FormControl(element.Status),
-          Commentaire: new FormControl(element.Commentaire),
-          tocpr: new FormControl(element.tocpr),
-        });
-        this.pas.push(res);
-    }
-    console.log('this.pas edit====++', this.pas);
+      this.pas.clear();
+      this.default = "";
+      this.defaultString = "";
+}
 
-    this.modalRef =  this.modalService.open(content, {size  : 'xl'})
-    this.modalRef.result.then(
-      (result:any) => {
-        console.log('oooook',result);
-    });
+//   deleStorageAndClose(){
+//     this.modalRef.dismiss( 'Close click') ;
+    // // this.PasForm.reset();
+    // this.PasForm.reset();
+    // this.pas.clear();
+    // this.default = "";
+    // this.defaultString = "";
+//   }
 
-  }
+//   open(content:any, plan_rai?:any) {
+//     this.disabledTocpr = true
+//     this.default = plan_rai.id
+// this.defaultString = plan_rai.Numerotocpro;
+//     this.title = "Création d'un plan d'action rai";
+//     this.tilreBtn =  "Enregistrer le PA"
+//     this.updateOrCreate = false;
+//     console.log('item', plan_rai , this.default);
+//     if (!plan_rai) {
+//       this.PasForm.reset();
+//     }
 
-  openView(contentView:any, item?:any) {
-    this.disableChamp = false
-    console.log('this.disableChamp ',this.disableChamp );
+//     this.addPas()
+//     this.modalRef =  this.modalService.open(content, {size  : 'xl'})
+//     this.modalRef.result.then(
+//       (result:any) => {
+//         console.log('oooook',result);
+//     });
+//   }
 
-    this.defaultString = item.Numerotocpro;
+//   openEdit(content:any, item?:any) {
+//     this.default = item.id
+// this.defaultString = item.Numerotocpro;
+// console.log('item', item);
+//     this.title = "Modification d'un plan d'action rai";
+//     this.tilreBtn =  "Enregistrer le PA modifier"
+//     this.updateOrCreate =  true
+//     this.disableBtn =  false;
+//     this.disableBtnAdd = true
+//     if (!item) {
+//       this.PasForm.reset();
+//     }
+//     for (let index = 0; index < item.planrai.length; index++) {
+//       const element = item.planrai[index];
+//       console.log('element',element);
+//       this.IdTOc =  element.id;
+//       const res = new FormGroup({
+//           Libelle: new FormControl(element.Libelle),
+//           Porteur: new FormControl(element.Porteur),
+//           Dateprevisionel: new FormControl(element.Dateprevisionel),
+//           Dateeffective: new FormControl(element.Dateeffective),
+//           Perimetre: new FormControl(element.Perimetre),
+//           Efficacite: new FormControl(element.Efficacite),
+//           Status: new FormControl(element.Status),
+//           Commentaire: new FormControl(element.Commentaire),
+//           tocpr: new FormControl(element.tocpr),
+//         });
+//         this.pas.push(res);
+//     }
+//     console.log('this.pas edit====++', this.pas);
 
-    this.elementView = {...item}
-    this.title = "Détails du plan d'action rai";
-    this.tilreBtn =  "Enregistrer le PA modifier"
-    this.updateOrCreate = true
-    this.disableBtn =  false;
-    this.disableBtnAdd = true
-    this.IdTOc =  item.id;
-    console.log('item', item,this.IdTOc);
-    if (!item) {
-      this.PasForm.reset();
-    }
-    for (let index = 0; index < item.planrai.length; index++) {
-      const element = item.planrai[index];
-      console.log('element',element);
+//     this.modalRef =  this.modalService.open(content, {size  : 'xl'})
+//     this.modalRef.result.then(
+//       (result:any) => {
+//         console.log('oooook',result);
+//     });
 
-      const res = new FormGroup({
-          Libelle: new FormControl(element.Libelle),
-          Porteur: new FormControl(element.Porteur),
-          Dateprevisionel: new FormControl(element.Dateprevisionel),
-          Dateeffective: new FormControl(element.Dateeffective),
-          Perimetre: new FormControl(element.Perimetre),
-          Efficacite: new FormControl(element.Efficacite),
-          Status: new FormControl(element.Status),
-          Commentaire: new FormControl(element.Commentaire),
-          tocpr: new FormControl(element.tocpr),
-        });
-        this.pas.push(res);
-    }
+//   }
 
-    this.modalRef =  this.modalService.open(contentView, {size  : 'xl'})
-    this.modalRef.result.then(
-      (result:any) => {
-        console.log('oooook',result);
-    });
+//   openView(contentView:any, item?:any) {
+//     this.disableChamp = false
+//     console.log('this.disableChamp ',this.disableChamp );
 
-  }
+//     this.defaultString = item.Numerotocpro;
+
+//     this.elementView = {...item}
+//     this.title = "Détails du plan d'action rai";
+//     this.tilreBtn =  "Enregistrer le PA modifier"
+//     this.updateOrCreate = true
+//     this.disableBtn =  false;
+//     this.disableBtnAdd = true
+//     this.IdTOc =  item.id;
+//     console.log('item', item,this.IdTOc);
+//     if (!item) {
+//       this.PasForm.reset();
+//     }
+//     for (let index = 0; index < item.planrai.length; index++) {
+//       const element = item.planrai[index];
+//       console.log('element',element);
+
+//       const res = new FormGroup({
+//           Libelle: new FormControl(element.Libelle),
+//           Porteur: new FormControl(element.Porteur),
+//           Dateprevisionel: new FormControl(element.Dateprevisionel),
+//           Dateeffective: new FormControl(element.Dateeffective),
+//           Perimetre: new FormControl(element.Perimetre),
+//           Efficacite: new FormControl(element.Efficacite),
+//           Status: new FormControl(element.Status),
+//           Commentaire: new FormControl(element.Commentaire),
+//           tocpr: new FormControl(element.tocpr),
+//         });
+//         this.pas.push(res);
+//     }
+
+//     this.modalRef =  this.modalService.open(contentView, {size  : 'xl'})
+//     this.modalRef.result.then(
+//       (result:any) => {
+//         console.log('oooook',result);
+//     });
+
+//   }
 
 
   get pas() : FormArray {
@@ -288,7 +319,7 @@ console.log('item', item);
     else{
       this.updatePlanAction();
       this.getTocProbleme()
-      this.deleStorageAndClose();
+      // this.deleStorageAndClose();
     }
 
   }
@@ -303,7 +334,7 @@ console.log('item', item);
             console.log('res planification====>',res);
           this.showSuccess('La création bine effectué')
           this.getTocProbleme()
-          this.deleStorageAndClose();
+          // this.deleStorageAndClose();
           this.default = "";
           this.pas.clear();
           console.log('planaction  objet :',i,'created successfully!',);

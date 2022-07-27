@@ -35,13 +35,6 @@
                         ],
                         "styles": [
 
-                            "node_modules/boosted/scss/boosted.scss",
-                            "node_modules/boosted/dist/css/orange-helvetica.css",
-
-                            "node_modules/ng-boosted/style/ng-boosted.scss",
-                            "node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
-
-                            "node_modules/ngx-spinner/animations/ball-scale-multiple.css",
                             "src/styles.scss",
                             "node_modules/ngx-toastr/toastr.css"
                         ],

@@ -328,7 +328,7 @@ main {
     outline: none;
     width: 100%;
     .sidebar-menu {
-        padding: 12px 11px;
+        padding: 6px 11px;
         border-radius: 16ùx;
         // margin-left: 0.6rem;
         // margin-right: 0.6rem;
@@ -529,7 +529,8 @@ main {
 //     display: block;
 // }
 #toggle:checked~.sidebar .sidebar-menu .menu-side-link>#menu-accordeon>i {
-    font-size: 1.5rem // margin-left: -0.4rem;
+    font-size: 1.5rem; // margin-left: -0.4rem;
+    margin-top: 0.2rem
 }
 
 #toggle:checked~.sidebar .sidebar-menu .menu-side-link>#menu-accordeon>li>a {

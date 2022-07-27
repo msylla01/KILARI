@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbModal, ModalDismissReasons,NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+// import { NgbModal, ModalDismissReasons,NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { SpinnerService } from '../../services/Spinner.service'
 import { ApiService } from '../../services/api.service'
 import { ToastService } from '../../services/toast.service'
@@ -9,6 +9,7 @@ import * as moment from "moment";
 import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
 
 import { filter } from 'rxjs/operators';
+
 
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzUploadFile } from 'ng-zorro-antd/upload';
@@ -34,6 +35,8 @@ import { right } from '@popperjs/core';
   styleUrls: ['./rai.component.scss']
 })
 export class RaiComponent implements OnInit {
+
+  cursor:any;
 changePays:any= [];
   ListPays:any = [];
   titleModal:any
@@ -61,6 +64,9 @@ changePays:any= [];
   step3:any = {};
   totalStep:any = {};
 
+  isVisibleReservation = false;
+  isVisibleDetail = false;
+
   stepVIew:any;
   listPays:any = [];
   listPlateforme:any = [];
@@ -76,7 +82,7 @@ changePays:any= [];
   loading2:boolean = false;
   listRAI:any;
   closeResult: any;
-  modalRef: NgbModalRef | any;
+  // modalRef: NgbModalRef | any;
   stepExpe: boolean = false;
   stepDest: boolean = false;
   stepTranc: boolean = false;
@@ -85,11 +91,14 @@ changePays:any= [];
   groundStep1: any;
   groundStep2: any;
   groundStep3: any;
+  groundStep4: any;
 
-  background1: any;
-  background2: any;
-  background3: any;
+  backgroundStep1: any;
+  backgroundStep2: any;
+  backgroundStep3: any;
+  backgroundSTep4: any;
 
+  listService:any = [];
   uploading = false;
   fileList: NzUploadFile[] = [];
 
@@ -122,6 +131,7 @@ changePays:any= [];
     {id:1, value:"Charles Modeste KAMBO"},
     {id:2, value:"Roland AMON"},
     {id:2, value:"Elodie TUHE LOU"},
+    {id:3, value:"CHARLÈNE KADJI"},
   ]
 
   Pays:any = [
@@ -177,13 +187,13 @@ changePays:any= [];
   Platforme:any = [
     {id:1, value:"SDP"},
     {id:2, value:"USSD SHOP"},
-    {id:2, value:"OTAP"},
-    {id:2, value:"EME"},
-    {id:2, value:"OBA"},
-    {id:2, value:"ESM"},
-    {id:2, value:"OTRS"},
-    {id:2, value:"ARCSIGHT"},
-    {id:2, value:"KMC"},
+    {id:3, value:"OTAP"},
+    {id:4, value:"EME"},
+    {id:5, value:"OBA"},
+    {id:6, value:"ESM"},
+    {id:7, value:"OTRS"},
+    {id:8, value:"ARCSIGHT"},
+    {id:9, value:"KMC"},
   ]
 
   Rediges:any = [
@@ -213,7 +223,7 @@ changePays:any= [];
   Join:any = [
     {id:1, value:"OUI"},
     {id:2, value:"NON"},
-    {id:2, value:"N/A"},
+    {id:3, value:"N/A"},
   ]
 
   Stat_root:any = [
@@ -239,23 +249,105 @@ changePays:any= [];
     {id:2, value:"RECURRENT"},
   ]
 
-  constructor(private msg: NzMessageService,private router: Router,private toastr: ToastrService,private modalService: NgbModal, private SpinnerService:SpinnerService,private ApiService:ApiService , private ToastService:ToastService) {}
+  constructor(private msg: NzMessageService,private router: Router,private toastr: ToastrService, private SpinnerService:SpinnerService,private ApiService:ApiService , private ToastService:ToastService) {}
 
 
   ngOnInit() {
     localStorage.removeItem('hideDest');
     localStorage.removeItem('hideTranc');
-
+    console.log('DisabledRAI',this.DisabledRAI);
     this.getPays();
-    // this.getPlateforme();
     this.getPriorite();
     this.getRAI();
     this.getPays();
+    this.getPlatforme()
+    this.getService()
     this.getNumbTicket();
     this.filterTicket();
     this.getPlatforme()
   }
 
+
+  open(content:any, rai?:any) {
+    this.titleModal = "Création d'un RAI"
+    if (rai != undefined) {
+      this.disabeldTIckToc = true;
+      console.log('++++rai edit',rai, this.disabeldTIckToc)
+      this.numeroToc =  rai.Numero;
+      this.values.push(rai.Numero);
+      this.disableChamp = false
+    this.titleModal = "Modification d'un RAI"
+      this.findEdit(rai)
+    }
+    localStorage.setItem('hideDest', JSON.stringify(true));
+    const hideExpediteur = JSON.parse(localStorage.getItem('hideExpe') || '{}');
+    if (hideExpediteur) {
+      this.groundStep1 = true;
+      this.groundStep2 = false;
+      this.groundStep3 = false;
+    }
+  }
+
+
+  showModal1(rai?:any): void {
+    // this.titleModal = "Ajouter une reservation";
+    this.isVisibleReservation = true;
+    this.DisabledRAI;
+    this.titleModal = "Création d'un RAI"
+    if (rai != undefined && rai.id) {
+      this.disabeldTIckToc = true;
+      console.log('++++rai edit',rai, this.disabeldTIckToc)
+      // this.numeroToc =  rai.Numero;
+      this.values.push(rai.Numero);
+      this.disableChamp = false
+    this.titleModal = "Modification d'un RAI"
+      this.findEdit(rai)
+    }
+    localStorage.setItem('hideDest', JSON.stringify(true));
+    const hideExpediteur = JSON.parse(localStorage.getItem('hideExpe') || '{}');
+    if (hideExpediteur) {
+      this.groundStep1 = true;
+      this.groundStep2 = false;
+      this.groundStep3 = false;
+      this.groundStep4 = false;
+    }
+  }
+
+  showModal1Detail(rai?:any): void {
+    this.titleModal = "Detail de la RAI";
+    this.isVisibleDetail = true;
+  }
+
+
+  handleCancel(): void {
+    console.log('handleCancel',);
+    this.isVisibleReservation = false;
+    this.disabeldTIckToc = false
+    localStorage.removeItem('hideDest');
+    localStorage.removeItem('hideTranc');
+    this.backgroundStep1 = false;
+    this.backgroundStep2 = false;
+    this.backgroundStep3 = false;
+    this.step1 ={};
+    this.step2 ={};
+    this.step3 ={};
+    this.step2Update = {};
+    this.step3Update = {};
+    this.numeroToc= '';
+    this.IdToc = [];
+    this.IdTocFilnale = [];
+    this.disableChamp = false;
+    this.values =[];
+  }
+
+  get DisabledRAI(){
+    if (this.step3.Rairecu  === "OUI" && this.step3.Rairecu) {
+      this.cursor = 'pointer';
+      return false
+    }
+    this.cursor = 'not-allowed';
+    return true
+  }
   getBase64ImageFromURL(url) {
     return new Promise((resolve, reject) => {
       var img = new Image();
@@ -290,6 +382,19 @@ this.step1.Platforme = ""
       (response:any) => {
         this.listPlateforme = response;
         console.log('listPlateforme+++', this.listPlateforme);
+      },
+      (error:any) => {
+        console.log('error',error);
+      }
+    );
+  }
+
+  getService(){
+    let endPoint = "service"
+    this.ApiService.get(endPoint).subscribe(
+      (response:any) => {
+        this.listService = response;
+        console.log('listService+++', this.listService);
       },
       (error:any) => {
         console.log('error',error);
@@ -445,12 +550,11 @@ this.deleStorageAndClose();
 
   deleStorageAndClose(){
     this.disabeldTIckToc = false
-    this.modalRef.dismiss( 'Close click') ;
     localStorage.removeItem('hideDest');
     localStorage.removeItem('hideTranc');
-    this.background1 = false;
-    this.background2 = false;
-    this.background3 = false;
+    this.backgroundStep1 = false;
+    this.backgroundStep2 = false;
+    this.backgroundStep3 = false;
     this.step1 ={};
     this.step2 ={};
     this.step3 ={};
@@ -465,11 +569,20 @@ this.deleStorageAndClose();
 
 
 
-  fileChange(event:any) {
+  fileChangeRI(event:any) {
     if (event.target.files && event.target.files.length > 0) {
        let extensionFile = event.target.files[0].name.split('.').pop()
-      this.step3.uploadedFile = event.target.files[0];
-      console.log('FILE', this.step3.uploadedFile);
+      this.step3.uploadedFileRI = event.target.files[0];
+      console.log('FILE', this.step3.uploadedFileRI);
+
+    }
+  }
+
+  fileChangeRAI(event:any) {
+    if (event.target.files && event.target.files.length > 0) {
+       let extensionFile = event.target.files[0].name.split('.').pop()
+      this.step3.uploadedFileRAI = event.target.files[0];
+      console.log('FILE', this.step3.uploadedFileRAI);
 
     }
   }
@@ -552,14 +665,15 @@ this.deleStorageAndClose();
   }
 
 
-
   nextStep1(){
     localStorage.setItem('hideTranc', JSON.stringify(true));
     const hideDistinataire = JSON.parse(localStorage.getItem('hideDest') || '{}');
     const hideExpediteur = JSON.parse(localStorage.getItem('hideExpe') || '{}');
+
     if (hideDistinataire && hideExpediteur && this.step1.pays &&  this.step1.priorite &&  this.step1.heurD
       && this.step1.Datedebut && this.step1.Datefin && this.step1.heurF && this.step1.heurD && this.step1.Datedebut
        && this.step1.Datedebut && this.step1.Description && this.step1.Service && this.step1.Platforme) {
+
       if (this.values.length < 0 ) {
         this.toastr.error('Renseigner le Ticket oceane SVP');
           return;
@@ -618,6 +732,9 @@ this.deleStorageAndClose();
               return;
             }
 
+            console.log('data ==>', this.step1,this.values);
+
+// return
             for (let index = 0; index < this.values.length; index++) {
               const element = this.values[index];
               let endPoint = 'tocticket';
@@ -632,80 +749,273 @@ this.deleStorageAndClose();
                   console.log('data res rai ticket ==> etape1', res);
                   this.showSuccess('La création du ticket est bien effectuée');
                   this.loading = true;
-                  this.createRAi(res);
+                  // this.createRAi(res);
                   this.groundStep1 = false;
                   this.groundStep2 = true;
                   this.groundStep3 = false;
-                  this.background1 = true;
-                  this.background2 = false;
+                  this.groundStep4 = false;
+
+                  this.backgroundStep1 = true;
+                  this.backgroundStep2 = false;
+
                 },
                 (error: any) => {
                   this.showDanger('La création de la RAI a échoué');
-                  this.groundStep1 = true;
-                  this.groundStep2 = false;
+                  this.groundStep1 = false;
+                  this.groundStep2 = true;
                   this.groundStep3 = false;
-                  this.background1 = false;
-                  this.background2 = false;
+                  this.groundStep4 = false;
+
+                  this.backgroundStep1 = true;
+                  this.backgroundStep2 = false;
+
                 }
               );
             }
-    }else{
+    }
+    else{
       this.showDanger('Les conditions ne sont pas remplies');
-      this.groundStep1 = true;
-      this.groundStep2 = false;
-      this.groundStep3 = false;
-      this.background1 = false;
-      this.background2 = false;
+    this.groundStep1 = true;
+    this.groundStep2 = false;
+    this.groundStep3 = false;
+    this.groundStep4 = false;
+
+    this.backgroundStep1 = false;
+    this.backgroundStep2 = false;
+
     }
   }
 
+  ImpactTicket(toctiket_id?:Number){
+    for (let index = 0; index < this.values.length; index++) {
+      const element = this.values[index];
+      let endPoint = 'tocticket';
+      let data =
+      {
+        toctiket:toctiket_id,
+        Numero: element
+      }
+      console.log('data ticket ocean ajout ==> etape1', element,toctiket_id);
 
-  createRAi(toc?: any) {
-    let endPoint = 'toc';
-    let data = {
-      toctik: toc.id,
-      priorite: this.step1.priorite,
-      pays: this.step1.pays,
-      Datedebut: this.step1.Datedebut,
-      heurD: this.step1.heurD,
-      Datefin: this.step1.Datefin,
-      heurF: this.step1.heurF,
-      Description: this.step1.Description,
-      Platforme: this.step1.Platforme,
-      Service: this.step1.Service,
-    };
+      this.ApiService.post(endPoint, data).subscribe(
+        (res: any) => {
+          console.log('data res rai ticket ==> etape1', res);
+          this.showSuccess('La création du ticket incident est bien effectuée');
+        },
+        (error: any) => {
+          this.showDanger('La création de la RAI a échoué');
+        }
+      );
+    }
+  }
+
+  ImpactPays(toctiket_id){
+    for (let index = 0; index < this.step1.pays.length; index++) {
+      const element = this.step1.pays[index];
+      let endPoint = 'impact';
+      let data =
+      {
+        toc:toctiket_id,
+        pays: element
+      }
+      console.log('data pays-incident ajout ==> etape1', element);
+
+      this.ApiService.post(endPoint, data).subscribe(
+        (res: any) => {
+          console.log('data res pays incident ==> etape1', res);
+          this.showSuccess('La liaison avec les pays est bien effectuée');
+        },
+        (error: any) => {
+          this.showDanger('La liaison avec les pays a échoué');
+        }
+      );
+    }
+  }
+
+  ImpactPlatform(toctiket_id){
+    for (let index = 0; index < this.step1.Platforme.length; index++) {
+      const element = this.step1.Platforme[index];
+      let endPoint = 'impactpp';
+      let data =
+      {
+        toc:toctiket_id,
+        Platform: element
+      }
+      console.log('data platefome-incident ajout ==> etape1', element);
+
+      this.ApiService.post(endPoint, data).subscribe(
+        (res: any) => {
+          console.log('data res platefome-incident  ==> etape1', res);
+          this.showSuccess('La création la platefome-incident incident est bien effectuée');
+        },
+        (error: any) => {
+          this.showDanger('La création de la platefome-incident a échoué');
+        }
+      );
+    }
+  }
+
+  ImpactServce(toctiket_id){
+    for (let index = 0; index < this.step1.Service.length; index++) {
+      const element = this.step1.Service[index];
+      let endPoint = 'impacts';
+      let data =
+      {
+        toc:toctiket_id,
+        service: element
+      }
+      console.log('data service-incident ajout ==> etape1', element);
+
+      this.ApiService.post(endPoint, data).subscribe(
+        (res: any) => {
+          console.log('data res rai ticket ==> etape1', res);
+          this.showSuccess('La création du service-incident est bien effectuée');
+        },
+        (error: any) => {
+          this.showDanger('La création du service-incident a échoué');
+        }
+      );
+    }
+  }
+
+  createRAi() {
+    localStorage.setItem('hideTranc', JSON.stringify(true));
+    const hideDistinataire = JSON.parse(localStorage.getItem('hideDest') || '{}');
+    const hideExpediteur = JSON.parse(localStorage.getItem('hideExpe') || '{}');
+
+    if (hideDistinataire && hideExpediteur && this.step1.pays &&  this.step1.priorite &&  this.step1.heurD
+      && this.step1.Datedebut && this.step1.Datefin && this.step1.heurF && this.step1.heurD && this.step1.Datedebut
+       && this.step1.Datedebut && this.step1.Description && this.step1.Service && this.step1.Platforme) {
+
+
+      // if (this.values.length < 0 ) {
+      //   this.toastr.error('Renseigner le Ticket oceane SVP');
+      //     return;
+      //   }
+      // if (!this.step1.pays) {
+      //   this.toastr.error('Selectionner le pays SVP');
+      //   return;
+      //   }
+
+      // if (!this.step1.priorite) {
+      //   this.toastr.error('renseigner priorité SVP');
+      //     return;
+      //   }
+
+      // if (!this.step1.Datedebut) {
+      // this.toastr.error('renseigner la date de debut SVP');
+      //     return;
+      //   }
+
+      //   if (!this.step1.heurD) {
+      // this.toastr.error('renseigner l\'heure de debut SVP');
+      //       return;
+      //     }
+
+      //   if (!this.step1.Datefin) {
+      // this.toastr.error('renseigner la date retablissement SVP');
+      //       return;
+      //     }
+
+      //     if (!this.step1.heurF) {
+      // this.toastr.error('renseigner l\'heure de retablissement SVP');
+      //         return;
+      //       }
+
+      //     if (!this.step1.Description) {
+      // this.toastr.error('renseigner la description SVP');
+      //         return;
+      //       }
+
+      //       if (!this.step1.Platforme) {
+      //         this.toastr.error('Selectionner la plateforme SVP');
+      //                 return;
+      //               }
+      //     if (!this.step1.Service) {
+      //       this.toastr.error('Selectionner le service SVP');
+      //               return;
+      //             }
+
+      //     if (this.step1.heurF.slice(0,2) < this.step1.heurD.slice(0,2)) {
+      //           this.toastr.error("Erreur sur la heure d'incident et la heure de rétablissement");
+      //           return;
+      //         }
+
+      //       if (new Date(this.step1.Datefin).getTime() < new Date(this.step1.Datedebut).getTime()) {
+      //         this.toastr.error("Erreur sur la date d'incident et la date de rétablissement");
+      //         return;
+      //       }
+
+      let endPoint = 'toc';
+      let data = {
+        priorite: this.step1.priorite,
+        Datedebut: this.step1.Datedebut,
+        heurD: this.step1.heurD,
+        Datefin: this.step1.Datefin,
+        heurF: this.step1.heurF,
+        Description: this.step1.Description,
+      };
     console.log('data rai create ticket ==>etape 1', data);
     this.loading = true;
     this.ApiService.post(endPoint, data)
       .subscribe(
         (res: any) => {
-          console.log(' res creatte rai ticket ==>etape 1', res);
+          console.log(' res creatte rai ticket incicent ==>etape 1', res);
+          console.log('IdToc table de id ==> etape 1', this.IdToc);
           if (res) {
-            this.IdToc.push(res.id);
-            console.log('IdToc table de id ==> etape 1', this.IdToc);
+            this.IdToc=res.id;
+            this.ImpactTicket(res.id);
+            this.ImpactPays(res.id);
+            this.ImpactPlatform(res.id);
+            this.ImpactServce(res.id);
             this.showSuccess('La première  étape validé')
             this.loading = false;
+            this.groundStep1 = false;
+            this.groundStep2 = true;
+            this.groundStep3 = false;
+            this.groundStep4 = false;
+
+            this.backgroundStep1 = true;
+            this.backgroundStep2 = false;
           } else {
-            console.log('erreur');
+          console.log(' erreur creatte rai ticket incicent ==>etape 1', res);
             this.loading = false;
             this.showDanger('La première  étape non validé')
             this.groundStep1 = true;
             this.groundStep2 = false;
             this.groundStep3 = false;
-            this.background1 = false;
-            this.background2 = false;
+            this.groundStep4 = false;
+
+            this.backgroundStep1 = false;
+            this.backgroundStep2 = false;
           }
         },
         (error: any) => {
+          console.log(' erreur creatte rai ticket incicent ==>etape 1', error);
           this.loading = false;
           this.showDanger('La première  étape non validé')
           this.groundStep1 = true;
           this.groundStep2 = false;
           this.groundStep3 = false;
-          this.background1 = false;
-          this.background2 = false;
+          this.groundStep4 = false;
+
+          this.backgroundStep1 = false;
+          this.backgroundStep2 = false;
         }
       );
+    }
+    else{
+      this.showDanger('Les conditions ne sont pas remplies');
+    this.groundStep1 = true;
+    this.groundStep2 = false;
+    this.groundStep3 = false;
+    this.groundStep4 = false;
+
+    this.backgroundStep1 = false;
+    this.backgroundStep2 = false;
+
+    }
+
   }
 
   updateStep1(){
@@ -731,9 +1041,11 @@ this.deleStorageAndClose();
 
           this.groundStep1 = false;
           this.groundStep2 = true;
+    this.groundStep4 = false;
+
           this.groundStep3 = false;
-          this.background1 = true;
-          this.background2 = false;
+          this.backgroundStep1 = true;
+          this.backgroundStep2 = false;
         },
         (error: any) => {
           this.showDanger(`La mise à jour numéro du ticket est non effectuée.
@@ -742,8 +1054,10 @@ this.deleStorageAndClose();
           this.groundStep1 = false;
           this.groundStep2 = false;
           this.groundStep3 = false;
-          this.background1 = false;
-          this.background2 = false;
+          this.backgroundStep1 = true;
+          this.backgroundStep2 = false;
+    this.groundStep4 = false;
+
         }
       );
     }
@@ -752,9 +1066,11 @@ this.deleStorageAndClose();
 
       this.groundStep1 = false;
       this.groundStep2 = false;
+    this.groundStep4 = false;
+
       this.groundStep3 = false;
-      this.background1 = false;
-      this.background2 = false;
+      this.backgroundStep1 = true;
+      this.backgroundStep2 = false;
     }
 
   }
@@ -798,20 +1114,6 @@ this.deleStorageAndClose();
       );
   }
 
-  viewStep1(){
-    localStorage.setItem('hideTranc', JSON.stringify(true));
-    const hideDistinataire = JSON.parse(localStorage.getItem('hideDest') || '{}');
-    const hideExpediteur = JSON.parse(localStorage.getItem('hideExpe') || '{}');
-    if (hideDistinataire && hideExpediteur) {
-      this.groundStep1 = false;
-      this.groundStep2 = true;
-      this.groundStep3 = false;
-      this.background1 = true;
-      this.background2 = false;
-      this.step2 =  {...this.step2Update}
-    this.disableChamp = true;
-    }
-  }
 
 
 
@@ -819,47 +1121,50 @@ this.deleStorageAndClose();
     const hideDistinataire = JSON.parse(localStorage.getItem('hideExpe') || '{}');
     const hideTrasaction = JSON.parse(localStorage.getItem('hideTranc') || '{}');
     const hideExpediteur = JSON.parse(localStorage.getItem('hideExpe') || '{}');
+
     if (hideDistinataire && hideExpediteur && hideTrasaction && this.step2.Numerotocpro &&  this.step2.Porteur &&
-      this.step2.typeproblem && this.IdToc != undefined && this.IdToc != null && this.IdToc.length > 0) {
+      this.step2.typeproblem && this.IdToc != undefined && this.IdToc != null) {
 
-      let rExp1 = new RegExp("^[A-Z]+$");
-      let rExp2 = new RegExp("^[0-9]+$");
-      let slice1 = this.step2.Numerotocpro.slice(0,4)
-      let slice2 = this.step2.Numerotocpro.slice(4,5)
-      let slice3 = this.step2.Numerotocpro.slice(5)
 
-      if (!this.step2.Numerotocpro) {
-        this.toastr.error('Renseigner le numéro ticket problème SVP');
-          return;
-        }
 
-      if (!this.step2.Porteur) {
-        this.toastr.error('Selectionner le porteur SVP');
-        return;
-        }
+      // let rExp1 = new RegExp("^[A-Z]+$");
+      // let rExp2 = new RegExp("^[0-9]+$");
+      // let slice1 = this.step2.Numerotocpro.slice(0,4)
+      // let slice2 = this.step2.Numerotocpro.slice(4,5)
+      // let slice3 = this.step2.Numerotocpro.slice(5)
 
-      if (!this.step2.typeproblem) {
-        this.toastr.error('Selectionner le type du problème SVP');
-          return;
-        }
+      // if (!this.step2.Numerotocpro) {
+      //   this.toastr.error('Renseigner le numéro ticket problème SVP');
+      //     return;
+      //   }
 
-        if (rExp1.test(slice2) === false && rExp2.test(slice3) === false && rExp2.test(slice1) === false) {
-          this.toastr.error('Le format du ticket ne respect pas la norme');
-          return
-        }
+      // if (!this.step2.Porteur) {
+      //   this.toastr.error('Selectionner le porteur SVP');
+      //   return;
+      //   }
 
-        if (this.step2.Numerotocpro.length !== 10) {
-          this.toastr.error('Il faut un numéro de ticket avec longueur de 10 caractères');
-          return
-        }
+      // if (!this.step2.typeproblem) {
+      //   this.toastr.error('Selectionner le type du problème SVP');
+      //     return;
+      //   }
 
-        for (let index = 0; index < this.IdToc.length; index++) {
-          const element = this.IdToc[index];
+      //   if (rExp1.test(slice2) === false && rExp2.test(slice3) === false && rExp2.test(slice1) === false) {
+      //     this.toastr.error('Le format du ticket ne respect pas la norme');
+      //     return
+      //   }
+
+      //   if (this.step2.Numerotocpro.length !== 10) {
+      //     this.toastr.error('Il faut un numéro de ticket avec longueur de 10 caractères');
+      //     return
+      //   }
+//  return
+        // for (let index = 0; index < this.IdToc.length; index++) {
+          // const element = this.IdToc[index];
           let endPoint = 'tocprobleme';
           let data =
           {
             Numerotocpro: this.step2.Numerotocpro,
-            toc:element,
+            toc:this.IdToc,
             typeproblem  :this.step2.typeproblem,
             Porteur: this.step2.Porteur,
           }
@@ -869,15 +1174,19 @@ this.deleStorageAndClose();
             (res: any) => {
               console.log('data res ticket probleme ==> etape2', res);
               this.showSuccess('La création bien effectuée')
-              this.IdTocFilnale.push(res.id)
+              this.IdTocFilnale = res.id
               console.log('IdTocFilnale table id ==> etape 2', this.IdTocFilnale);
               this.loading1 = false;
 
               this.groundStep1 = false;
               this.groundStep2 = false;
+              this.groundStep4 = false;
+
               this.groundStep3 = true;
-              this.background1 = true;
-              this.background2 = true;
+
+              this.backgroundStep2 = true;
+              this.backgroundStep3 = false;
+
             },
             (error: any) => {
               this.showDanger('La création a échouée');
@@ -885,19 +1194,22 @@ this.deleStorageAndClose();
               this.groundStep1 = false;
               this.groundStep2 = true;
               this.groundStep3 = false;
-              this.background1 = true;
-              this.background2 = true;
+              this.backgroundStep2 = false;
+              this.backgroundStep3 = false;
+              this.groundStep4 = false;
+
             }
           );
-        }
+        // }
     }
     else{
       this.showDanger('Les conditions ne sont pas remplies');
       this.groundStep1 = false;
       this.groundStep2 = true;
       this.groundStep3 = false;
-      this.background1 = true;
-      this.background2 = true;
+      this.backgroundStep2 = false;
+      this.backgroundStep3 = false;
+      this.groundStep4 = false;
 
     }
 
@@ -964,16 +1276,20 @@ this.deleStorageAndClose();
               this.groundStep1 = false;
               this.groundStep2 = false;
               this.groundStep3 = true;
-              this.background1 = true;
-              this.background2 = true;
+    this.groundStep4 = false;
+
+    this.backgroundStep2 = true;
+    this.backgroundStep3 = false;
             },
             (error: any) => {
               this.showDanger('La mise à jour a échouée')
               this.groundStep1 = false;
               this.groundStep2 = true;
+    this.groundStep4 = false;
+
               this.groundStep3 = false;
-              this.background1 = true;
-              this.background2 = true;
+              this.backgroundStep2 = true;
+              this.backgroundStep3 = false;
             }
           );
       }
@@ -981,38 +1297,73 @@ this.deleStorageAndClose();
       this.showDanger('Les conditions ne sont pas remplies');
       this.groundStep1 = false;
       this.groundStep2 = true;
+    this.groundStep4 = false;
+
       this.groundStep3 = false;
-      this.background1 = true;
-      this.background2 = true;
+      this.backgroundStep2 = true;
+      this.backgroundStep3 = false;
       }
 
   }
 
-  viewStep2(){
-    const hideDistinataire = JSON.parse(localStorage.getItem('hideExpe') || '{}');
-    const hideTrasaction = JSON.parse(localStorage.getItem('hideTranc') || '{}');
-    const hideExpediteur = JSON.parse(localStorage.getItem('hideExpe') || '{}');
-    if (hideDistinataire && hideExpediteur && hideTrasaction) {
-      this.groundStep1 = false;
-      this.groundStep2 = false;
-      this.groundStep3 = true;
-      this.background1 = true;
-      this.background2 = true;
-      this.step3 =  {...this.step3Update}
-      this.disableChamp = true;
-    }
-  }
-
-
 
   finalStep(){
-    if (this.IdTocFilnale != undefined && this.IdTocFilnale != null && this.IdTocFilnale.length > 0) {
-        for (let index = 0; index < this.IdTocFilnale.length; index++) {
-          const element = this.IdTocFilnale[index];
+
+    if (this.IdTocFilnale != undefined && this.IdTocFilnale != null) {
+
+        // for (let index = 0; index < this.IdTocFilnale.length; index++) {
+          // const element = this.IdTocFilnale[index];
           let endPoint = 'rai';
             this.data =
                 {
-                  tocprobleme : element,
+                  tocprobleme : this.IdTocFilnale,
+                  declenchement : this.step3.declenchement,
+                  status : this.step3.status,
+                  Rapportredige :this.step3.Rapportredige,
+                  Rapportpartage : this.step3.Rapportpartage,
+                  Comptrendus : this.step3.Comptrendus,
+                  Jointoc :this.step3.Jointoc,
+                  Rairecu :this.step3.Rairecu,
+                  Cause : this.step3.Cause,
+                  // Rootcause : this.step3.Rootcause,
+                  // Statrootcause : this.step3.Statrootcause,
+                  // Commentaire : this.step3.Commentaire,
+                  // Typesolution : this.step3.Typesolution,
+                  Actionretablissement : this.step3.Actionretablissement,
+                  Datecritere : this.step3.Datecritere,
+                  DateRept : this.step3.DateRept,
+                  uploadedFileRI:this.step3.uploadedFile,
+                }
+        console.log('data create RAI ajout ==>etape 3', this.data,this.step3);
+        // return
+        this.loading2 = true;
+        this.ApiService.post(endPoint, this.data).subscribe(
+          (res: any) => {
+            console.log('data res RAI data ajout ==> etape 3', res);
+            this.loading2 = false;
+            this.showSuccess('La création est bien  effectuée')
+            this.deleStorageAndClose()
+            this.getNumbTicket()
+          },
+          (error: any) => {
+            this.loading2 = false;
+            this.showDanger('La création bien effectué')
+          }
+        );
+    //  }
+  }
+
+  }
+  finalStep2(){
+
+    if (this.IdTocFilnale != undefined && this.IdTocFilnale != null) {
+
+        // for (let index = 0; index < this.IdTocFilnale.length; index++) {
+          // const element = this.IdTocFilnale[index];
+          let endPoint = 'rai';
+            this.data =
+                {
+                  tocprobleme : this.IdTocFilnale,
                   declenchement : this.step3.declenchement,
                   status : this.step3.status,
                   Rapportredige :this.step3.Rapportredige,
@@ -1024,11 +1375,12 @@ this.deleStorageAndClose();
                   Rootcause : this.step3.Rootcause,
                   Statrootcause : this.step3.Statrootcause,
                   Actionretablissement : this.step3.Actionretablissement,
-                  Datecritere : this.step3.Datecritere,
-                  Typesolution : this.step3.Typesolution,
                   Commentaire : this.step3.Commentaire,
+                  Typesolution : this.step3.Typesolution,
+                  Datecritere : this.step3.Datecritere,
                   DateRept : this.step3.DateRept,
-                  uploadedFile:this.step3.uploadedFile
+                  uploadedFileRAI:this.step3.uploadedFileRAI,
+                  uploadedFileRI:this.step3.uploadedFileRI
                 }
         console.log('data create RAI ajout ==>etape 3', this.data);
         this.loading2 = true;
@@ -1045,7 +1397,7 @@ this.deleStorageAndClose();
             this.showDanger('La création bien effectué')
           }
         );
-     }
+    //  }
   }
 
   }
@@ -1097,25 +1449,36 @@ this.deleStorageAndClose();
 
   }
 
-  viewStep3(){
+
+
+  nexStep4(){
+    this.groundStep1 = false;
+    this.groundStep2 = false;
+    this.groundStep3 = false;
+    this.groundStep4= true;
+    this.backgroundStep1 = true;
+    this.backgroundStep3 = true;
+    this.backgroundSTep4 = true;
+    this.backgroundStep2 = true;
   }
 
 
+
+
   getNumbTicket(){
-    let endPoint = "tocticket"
+    let endPoint = "toc"
     this.SpinnerService.showSpinner();
       this.ApiService.get(endPoint).subscribe(
         (response:any) => {
           this.ListTickOcean = response;
           this.SpinnerService.hideSpinner();
-          console.log('ListTickOcean', this.ListTickOcean);
+          console.log('ListTickOcean++ ///', this.ListTickOcean);
         },
         (error:any) => {
           console.log('error',error);
         }
       );
   }
-
 
   filterTicket(){
     console.log('event===>',this.searchToc);
@@ -1174,20 +1537,6 @@ this.deleStorageAndClose();
       );
   }
 
-  // getPlateforme(){
-  //   let endPoint = "platform"
-  //     this.ApiService.get(endPoint).subscribe(
-  //       (response:any) => {
-  //         this.listPlateforme = response;
-  //         console.log('listPlateforme==>', this.listPlateforme);
-  //       },
-  //       (error:any) => {
-  //         console.log('error',error);
-  //       }
-  //     );
-  // }
-
-
 
 
 
@@ -1200,7 +1549,6 @@ this.deleStorageAndClose();
         console.log('data toc ====>',data)
         this.idGobal = data
           this.step1 = data;
-          // this.step1.disableChamp = rai.disableChamp
           console.log('step1====>', this.step1);
           this.idTocStep1 =  data.id
           this.idtocpro =data.tocpro[0].id;
@@ -1225,14 +1573,11 @@ this.deleStorageAndClose();
     console.log('rai=====>', rai);
     let endPoint = 'toc'
     this.idToc=rai.id;
-    // this.idTocRai=rai.toc[0].id;
-    // this.idTocProbleme=rai.toc[0].tocpro[0].id;
     this.ApiService.getOptionFind(endPoint,rai.id).subscribe(
       (data:any)=>{
         console.log('data toc ====>',data)
         this.idGobal = data
           this.stepVIew = data;
-          // this.step1.disableChamp = rai.disableChamp
           console.log('step1====>', this.step1);
           this.idTocStep1 =  data.id
           this.idtocpro =data.tocpro[0].id;
@@ -1252,66 +1597,5 @@ this.deleStorageAndClose();
         });
   }
 
-  open(content:any, rai?:any) {
-    this.titleModal = "Création d'un RAI"
-    if (rai != undefined) {
-      this.disabeldTIckToc = true;
-      console.log('++++rai edit',rai, this.disabeldTIckToc)
-      this.numeroToc =  rai.Numero;
-      this.disableChamp = false
-    this.titleModal = "Modification d'un RAI"
-      this.findEdit(rai)
-    }
-    localStorage.setItem('hideDest', JSON.stringify(true));
-    const hideExpediteur = JSON.parse(localStorage.getItem('hideExpe') || '{}');
-    if (hideExpediteur) {
-      this.groundStep1 = true;
-      this.groundStep2 = false;
-      this.groundStep3 = false;
-    }
-    this.modalRef =  this.modalService.open(content, {size  : 'xl'})
-    this.modalRef.result.then(
-      (result:any) => {
-        console.log('oooook',result);
-
-    });
-  }
-
-  openView(contentView:any, rai?:any) {
-    this.titleModal = "Details d'un RAI"
-
-    this.disableChamp = true;
-    if (rai != undefined ) {
-      console.log('++++rai view',rai)
-      this.numeroToc =  rai.Numero;
-      // rai.disableChamp = true
-      this.findView(rai)
-    }
-    localStorage.setItem('hideDest', JSON.stringify(true));
-    const hideExpediteur = JSON.parse(localStorage.getItem('hideExpe') || '{}');
-    if (hideExpediteur) {
-      this.groundStep1 = true;
-      this.groundStep2 = false;
-      this.groundStep3 = false;
-    }
-    this.modalRef =  this.modalService.open(contentView, {size  : 'xl'})
-    this.modalRef.result.then(
-      (result:any) => {
-        console.log('oooook',result);
-
-    });
-  }
-
-
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return  `with: ${reason}`;
-    }
-  }
 
 }

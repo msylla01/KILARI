@@ -4,11 +4,11 @@
         <div class="imput-search-btn">
             <small> Filtrer par nom:</small>
             <form action="#">
-                <input type="text*" name="searchToc" [(ngModel)]="searchToc" class="form-control" placeholder="Rechercher par nom" autocomplete="off">
+                <input type="text*" name="searchToc" class="form-control" placeholder="Rechercher par nom" autocomplete="off">
                 <button type="submit" class="btn btn-secondary"><i class="fas fa-search"></i></button>
             </form>
         </div>
-        <button type="button" (click)="open(content)" class=" btn btn-primary plus "> <i class="fa-solid fa-plus "></i> Créer un utilisateur</button>
+        <button type="button" class=" btn btn-primary plus "> <i class="fa-solid fa-plus "></i> Créer un utilisateur</button>
     </div>
     <div class="content-tableau ">
         <nz-table #smallTable nzSize="small" [nzData]="ListPays">
@@ -24,13 +24,13 @@
                     <td style="text-align:center ;">{{item.id}}</td>
                     <td style="text-align:center ;">{{item.Libelle}}</td>
                     <td class="" style="text-align:right ;">
-                        <button style="    margin-right: 0.6rem;" type="button" class="btn btn-danger" (click)="openEdit(content, item)">
+                        <button style="    margin-right: 0.6rem;" type="button" class="btn btn-danger">
                       <i class="fa fa-edit" aria-hidden="true"></i>
                     </button>
-                        <button type="button" class="btn btn-success" (click)="openView(contentView, item)">
+                        <button type="button" class="btn btn-success">
                       <i class="fa fa-eye" aria-hidden="true"></i>
                     </button>
-                        <button type="button" style="    margin-left: 0.6rem;" class="btn btn-light" (click)="confirmSubmitDeletPays(item)">
+                        <button type="button" style="    margin-left: 0.6rem;" class="btn btn-light">
                       <i class="fa fa-trash" aria-hidden="true"></i>
                     </button>
                     </td>
@@ -40,7 +40,7 @@
     </div>
 </div>
 
-<ng-template #content let-modal class="content-modal">
+<!-- <ng-template #content let-modal class="content-modal">
     <div class="modal-header ">
         <h5 class="modal-title " id="exampleModalLabel " style="    font-size: 25px;
     font-weight: 600;">{{titleModal}} <i class="fa fa-users " style=" font-size:1rem ; margin-left: 1rem; color: #ff7900; " aria-hidden="true "></i></h5>
@@ -61,10 +61,10 @@
         </div>
     </div>
 
-</ng-template>
+</ng-template> -->
 
 
-<ng-template #contentView let-modal class="content-modal">
+<!-- <ng-template #contentView let-modal class="content-modal">
     <div class="modal-header ">
         <h5 class="modal-title " id="exampleModalLabel " style="    font-size: 25px;
     font-weight: 600;">{{titleModal}} <i class="fa fa-users " style=" font-size:1rem ; margin-left: 1rem; color: #ff7900; " aria-hidden="true "></i></h5>
@@ -85,12 +85,8 @@
                         <td style="text-align: right;">{{stepVIew?.Libelle}}</td>
                     </tr>
                 </table>
-                <!-- <div>
-                <button (click)="createPDF()" type="button" class="btn btn-secondary" style="margin-top: 0.7rem;">
-                  <i class="fa-solid fa-print" style="margin-right: 1rem;"></i>Edition des détails</button>
-            </div> -->
             </div>
         </div>
     </div>
 
-</ng-template>
+</ng-template> -->

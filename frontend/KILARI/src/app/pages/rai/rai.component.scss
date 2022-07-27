@@ -44,7 +44,7 @@
 .modal-body {
     position: relative;
     flex: 1 1 auto;
-    padding: 2rem 1.25rem;
+    padding: 0rem 1rem;
     .step-line {
         display: flex;
         width: 100%;
@@ -314,11 +314,11 @@
     background: #ff7900;
 }
 
-.background2 {
+.background3 {
     background: transparent;
 }
 
-.background3 {
+.background2 {
     background: gray;
 }
 
@@ -327,22 +327,29 @@ input[type="file"] {
 }
 
 .uploadedFile {
-    border-radius: 14px;
+    // border-radius: 14px;
     color: white;
-    height: 60px;
-    width: 250px;
+    height: 41px;
+    width: 221px;
     background-color: gray;
-    // position: absolute;
     margin: auto;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-    font-size: 18px;
+    font-size: 14px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: "Courier New", Courier, monospace;
+}
+
+.pointerFalse {
+    cursor: pointer;
+}
+
+.pointerTrue {
+    cursor: not-allowed;
 }
 
 .tag-input {
@@ -375,3 +382,21 @@ input[type="file"] {
 //     line-height: 50px;
 //     background: none;
 // }
+::ng-deep .ant-select-show-search.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    cursor: text;
+    height: 40px;
+}
+
+::ng-deep .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    position: relative;
+    background-color: #fff;
+    border: 2px solid #ccc7c7;
+    border-radius: 2px;
+    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.ligne1-detail {
+    display: flex;
+    justify-content: space-evenly;
+    font-size: 21px;
+}

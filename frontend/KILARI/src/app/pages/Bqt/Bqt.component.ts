@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbModal, ModalDismissReasons,NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+// import { NgbModal, ModalDismissReasons,NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { SpinnerService } from '../../services/Spinner.service'
 import { ApiService } from '../../services/api.service'
 import { ToastService } from '../../services/toast.service'
@@ -22,7 +22,7 @@ export class BqtComponent implements OnInit {
   commantaire:string;
   titleModal:any;
   search:any;
-  modalRef: NgbModalRef | any;
+  // modalRef: NgbModalRef | any;
   loading:boolean = true
   shoEdit:boolean =false;
   elementBQT:any = {};
@@ -31,15 +31,19 @@ export class BqtComponent implements OnInit {
   filteredItems:any = [];
   IdBQT:any;
 
-  constructor(private router: Router,private toastr: ToastrService,private modalService: NgbModal, private SpinnerService:SpinnerService,private ApiService:ApiService , private ToastService:ToastService) { }
+  isVisibleBQT:boolean = false;
+  isVisibleBQTDetail:boolean = false;
+
+  constructor(private router: Router,private toastr: ToastrService, private SpinnerService:SpinnerService,private ApiService:ApiService , private ToastService:ToastService) { }
 
   ngOnInit() {
     this.getAllBQT();
   }
 
   deleStorageClose(){
-    this.modalRef.dismiss('Close click') ;
-    this.elementBQT = {}
+    // this.modalRef.dismiss('Close click') ;
+    // this.elementBQT = {}
+    this.isVisibleBQT = false
   }
 
   Status:any = [
@@ -67,7 +71,7 @@ export class BqtComponent implements OnInit {
 
 
   // async createPDF(){
-  //   this.deleStorageAndClose();
+  //   this.handleCancel();
   //       const pdfDefinition:any = {
 
   //         content: [
@@ -222,7 +226,7 @@ export class BqtComponent implements OnInit {
 
   getAllBQT(){
     let endPoint = "bqt"
-    this.SpinnerService.showSpinner()
+    this.SpinnerService.hideSpinner()
     this.ApiService.get(endPoint).subscribe(
       (response:any) => {
         this.ListBQT = response;
@@ -233,50 +237,52 @@ export class BqtComponent implements OnInit {
       },
       (error:any) => {
         console.log('error',error);
+    this.SpinnerService.hideSpinner()
+
       }
     );
   }
 
-
-  open(content:any, rai?:any) {
+  showModal1(bqt?:any): void {
+    this.isVisibleBQT = true;
+  this.shoEdit =  false;
     this.titleModal = "Creation d'une BQT"
-    this.modalRef =  this.modalService.open(content, {size  : 'xl'})
-    this.modalRef.result.then(
-      (result:any) => {
-        console.log('oooook',result);
-    });
-  }
-
-
-  openEdit(content:any, bqt?:any) {
+    if (bqt != undefined && bqt.id) {
+      console.log('++++bqt edit',bqt)
+      this.disableChamp = false
+      this.shoEdit =true;
+      this.IdBQT =  bqt.id
+      this.elementBQT = {...bqt}
     this.titleModal = "Modification de la BQT"
-    this.shoEdit =true;
-    this.IdBQT =  bqt.id
-    this.elementBQT = {...bqt}
-    console.log('this.elementBQT edit',this.elementBQT );
+    }
+  }
 
-    this.modalRef =  this.modalService.open(content, {size  : 'xl'})
-    this.modalRef.result.then(
-      (result:any) => {
-        console.log('oooook',result);
-    });
+  showModal1Detail(bqt?:any): void {
+    this.titleModal = "Detail de la BQT";
+    this.isVisibleBQTDetail = true;
+    this.elementBQT = {...bqt}
   }
 
 
-
-  ViewBQT(contentView:any, bqt?:any){
-    this.titleModal = "Details de la BQT"
-    // this.disableChamp = true;
-    this.IdBQT =  bqt.id
-    this.elementBQT = {...bqt}
-    console.log('this.elementBQT view',this.elementBQT );
-
-    this.modalRef =  this.modalService.open(contentView, {size  : 'xl'})
-    this.modalRef.result.then(
-      (result:any) => {
-        console.log('oooook',result);
-    });
+  handleCancel(): void {
+    console.log('handleCancel',);
+    this.isVisibleBQT = false;
+    this.isVisibleBQTDetail = false
   }
+
+
+  // ViewBQT(contentView:any, bqt?:any){
+  //   this.titleModal = "Details de la BQT"
+  //   this.IdBQT =  bqt.id
+  //   this.elementBQT = {...bqt}
+  //   console.log('this.elementBQT view',this.elementBQT );
+
+  //   this.modalRef =  this.modalService.open(contentView, {size  : 'xl'})
+  //   this.modalRef.result.then(
+  //     (result:any) => {
+  //       console.log('oooook',result);
+  //   });
+  // }
 
   SauveBQT(){
     if (!this.elementBQT.Libelle) {
@@ -316,7 +322,6 @@ this.loading = false
         console.log('data res bqt', res);
         this.deleStorageClose();
         this.showSuccess('La création du BQT bien effectuée');
-        // this.router.navigate(['plan-action-bqt']);
         this.getAllBQT();
         this.elementBQT = {};
         this.loading = true;
@@ -347,7 +352,7 @@ this.loading = false
       if (!this.elementBQT.ComptRendus) {
         this.toastr.error('Renseigner le compte rendu de la BQT SVP');
           return;
-        }
+    }
 
     let endPoint = 'bqt';
     let data =
@@ -361,7 +366,7 @@ this.loading = false
     }
 
     console.log('data bqt ajout', data,endPoint);
-this.loading = false;
+    this.loading = false;
     this.ApiService.put(endPoint, this.IdBQT ,data).subscribe(
       (res: any) => {
         console.log('data res bqt', res);
@@ -377,31 +382,22 @@ this.loading = false;
     );
   }
 
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return  `with: ${reason}`;
-    }
-  }
 
 
-  assignCopy(){
-    this.filteredItems = Object.assign([], this.ListBQT);
- }
+//   assignCopy(){
+//     this.filteredItems = Object.assign([], this.ListBQT);
+//  }
 
- filterItem(value:any){
-   console.log('value===>event',value.target);
+//  filterItem(value:any){
+//    console.log('value===>event',value.target);
 
-    if(!value.target){
-        this.assignCopy();
-    } //when nothing has typed
-    this.filteredItems = Object.assign([], this.ListBQT).filter(
-       (item:any) => item.name.toLowerCase().indexOf(value.toLowerCase()) > -1
-    )
- }
+//     if(!value.target){
+//         this.assignCopy();
+//     } //when nothing has typed
+//     this.filteredItems = Object.assign([], this.ListBQT).filter(
+//        (item:any) => item.name.toLowerCase().indexOf(value.toLowerCase()) > -1
+//     )
+//  }
 //  this.assignCopy();//when you fetch collection from server.
 
 }

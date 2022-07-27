@@ -88,7 +88,7 @@ input[type="file"] {
 }
 
 .uploadedFilePword {
-    border-radius: 14px;
+    // border-radius: 14px;
     color: white;
     height: 41px;
     width: 203px;
@@ -106,7 +106,7 @@ input[type="file"] {
 }
 
 .uploadedFileCompteR {
-    border-radius: 14px;
+    // border-radius: 14px;
     color: white;
     height: 41px;
     width: 203px;
@@ -121,4 +121,13 @@ input[type="file"] {
     justify-content: center;
     align-items: center;
     font-family: "Courier New", Courier, monospace;
+}
+
+.ligne1-detail {
+    display: flex;
+    justify-content: space-between;
+    font-size: 21px;
+    align-items: center;
+    padding-bottom: 1.5rem;
+    // border-bottom: 1px solid #dedede;
 }
