@@ -266,7 +266,7 @@ class Rai(models.Model):
     Rootcause = models.CharField(max_length=200,blank=False, default='',null=True)
     Statrootcause =models.CharField(max_length=200,blank=False, default='',null=True)
     Actionretablissement = models.CharField(max_length=200,blank=False, default='')
-    EvaluationDate = models.DateField(default=datetime.now, null=True,)
+    EvaluationDate = models.DateField(null=True,)
     Datecritere = models.DateField()
     Typesolution = models.CharField(max_length=100,blank=False, default='')
     Commentaire = models.CharField(max_length=100,blank=False, default='',null=True)
