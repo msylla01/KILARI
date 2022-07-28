@@ -267,6 +267,7 @@ export class RaiComponent implements OnInit {
     {id:1, value:"MAJEUR"},
     {id:2, value:"RECURRENT"},
   ]
+  ps: any;
 
 
 
@@ -288,6 +289,7 @@ export class RaiComponent implements OnInit {
     this.filterTicket();
     this.getPlatforme();
     this.ImpactTicketUpdate()
+    //this.func(1)
   }
 
 
@@ -338,6 +340,21 @@ export class RaiComponent implements OnInit {
     }
   }
 
+func(idval){
+  let endPoint = 'pays'
+  const result = this.Pays.find( ({ id }) => id === idval );
+  return result.value // { name: 'cherries', quantity: 5 }
+}
+func1(idval){
+  let endPoint = 'pays'
+  const result = this.Service.find( ({ id }) => id === idval );
+  return result.value // { name: 'cherries', quantity: 5 }
+}
+func2(idval){
+  let endPoint = 'pays'
+  const result = this.Platforme.find( ({ id }) => id === idval );
+  return result.value // { name: 'cherries', quantity: 5 }
+}
 
   findEdit(rai:any){
     console.log('rai=====>', rai, rai.id);

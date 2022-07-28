@@ -57,24 +57,24 @@
                     <td style="white-space: nowrap;">Statut</td>
                     <td>{{item.Datedebut}}-{{item.heurD}}</td>
                     <td>{{item.Datedebut}}-{{item.heurD}}</td>
-                    <td style="white-space: nowrap;">{{ item.tocpro[0].rai[0].Rirecu}}</td>
+                    <td style="white-space: nowrap;">{{ item.tocpro[0]?.rai[0]?.Rirecu}}</td>
                     <td>{{item.Datefin}}-{{item.heurF}}</td>
 
                     <td style="    white-space: nowrap;">
                         <nz-tag *ngFor="let element of item.Impactpays" nzColor="processing">
-                            {{element.pays}}
+                            {{func(element.pays)}}
                         </nz-tag>
                     </td>
 
                     <td style="    white-space: nowrap;">
                         <nz-tag *ngFor="let element of item.Impactplat" nzColor="processing">
-                            {{element.Platform}}
+                            {{func1(element.Platform)}}
                         </nz-tag>
                     </td>
 
                     <td style="    white-space: nowrap;">
                         <nz-tag *ngFor="let element of item.Impactservice" nzColor="processing">
-                            {{element.service}}
+                            {{func2(element.service)}}
                         </nz-tag>
                     </td>
 
