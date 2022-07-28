@@ -232,7 +232,7 @@ class Rai(models.Model):
     Rootcause = models.CharField(max_length=200,blank=True, default='',null=True)
     Statrootcause =models.CharField(max_length=200,blank=True, default='',null=True)
     Actionretablissement = models.CharField(max_length=200,blank=False, default='')
-    EvaluationDate = models.DateField(null=True)
+    EvaluationDate = models.DateField(null=True,default=None,)
     Datecritere = models.DateField()
     Typesolution = models.CharField(max_length=100,blank=True, default='')
     Commentaire = models.CharField(max_length=100,blank=True, default='',null=True)
