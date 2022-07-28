@@ -52,7 +52,7 @@ const url:any =  this.router.navigate(['/login-kilari'])
 
 
   ngOnInit() {
-  //   this.getUsers();
+    this.getUsers();
 
   //   const Platforme:any = [
   //     {id:1, value:"VITIB"},
@@ -107,13 +107,13 @@ const url:any =  this.router.navigate(['/login-kilari'])
 
   }
 
-  // showSuccess(msg:any) {
-  //   this.toastr.success(msg);
-  // }
+  showSuccess(msg:any) {
+    this.toastr.success(msg);
+  }
 
-  // showDanger(msg:any){
-  //   this.toastr.error(msg);
-  // }
+  showDanger(msg:any){
+    this.toastr.error(msg);
+  }
 
   // show(){
   //   this.SpinnerService.showSpinner()
@@ -124,21 +124,21 @@ const url:any =  this.router.navigate(['/login-kilari'])
   // }
 
 
-  // open(content:any, rai?:any) {
-  //   this.modalRef =  this.modalService.open(content, {size  : 'lg'})
-  //   this.modalRef.result.then(
-  //     (result:any) => {
-  //       console.log('oooook',result);
-  //   });
-  // }
+  open(content?:any, rai?:any) {
+    // this.modalRef =  this.modalService.open(content, {size  : 'lg'})
+    // this.modalRef.result.then(
+    //   (result:any) => {
+    //     console.log('oooook',result);
+    // });
+  }
 
-  // openLock(contentLock:any, rai?:any) {
-  //   this.modalRef =  this.modalService.open(contentLock, {size  : 'lg'})
-  //   this.modalRef.result.then(
-  //     (result:any) => {
-  //       console.log('oooook',result);
-  //   });
-  // }
+  openLock(contentLock?:any, rai?:any) {
+    // this.modalRef =  this.modalService.open(contentLock, {size  : 'lg'})
+    // this.modalRef.result.then(
+    //   (result:any) => {
+    //     console.log('oooook',result);
+    // });
+  }
 
 
   // PwdForgot(){
@@ -286,36 +286,36 @@ const url:any =  this.router.navigate(['/login-kilari'])
   // }
 
 
-  // getUsers(){
-  //   let endPoint = "user"
-  //   this.ApiService.get(endPoint).subscribe(
-  //     (response:any) => {
-  //       this.ListUser = response;
-  //       console.log('ListUser', this.ListUser);
-  //     },
-  //     (error:any) => {
-  //       console.log('error',error);
-  //     }
-  //   );
-  // }
+  getUsers(){
+    let endPoint = "user"
+    this.ApiService.get(endPoint).subscribe(
+      (response:any) => {
+        this.ListUser = response;
+        console.log('ListUser', this.ListUser);
+      },
+      (error:any) => {
+        console.log('error',error);
+      }
+    );
+  }
 
-  // login() {
-  //   // const endPoint = "user";
-  //   const user = this.ListUser.find( (el:any)=>{
-  //     return el.username === this.user.username && el.password === this.user.password
-  //   })
-  //   console.log('user',user);
-  //     this.SpinnerService.showSpinner();
-  //   if(user){
-  //     this.showSuccess("Connexion réussie");
-  //     this.SpinnerService.hideSpinner();
-  //     this.userService.setUserSession(user);
-  //     this.router.navigate(["tableau-de-bord"])
-  //   }else{
-  //     this.showDanger("Connexion échouée ! Saisissez les bonnes informations SVP || Mot de passe/identifiant")
-  //     this.SpinnerService.hideSpinner();
-  //   }
-  // }
+  login() {
+    // const endPoint = "user";
+    const user = this.ListUser.find( (el:any)=>{
+      return el.username === this.user.username && el.password === this.user.password
+    })
+    console.log('user',user);
+      this.SpinnerService.showSpinner();
+    if(user){
+      this.showSuccess("Connexion réussie");
+      this.SpinnerService.hideSpinner();
+      this.userService.setUserSession(user);
+      this.router.navigate(["tableau-de-bord"])
+    }else{
+      this.showDanger("Connexion échouée ! Saisissez les bonnes informations SVP || Mot de passe/identifiant")
+      this.SpinnerService.hideSpinner();
+    }
+  }
 
 
 

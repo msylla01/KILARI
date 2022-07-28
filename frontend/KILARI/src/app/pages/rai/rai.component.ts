@@ -29,15 +29,23 @@ import { right } from '@popperjs/core';
 // import * as pdfMake from 'pdfmake/build/pdfmake.js';
 // import * as pdfFonts from 'pdfmake/build/vfs_fonts.js';
 // pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
+interface Typrobleme{
+  Numero: Number;
+  id: Number | null;
+  toctiket: Number | null;
+}
 @Component({
   selector: 'app-rai',
   templateUrl: './rai.component.html',
   styleUrls: ['./rai.component.scss']
 })
+
+
 export class RaiComponent implements OnInit {
 
   cursor:any;
-changePays:any= [];
+  changePays:any= [];
   ListPays:any = [];
   titleModal:any
   searchTerm:any;
@@ -67,13 +75,20 @@ changePays:any= [];
   isVisibleReservation = false;
   isVisibleDetail = false;
 
+
+  findPays:any;
+  findService:any;
+  findPlatform:any;
+
   stepVIew:any;
   listPays:any = [];
   listPlateforme:any = [];
   listPriorite:any = [];
   ListTickOcean:any = [];
   NewListTickOcean:any = [];
-  values:any = [];
+  values:any = [
+    // {} as Typrobleme
+  ];
 
   headerModal:string = '';
   hideSPan:boolean = false;
@@ -87,6 +102,10 @@ changePays:any= [];
   stepDest: boolean = false;
   stepTranc: boolean = false;
   disabeldTIckToc:boolean = false;
+
+  tagsPays:any =[];
+  tagsPlat:any= [];
+  tagsServi:any= [];
 
   groundStep1: any;
   groundStep2: any;
@@ -249,7 +268,10 @@ changePays:any= [];
     {id:2, value:"RECURRENT"},
   ]
 
+
+
   constructor(private msg: NzMessageService,private router: Router,private toastr: ToastrService, private SpinnerService:SpinnerService,private ApiService:ApiService , private ToastService:ToastService) {}
+
 
 
   ngOnInit() {
@@ -264,7 +286,8 @@ changePays:any= [];
     this.getService()
     this.getNumbTicket();
     this.filterTicket();
-    this.getPlatforme()
+    this.getPlatforme();
+    this.ImpactTicketUpdate()
   }
 
 
@@ -297,8 +320,10 @@ changePays:any= [];
     if (rai != undefined && rai.id) {
       this.disabeldTIckToc = true;
       console.log('++++rai edit',rai, this.disabeldTIckToc)
-      // this.numeroToc =  rai.Numero;
-      this.values.push(rai.Numero);
+
+      this.values.push(...rai.toc);
+      console.log('++++rai edit<<<<',this.values)
+
       this.disableChamp = false
     this.titleModal = "Modification d'un RAI"
       this.findEdit(rai)
@@ -311,6 +336,56 @@ changePays:any= [];
       this.groundStep3 = false;
       this.groundStep4 = false;
     }
+  }
+
+
+  findEdit(rai:any){
+    console.log('rai=====>', rai, rai.id);
+    let endPoint = 'toc'
+    this.idToc=rai.id;
+    this.ApiService.getOptionFind(endPoint,rai.id).subscribe(
+      (data:any)=>{
+        console.log('data toc ====>',data)
+        this.idGobal = data
+          this.step1 = data;
+          const {Impactpays,Impactplat,Impactservice,...reste} = data
+          data.Impactpays.map( (py:any)=> {
+            this.tagsPays.push(py['pays'])
+          })
+
+          data.Impactplat.map( (pt:any)=> {
+            this.tagsPlat.push(pt['Platform'])
+          })
+
+          data.Impactservice.map( (s:any)=> {
+            this.tagsServi.push(s['service'])
+          })
+          let result = reste;
+          result.pays =  this.tagsPays
+          result.Platforme =  this.tagsPlat
+          result.Service =  this.tagsServi
+          console.log('result.tags',result);
+          this.step1 = { ...result  };
+
+
+          console.log('step1====>', this.step1);
+          this.idTocStep1 =  data.id
+          this.idtocpro =data.tocpro[0].id;
+          this.idrai = data.tocpro[0].rai[0].id
+          let endPointToc ="tocprobleme"
+          let endPointRai ="rai"
+
+          this.ApiService.getOptionFind(endPointToc,this.idtocpro).subscribe((data:any)=>{
+            this.step2Update = data
+            console.log('step2Update',data)
+          });
+          this.ApiService.getOptionFind(endPointRai,this.idrai).subscribe((data: any)=>{
+            this.step3Update =  data;
+
+            console.log('step3Update',data)
+          });
+            console.log(this.idrai)
+        });
   }
 
   showModal1Detail(rai?:any): void {
@@ -335,9 +410,13 @@ changePays:any= [];
     this.step3Update = {};
     this.numeroToc= '';
     this.IdToc = [];
+    this.idToc =''
     this.IdTocFilnale = [];
     this.disableChamp = false;
     this.values =[];
+  this.tagsPays = []
+  this.tagsPlat = []
+  this.tagsServi = []
   }
 
   get DisabledRAI(){
@@ -348,6 +427,7 @@ changePays:any= [];
     this.cursor = 'not-allowed';
     return true
   }
+
   getBase64ImageFromURL(url) {
     return new Promise((resolve, reject) => {
       var img = new Image();
@@ -370,11 +450,11 @@ changePays:any= [];
 
 
   getSelect(event:any){
-console.log('event.target.value ==>', event)
-this.changePays.push(event)
-event = ""
-this.step1.Platforme = ""
-  }
+  console.log('event.target.value ==>', event)
+  this.changePays.push(event)
+  event = ""
+  this.step1.Platforme = ""
+    }
 
   getPlatforme(){
     let endPoint = "platform"
@@ -623,31 +703,27 @@ this.deleStorageAndClose();
       let slice2 = event.target.value .slice(4,5)
       let slice3 = event.target.value .slice(5)
 
-      if ( event.target.value.length === 10 && this.disabeldTIckToc === false ) {
+      if ( event.target.value.length === 10) {
 
         if (rExp1.test(slice2) && rExp2.test(slice3) && rExp2.test(slice1)) {
 
           if ( event.target.value && event.target.value !== undefined
             && event.target.value !== null) {
 
-            this.values.push(event.target.value);
+              let data = {} as Typrobleme
+              data.Numero = event.target.value;
+              data.id = null;
+              data.toctiket = null;
+
+            this.values.push(data);
             console.log('this.values',this.values);
             this.numeroToc = "";
-
             return;
              }
-            else{
-              return
-              }
         }else{
           this.toastr.error('Le format du ticket ne respect pas la norme');
           return
         }
-      }
-      else
-        if(event.target.value.length === 10 && this.disabeldTIckToc === true){
-        console.log("test annulation d'ajout dans le champ",event.target.value , this.disabeldTIckToc )
-        return
       }
       else{
         this.toastr.error('Il faut un numéro de ticket avec longueur de 10 caractères');
@@ -655,6 +731,8 @@ this.deleStorageAndClose();
       }
 
   }
+
+
 
   remove(item:any,ind?:number){
     const index = this.values.indexOf(item);
@@ -800,13 +878,36 @@ this.deleStorageAndClose();
       this.ApiService.post(endPoint, data).subscribe(
         (res: any) => {
           console.log('data res rai ticket ==> etape1', res);
-          this.showSuccess('La création du ticket incident est bien effectuée');
+          // this.showSuccess('La création du ticket incident est bien effectuée');
         },
         (error: any) => {
-          this.showDanger('La création de la RAI a échoué');
+          // this.showDanger('La création de la RAI a échoué');
         }
       );
     }
+  }
+
+  ImpactTicketUpdate(toctiket_id?:Number){
+    // for (let index = 0; index < this.values.length; index++) {
+      // const element = this.values[index];
+      let endPoint = 'tocticket';
+      let data =
+      {
+        toctiket:1,
+        Numero: '2525T78750'
+      }
+      console.log('data ticket ocean ajout ==> etape1', data,toctiket_id);
+
+      this.ApiService.put(endPoint,1, data).subscribe(
+        (res: any) => {
+          console.log('data res rai ticket ==> etape1', res);
+          // this.showSuccess('La création du ticket incident est bien effectuée');
+        },
+        (error: any) => {
+          // this.showDanger('La création de la RAI a échoué');
+        }
+      );
+    // }
   }
 
   ImpactPays(toctiket_id){
@@ -823,10 +924,33 @@ this.deleStorageAndClose();
       this.ApiService.post(endPoint, data).subscribe(
         (res: any) => {
           console.log('data res pays incident ==> etape1', res);
-          this.showSuccess('La liaison avec les pays est bien effectuée');
+          // this.showSuccess('La liaison avec les pays est bien effectuée');
         },
         (error: any) => {
-          this.showDanger('La liaison avec les pays a échoué');
+          // this.showDanger('La liaison avec les pays a échoué');
+        }
+      );
+    }
+  }
+
+  ImpactPaysUpdate(toctiket_id){
+    for (let index = 0; index < this.step1.pays.length; index++) {
+      const element = this.step1.pays[index];
+      let endPoint = 'impact';
+      let data =
+      {
+        toc:toctiket_id,
+        pays: element
+      }
+      console.log('data pays-incident ajout ==> etape1', element,data);
+
+      this.ApiService.put(endPoint, this.idToc,data).subscribe(
+        (res: any) => {
+          console.log('data res pays incident ==> etape1', res);
+          // this.showSuccess('La liaison avec les pays est bien effectuée');
+        },
+        (error: any) => {
+          // this.showDanger('La liaison avec les pays a échoué');
         }
       );
     }
@@ -846,10 +970,33 @@ this.deleStorageAndClose();
       this.ApiService.post(endPoint, data).subscribe(
         (res: any) => {
           console.log('data res platefome-incident  ==> etape1', res);
-          this.showSuccess('La création la platefome-incident incident est bien effectuée');
+          // this.showSuccess('La création la platefome-incident incident est bien effectuée');
         },
         (error: any) => {
-          this.showDanger('La création de la platefome-incident a échoué');
+          // this.showDanger('La création de la platefome-incident a échoué');
+        }
+      );
+    }
+  }
+
+  ImpactPlatformUpdate(toctiket_id){
+    for (let index = 0; index < this.step1.Platforme.length; index++) {
+      const element = this.step1.Platforme[index];
+      let endPoint = 'impactpp';
+      let data =
+      {
+        toc:toctiket_id,
+        Platform: element
+      }
+      console.log('data platefome-incident ajout ==> etape1', element,data);
+
+      this.ApiService.put(endPoint,this.idToc, data).subscribe(
+        (res: any) => {
+          console.log('data res platefome-incident  ==> etape1', res);
+          // this.showSuccess('La création la platefome-incident incident est bien effectuée');
+        },
+        (error: any) => {
+          // this.showDanger('La création de la platefome-incident a échoué');
         }
       );
     }
@@ -869,10 +1016,33 @@ this.deleStorageAndClose();
       this.ApiService.post(endPoint, data).subscribe(
         (res: any) => {
           console.log('data res rai ticket ==> etape1', res);
-          this.showSuccess('La création du service-incident est bien effectuée');
+          // this.showSuccess('La création du service-incident est bien effectuée');
         },
         (error: any) => {
-          this.showDanger('La création du service-incident a échoué');
+          // this.showDanger('La création du service-incident a échoué');
+        }
+      );
+    }
+  }
+
+  ImpactServceUpdate(toctiket_id){
+    for (let index = 0; index < this.step1.Service.length; index++) {
+      const element = this.step1.Service[index];
+      let endPoint = 'impacts';
+      let data =
+      {
+        toc:toctiket_id,
+        service: element
+      }
+      console.log('data service-incident ajout ==> etape1', element,data);
+
+      this.ApiService.put(endPoint,this.idToc, data).subscribe(
+        (res: any) => {
+          console.log('data res rai ticket ==> etape1', res);
+          // this.showSuccess('La création du service-incident est bien effectuée');
+        },
+        (error: any) => {
+          // this.showDanger('La création du service-incident a échoué');
         }
       );
     }
@@ -887,64 +1057,63 @@ this.deleStorageAndClose();
       && this.step1.Datedebut && this.step1.Datefin && this.step1.heurF && this.step1.heurD && this.step1.Datedebut
        && this.step1.Datedebut && this.step1.Description && this.step1.Service && this.step1.Platforme) {
 
+      if (this.values.length < 0 ) {
+        this.toastr.error('Renseigner le Ticket oceane SVP');
+          return;
+        }
+      if (!this.step1.pays) {
+        this.toastr.error('Selectionner le pays SVP');
+        return;
+        }
 
-      // if (this.values.length < 0 ) {
-      //   this.toastr.error('Renseigner le Ticket oceane SVP');
-      //     return;
-      //   }
-      // if (!this.step1.pays) {
-      //   this.toastr.error('Selectionner le pays SVP');
-      //   return;
-      //   }
+      if (!this.step1.priorite) {
+        this.toastr.error('renseigner priorité SVP');
+          return;
+        }
 
-      // if (!this.step1.priorite) {
-      //   this.toastr.error('renseigner priorité SVP');
-      //     return;
-      //   }
+      if (!this.step1.Datedebut) {
+      this.toastr.error('renseigner la date de debut SVP');
+          return;
+        }
 
-      // if (!this.step1.Datedebut) {
-      // this.toastr.error('renseigner la date de debut SVP');
-      //     return;
-      //   }
+        if (!this.step1.heurD) {
+      this.toastr.error('renseigner l\'heure de debut SVP');
+            return;
+          }
 
-      //   if (!this.step1.heurD) {
-      // this.toastr.error('renseigner l\'heure de debut SVP');
-      //       return;
-      //     }
+        if (!this.step1.Datefin) {
+      this.toastr.error('renseigner la date retablissement SVP');
+            return;
+          }
 
-      //   if (!this.step1.Datefin) {
-      // this.toastr.error('renseigner la date retablissement SVP');
-      //       return;
-      //     }
+          if (!this.step1.heurF) {
+      this.toastr.error('renseigner l\'heure de retablissement SVP');
+              return;
+            }
 
-      //     if (!this.step1.heurF) {
-      // this.toastr.error('renseigner l\'heure de retablissement SVP');
-      //         return;
-      //       }
+          if (!this.step1.Description) {
+      this.toastr.error('renseigner la description SVP');
+              return;
+            }
 
-      //     if (!this.step1.Description) {
-      // this.toastr.error('renseigner la description SVP');
-      //         return;
-      //       }
+            if (!this.step1.Platforme) {
+              this.toastr.error('Selectionner la plateforme SVP');
+                      return;
+                    }
+          if (!this.step1.Service) {
+            this.toastr.error('Selectionner le service SVP');
+                    return;
+                  }
 
-      //       if (!this.step1.Platforme) {
-      //         this.toastr.error('Selectionner la plateforme SVP');
-      //                 return;
-      //               }
-      //     if (!this.step1.Service) {
-      //       this.toastr.error('Selectionner le service SVP');
-      //               return;
-      //             }
+          if (this.step1.heurF.slice(0,2) < this.step1.heurD.slice(0,2)) {
+                this.toastr.error("Erreur sur la heure d'incident et la heure de rétablissement");
+                return;
+              }
 
-      //     if (this.step1.heurF.slice(0,2) < this.step1.heurD.slice(0,2)) {
-      //           this.toastr.error("Erreur sur la heure d'incident et la heure de rétablissement");
-      //           return;
-      //         }
-
-      //       if (new Date(this.step1.Datefin).getTime() < new Date(this.step1.Datedebut).getTime()) {
-      //         this.toastr.error("Erreur sur la date d'incident et la date de rétablissement");
-      //         return;
-      //       }
+            if (new Date(this.step1.Datefin).getTime() < new Date(this.step1.Datedebut).getTime()) {
+              this.toastr.error("Erreur sur la date d'incident et la date de rétablissement");
+              return;
+            }
 
       let endPoint = 'toc';
       let data = {
@@ -1019,60 +1188,143 @@ this.deleStorageAndClose();
   }
 
   updateStep1(){
+
     localStorage.setItem('hideTranc', JSON.stringify(true));
     const hideDistinataire = JSON.parse(localStorage.getItem('hideDest') || '{}');
     const hideExpediteur = JSON.parse(localStorage.getItem('hideExpe') || '{}');
+
     if (hideDistinataire && hideExpediteur && this.step1.pays &&  this.step1.priorite &&  this.step1.heurD
-      && this.step1.Datedebut && this.step1.Datefin && this.step1.heurF && this.step1.heurD && this.step1.Datedebut && this.step1.Datedebut
-      && this.step1.Description && this.step1.Service && this.step1.Platforme) {
+      && this.step1.Datedebut && this.step1.Datefin && this.step1.heurF && this.step1.heurD && this.step1.Datedebut
+       && this.step1.Datedebut && this.step1.Description && this.step1.Service && this.step1.Platforme) {
 
-    let endPoint = 'tocticket';
-    let data =
-      {
-        Numero: this.numeroToc
-      }
-      console.log('data ticket mise à jour ocean ajout', data,endPoint);
-      this.ApiService.put(endPoint, this.idToc, data).subscribe(
+      if (this.values.length < 0 ) {
+        this.toastr.error('Renseigner le Ticket oceane SVP');
+          return;
+        }
+      if (!this.step1.pays) {
+        this.toastr.error('Selectionner le pays SVP');
+        return;
+        }
+
+      if (!this.step1.priorite) {
+        this.toastr.error('renseigner priorité SVP');
+          return;
+        }
+
+      if (!this.step1.Datedebut) {
+      this.toastr.error('renseigner la date de debut SVP');
+          return;
+        }
+
+        if (!this.step1.heurD) {
+      this.toastr.error('renseigner l\'heure de debut SVP');
+            return;
+          }
+
+        if (!this.step1.Datefin) {
+      this.toastr.error('renseigner la date retablissement SVP');
+            return;
+          }
+
+          if (!this.step1.heurF) {
+      this.toastr.error('renseigner l\'heure de retablissement SVP');
+              return;
+            }
+
+          if (!this.step1.Description) {
+      this.toastr.error('renseigner la description SVP');
+              return;
+            }
+
+            if (!this.step1.Platforme) {
+              this.toastr.error('Selectionner la plateforme SVP');
+                      return;
+                    }
+          if (!this.step1.Service) {
+            this.toastr.error('Selectionner le service SVP');
+                    return;
+                  }
+
+          if (this.step1.heurF.slice(0,2) < this.step1.heurD.slice(0,2)) {
+                this.toastr.error("Erreur sur la heure d'incident et la heure de rétablissement");
+                return;
+              }
+
+            if (new Date(this.step1.Datefin).getTime() < new Date(this.step1.Datedebut).getTime()) {
+              this.toastr.error("Erreur sur la date d'incident et la date de rétablissement");
+              return;
+            }
+
+      let endPoint = 'toc';
+      let data = {
+        priorite: this.step1.priorite,
+        Datedebut: this.step1.Datedebut,
+        heurD: this.step1.heurD,
+        Datefin: this.step1.Datefin,
+        heurF: this.step1.heurF,
+        Description: this.step1.Description,
+      };
+    console.log('data rai create ticket ==>etape 1', data);
+    this.loading = true;
+    this.ApiService.put(endPoint, this.idToc, data)
+      .subscribe(
         (res: any) => {
-          console.log('data res mise à jour rai ticket', res);
-          this.updateRAi(res);
-          this.showSuccess('La mise à jour du numéro de ticket est bien effectuée');
-          this.loading = true;
+          console.log(' res creatte rai ticket incicent ==>etape 1', res);
+          console.log('IdToc table de id ==> etape 1', this.IdToc);
+          if (res) {
+            this.IdToc=res.id;
+            this.ImpactTicketUpdate(res.id);
+            this.ImpactPaysUpdate(res.id);
+            this.ImpactPlatformUpdate(res.id);
+            this.ImpactServceUpdate(res.id);
+            this.step2 =  {...this.step2Update}
+            this.showSuccess('La update étape 1 validé')
+            this.loading = false;
+            this.groundStep1 = false;
+            this.groundStep2 = true;
+            this.groundStep3 = false;
+            this.groundStep4 = false;
 
-          this.groundStep1 = false;
-          this.groundStep2 = true;
-    this.groundStep4 = false;
+            this.backgroundStep1 = true;
+            this.backgroundStep2 = false;
+          } else {
+          console.log(' erreur creatte rai ticket incicent ==>etape 1', res);
+            this.loading = false;
+            this.showDanger('Update étape 1 non validé')
+            this.groundStep1 = true;
+            this.groundStep2 = false;
+            this.groundStep3 = false;
+            this.groundStep4 = false;
 
-          this.groundStep3 = false;
-          this.backgroundStep1 = true;
-          this.backgroundStep2 = false;
+            this.backgroundStep1 = false;
+            this.backgroundStep2 = false;
+          }
         },
         (error: any) => {
-          this.showDanger(`La mise à jour numéro du ticket est non effectuée.
-          Roote cause: ${error}`);
-
-          this.groundStep1 = false;
+          console.log(' erreur creatte rai ticket incicent ==>etape 1', error);
+          this.loading = false;
+          this.showDanger('Update étape 1  non validé')
+          this.groundStep1 = true;
           this.groundStep2 = false;
           this.groundStep3 = false;
-          this.backgroundStep1 = true;
-          this.backgroundStep2 = false;
-    this.groundStep4 = false;
+          this.groundStep4 = false;
 
+          this.backgroundStep1 = false;
+          this.backgroundStep2 = false;
         }
       );
     }
     else{
       this.showDanger('Les conditions ne sont pas remplies');
-
-      this.groundStep1 = false;
-      this.groundStep2 = false;
+    this.groundStep1 = true;
+    this.groundStep2 = false;
+    this.groundStep3 = false;
     this.groundStep4 = false;
 
-      this.groundStep3 = false;
-      this.backgroundStep1 = true;
-      this.backgroundStep2 = false;
-    }
+    this.backgroundStep1 = false;
+    this.backgroundStep2 = false;
 
+    }
   }
 
   updateRAi(toc?: any) {
@@ -1115,8 +1367,6 @@ this.deleStorageAndClose();
   }
 
 
-
-
   nextStep2(){
     const hideDistinataire = JSON.parse(localStorage.getItem('hideExpe') || '{}');
     const hideTrasaction = JSON.parse(localStorage.getItem('hideTranc') || '{}');
@@ -1125,41 +1375,36 @@ this.deleStorageAndClose();
     if (hideDistinataire && hideExpediteur && hideTrasaction && this.step2.Numerotocpro &&  this.step2.Porteur &&
       this.step2.typeproblem && this.IdToc != undefined && this.IdToc != null) {
 
+      let rExp1 = new RegExp("^[A-Z]+$");
+      let rExp2 = new RegExp("^[0-9]+$");
+      let slice1 = this.step2.Numerotocpro.slice(0,4)
+      let slice2 = this.step2.Numerotocpro.slice(4,5)
+      let slice3 = this.step2.Numerotocpro.slice(5)
 
+      if (!this.step2.Numerotocpro) {
+        this.toastr.error('Renseigner le numéro ticket problème SVP');
+          return;
+        }
 
-      // let rExp1 = new RegExp("^[A-Z]+$");
-      // let rExp2 = new RegExp("^[0-9]+$");
-      // let slice1 = this.step2.Numerotocpro.slice(0,4)
-      // let slice2 = this.step2.Numerotocpro.slice(4,5)
-      // let slice3 = this.step2.Numerotocpro.slice(5)
+      if (!this.step2.Porteur) {
+        this.toastr.error('Selectionner le porteur SVP');
+        return;
+        }
 
-      // if (!this.step2.Numerotocpro) {
-      //   this.toastr.error('Renseigner le numéro ticket problème SVP');
-      //     return;
-      //   }
+      if (!this.step2.typeproblem) {
+        this.toastr.error('Selectionner le type du problème SVP');
+          return;
+        }
 
-      // if (!this.step2.Porteur) {
-      //   this.toastr.error('Selectionner le porteur SVP');
-      //   return;
-      //   }
+        if (rExp1.test(slice2) === false && rExp2.test(slice3) === false && rExp2.test(slice1) === false) {
+          this.toastr.error('Le format du ticket ne respect pas la norme');
+          return
+        }
 
-      // if (!this.step2.typeproblem) {
-      //   this.toastr.error('Selectionner le type du problème SVP');
-      //     return;
-      //   }
-
-      //   if (rExp1.test(slice2) === false && rExp2.test(slice3) === false && rExp2.test(slice1) === false) {
-      //     this.toastr.error('Le format du ticket ne respect pas la norme');
-      //     return
-      //   }
-
-      //   if (this.step2.Numerotocpro.length !== 10) {
-      //     this.toastr.error('Il faut un numéro de ticket avec longueur de 10 caractères');
-      //     return
-      //   }
-//  return
-        // for (let index = 0; index < this.IdToc.length; index++) {
-          // const element = this.IdToc[index];
+        if (this.step2.Numerotocpro.length !== 10) {
+          this.toastr.error('Il faut un numéro de ticket avec longueur de 10 caractères');
+          return
+        }
           let endPoint = 'tocprobleme';
           let data =
           {
@@ -1258,7 +1503,7 @@ this.deleStorageAndClose();
           let data =
           {
             Numerotocpro: this.step2.Numerotocpro,
-            toc:this.IdTocUpdate,
+            toc:this.idtocpro,
             typeproblem  :this.step2.typeproblem,
             Porteur: this.step2.Porteur,
           }
@@ -1342,7 +1587,8 @@ this.deleStorageAndClose();
             console.log('data res RAI data ajout ==> etape 3', res);
             this.loading2 = false;
             this.showSuccess('La création est bien  effectuée')
-            this.deleStorageAndClose()
+            // this.deleStorageAndClose()
+            this.handleCancel()
             this.getNumbTicket()
           },
           (error: any) => {
@@ -1354,6 +1600,7 @@ this.deleStorageAndClose();
   }
 
   }
+
   finalStep2(){
 
     if (this.IdTocFilnale != undefined && this.IdTocFilnale != null) {
@@ -1389,7 +1636,8 @@ this.deleStorageAndClose();
             console.log('data res RAI data ajout ==> etape 3', res);
             this.loading2 = false;
             this.showSuccess('La création est bien  effectuée')
-            this.deleStorageAndClose()
+            // this.deleStorageAndClose()
+            this.handleCancel()
             this.getNumbTicket()
           },
           (error: any) => {
@@ -1404,12 +1652,10 @@ this.deleStorageAndClose();
 
   editRAI(){
     if (this.IdTocFilnaleUpdate != undefined && this.IdTocFilnaleUpdate != null) {
-      // for (let index = 0; index < this.IdTocFilnale.length; index++) {
-      //   const element = this.IdTocFilnale[index];
         let endPoint = 'rai';
           this.data =
               {
-                tocprobleme : this.IdTocFilnaleUpdate,
+                tocprobleme : this.idrai,
                 declenchement : this.step3.declenchement,
                 status : this.step3.status,
                 Rapportredige :this.step3.Rapportredige,
@@ -1470,12 +1716,13 @@ this.deleStorageAndClose();
     this.SpinnerService.showSpinner();
       this.ApiService.get(endPoint).subscribe(
         (response:any) => {
-          this.ListTickOcean = response;
+          this.ListTickOcean = response
           this.SpinnerService.hideSpinner();
-          console.log('ListTickOcean++ ///', this.ListTickOcean);
+          console.log('ListTickOcean++ ///', response);
         },
         (error:any) => {
           console.log('error',error);
+          this.SpinnerService.hideSpinner();
         }
       );
   }
@@ -1483,7 +1730,6 @@ this.deleStorageAndClose();
   filterTicket(){
     console.log('event===>',this.searchToc);
     if (this.searchToc) {
-      // this.NewListTickOcean = this.ListTickOcean.filter((val: any) => this.searchToc.toLowerCase().includes(val.Numero));
        this.ListTickOcean.map( (el:any)=>{
         console.log('el===>', el,this.searchToc,this.searchToc.toLowerCase().includes(el.Numero.toLowerCase()), this.searchToc.toLowerCase());
         if (this.searchToc.includes(el.Numero)) {
@@ -1540,34 +1786,7 @@ this.deleStorageAndClose();
 
 
 
-  findEdit(rai:any){
-    console.log('rai=====>', rai, rai.id);
-    let endPoint = 'toc'
-    this.idToc=rai.id;
-    this.ApiService.getOptionFind(endPoint,rai.id).subscribe(
-      (data:any)=>{
-        console.log('data toc ====>',data)
-        this.idGobal = data
-          this.step1 = data;
-          console.log('step1====>', this.step1);
-          this.idTocStep1 =  data.id
-          this.idtocpro =data.tocpro[0].id;
-          this.idrai = data.tocpro[0].rai[0].id
-          let endPointToc ="tocprobleme"
-          let endPointRai ="rai"
 
-          this.ApiService.getOptionFind(endPointToc,this.idtocpro).subscribe((data:any)=>{
-            this.step2Update = data
-            console.log('step2Update',data)
-          });
-          this.ApiService.getOptionFind(endPointRai,this.idrai).subscribe((data: any)=>{
-            this.step3Update =  data;
-
-            console.log('step3Update',data)
-          });
-            console.log(this.idrai)
-        });
-  }
 
   findView(rai:any){
     console.log('rai=====>', rai);

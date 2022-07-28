@@ -12,38 +12,76 @@
         <button type="button" (click)="showModal1()" class=" btn btn-primary plus "> <i class="fa-solid fa-plus "></i> Créer une RAI</button>
     </div>
     <div class="content-tableau ">
-        <nz-table #smallTable nzSize="small" [nzData]="ListTickOcean">
+        <nz-table nzBordered #smallTable nzSize="small" [nzData]="ListTickOcean">
             <thead>
                 <tr>
-                    <th style="font-size: 14px;font-weight: 600;">Ticket incident</th>
-                    <th style="font-size: 14px;font-weight: 600;">Priorité</th>
-                    <th style="font-size: 14px;font-weight: 600;">Toc problème</th>
-                    <th style="font-size: 14px;font-weight: 600;">Porteur</th>
-                    <th style="font-size: 14px;font-weight: 600;">Platforme</th>
-                    <th style="font-size: 14px;font-weight: 600;">Service</th>
-                    <th style="font-size: 14px;font-weight: 600;">Pays</th>
-                    <th style="font-size: 14px;font-weight: 600;">Priorité</th>
-                    <th style="font-size: 14px;font-weight: 600;">Ticket problème</th>
-                    <th style="font-size: 14px;font-weight: 600;">Type de solution</th>
-                    <th style="font-size: 14px;font-weight: 600;">Actions</th>
+                    <th style="font-size: 14px;font-weight: 600;
+                    white-space: nowrap;">Ticket incident</th>
+                    <th style="font-size: 14px;font-weight: 600;
+                    white-space: nowrap;">Porteur</th>
+                    <th style="font-size: 14px;font-weight: 600;
+                    white-space: nowrap;">Toc problème</th>
+                    <th style="font-size: 14px;font-weight: 600;
+                    white-space: nowrap;">Priorité</th>
+                    <th style="font-size: 14px;font-weight: 600;
+                    white-space: nowrap;">Status toc problème</th>
+                    <th style="font-size: 14px;font-weight: 600;
+                    white-space: nowrap;">Date RI reçue</th>
+                    <th style="font-size: 14px;font-weight: 600;
+                    white-space: nowrap;">Date RAI</th>
+                    <th style="font-size: 14px;font-weight: 600;
+                    white-space: nowrap;">Type de problème</th>
+                    <th style="font-size: 14px;font-weight: 600;
+                      white-space: nowrap;">Statut RAI</th>
+                    <th style="font-size: 14px;font-weight: 600;
+                      white-space: nowrap;">Pays</th>
+                    <th style="font-size: 14px;font-weight: 600;
+                    white-space: nowrap;"> Plateforme</th>
+                    <th style="font-size: 14px;font-weight: 600;
+                      white-space: nowrap;">Service</th>
+
+                    <th style="font-size: 14px;font-weight: 600;
+                    white-space: nowrap;">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let item of smallTable.data">
-                    <td>{{item.Numero}}</td>
-                    <td>{{item.toc[0]?.priorite}}</td>
-                    <td>{{item.toc[0]?.tocpro[0]?.Numerotocpro}}</td>
-                    <td>{{item.toc[0]?.tocpro[0]?.Porteur}}</td>
-                    <td>{{item.toc[0]?.Platforme}}</td>
-                    <td>{{item.toc[0]?.Service}}</td>
-                    <td>{{item.toc[0]?.pays}}</td>
-                    <td>{{item.toc[0]?.tocpro[0]?.Numerotocpro}}</td>
-                    <td>{{item.toc[0]?.tocpro[0]?.typeproblem}}</td>
-                    <td>{{item.toc[0]?.tocpro[0]?.rai[0].Typesolution}}</td>
-                    <td class="">
+                    <td>
+                        <nz-tag *ngFor="let element of item.toc" nzColor="processing" [style]="{marginBottom:'10px'}">
+                            {{element.Numero}}
+                        </nz-tag>
+                    </td>
+                    <td style="white-space: nowrap;">{{ item.tocpro[0].Porteur }}</td>
+                    <td style="white-space: nowrap;">{{ item.tocpro[0].Numerotocpro }}</td>
+                    <td style="white-space: nowrap;">{{ item.priorite }}</td>
+                    <td style="white-space: nowrap;">Statut</td>
+                    <td>{{item.Datedebut}}-{{item.heurD}}</td>
+                    <td>{{item.Datedebut}}-{{item.heurD}}</td>
+                    <td style="white-space: nowrap;">{{ item.tocpro[0].rai[0].Rirecu}}</td>
+                    <td>{{item.Datefin}}-{{item.heurF}}</td>
+
+                    <td style="    white-space: nowrap;">
+                        <nz-tag *ngFor="let element of item.Impactpays" nzColor="processing">
+                            {{element.pays}}
+                        </nz-tag>
+                    </td>
+
+                    <td style="    white-space: nowrap;">
+                        <nz-tag *ngFor="let element of item.Impactplat" nzColor="processing">
+                            {{element.Platform}}
+                        </nz-tag>
+                    </td>
+
+                    <td style="    white-space: nowrap;">
+                        <nz-tag *ngFor="let element of item.Impactservice" nzColor="processing">
+                            {{element.service}}
+                        </nz-tag>
+                    </td>
+
+                    <td class="" style="    white-space: nowrap;">
                         <!-- (click)="open(content, item)" -->
                         <button style="    margin-right: 0.6rem;" type="button" class="btn btn-danger">
-                  <i class="fa fa-edit" aria-hidden="true"></i>
+                  <i class="fa fa-edit" aria-hidden="true" (click)="showModal1(item)"></i>
                 </button>
                         <button type="button" class="btn btn-success">
                   <i class="fa fa-eye" aria-hidden="true"></i>
@@ -100,7 +138,7 @@ font-weight: 600;">{{titleModal}} <i class="fa fa-tasks " style=" font-size:1rem
                                     <span title="supprimer" style="background: gray;
                           padding: 0.1rem 0.4rem;
                           border-radius: 0px;margin-right: 0.3rem;    font-size: 15px;
-                          font-weight: 700;" *ngFor="let item of values">{{item}} <small (click)="remove(item)" style="color: orangered;cursor: pointer;">X</small></span>
+                          font-weight: 700;" *ngFor="let item of values">{{item.Numero}} <small (click)="remove(item)" style="color: orangered;cursor: pointer;">X</small></span>
                                 </div>
                             </div>
                             <div class="pays ">
@@ -137,9 +175,7 @@ font-weight: 600;">{{titleModal}} <i class="fa fa-tasks " style=" font-size:1rem
                                 </div>
                                 <div class="service" style="width: 100%;">
                                     <label for="service">Services:<small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                                    <!-- <select class="form-select " name="Service " [(ngModel)]="step1.Service " aria-label="Default select example ">
-                                      <option *ngFor="let item of Service " [value]="item.value ">{{item.value}}</option>
-                                    </select> -->
+
                                     <nz-select nzMode="tags" nzPlaceHolder="Selectionner les services" name="Service" style="width: 100%;" [(ngModel)]="step1.Service">
                                         <nz-option *ngFor="let option of listService" [nzLabel]="option.Libelle" [nzValue]="option.id"></nz-option>
                                     </nz-select>
@@ -172,9 +208,6 @@ font-weight: 600;">{{titleModal}} <i class="fa fa-tasks " style=" font-size:1rem
                 <span *ngIf="loading " class="spinner-border spinner-border-sm " role="status " aria-hidden="true "></span>
                 <span *ngIf="loading " style="margin-left: 0.2rem; ">Loading...</span>
               </button>
-                        <!-- <button *ngIf="disableChamp" type="button" class="btn btn-primary" (click)="viewStep1()"> -->
-                        <!-- <span>Etape suivante</span>
-                        </button> -->
                     </div>
                 </div>
             </div>
@@ -209,13 +242,9 @@ font-weight: 600;">{{titleModal}} <i class="fa fa-tasks " style=" font-size:1rem
                 <span *ngIf="loading1 " class="spinner-border spinner-border-sm " role="status " aria-hidden="true "></span>
                 <span *ngIf="loading1 " style="margin-left: 0.2rem; ">Loading...</span>
               </button>
-                        <!-- <button *ngIf="disableChamp" type="button " class="btn btn-primary" (click)="viewStep2()"> -->
-                        <!-- <span>Etape suivante</span>
-                        </button> -->
                     </div>
                 </div>
             </div>
-            <!-- -->
             <div id="imput-content-step3 " *ngIf="groundStep3">
                 <div class="imput-content-step3 ">
                     <div class="content ">
@@ -302,7 +331,6 @@ font-weight: 600;">{{titleModal}} <i class="fa fa-tasks " style=" font-size:1rem
                         </div>
                     </div>
                     <div class="footer-finale ">
-                        <!-- <button type="button " *ngIf="!disableChamp" class="btn btn-secondary " (click)="handleCancel() ">Annuler</button> -->
                         <button *ngIf="!step3.id && !disableChamp" type="button " class="btn btn-primary " (click)="finalStep() ">
                 <span *ngIf="!loading2 " style="margin-left: 0.2rem; ">Sauvegarder</span>
                 <span *ngIf="loading2 " class="spinner-border spinner-border-sm " role="status " aria-hidden="true "></span>
@@ -390,17 +418,6 @@ font-weight: 600;">{{titleModal}} <i class="fa fa-tasks " style=" font-size:1rem
     </div>
     <div *nzModalFooter [style]="{display:'flex',    padding: '1%', borderTop: 'none',    justifyContent: 'center',textAlign: 'center',
 flexDirection: 'column'}">
-        <!-- <div *ngIf="!customerModif['@id']">
-          <button nz-button nzType="default" (click)="handleCancel()" [style]="{height: '39px',marginRight: '37px', color:'black', background:'white',fontWeight: '300',fontSize: '14px',border: '1px solid #dcd9d9',borderRadius: '5px'}" (click)="retour()">Retour</button>
-          <button nz-button nzType="primary" [nzLoading]="LoadingDraft" [style]="{marginRight: '37px',color:'white', background:'#8D191E',fontWeight: '300',fontSize: '14px',border: 'none',borderRadius: '5px',width: '110px',
-        height: '39px'}" (click)="CreateOrUpdateDraft()">Enregistrer</button>
-          <button nz-button nzType="primary" [nzLoading]="LoadingNoDraft" [style]="{color:'white', background:'#2EE083',fontWeight: '300',fontSize: '14px',border: 'none',borderRadius: '5px',width: '193px',
-        height: '39px'}" (click)="CreateOrUpdateNoDraft()">Confirmer et Reserver</button>
-      </div>
-      <div *ngIf="customerModif['@id']">
-          <button nz-button nzType="primary" [nzLoading]="LoadingNoDraft" [style]="{color:'white', background:'#8D191E',fontWeight: '300',fontSize: '14px',border: 'none',borderRadius: '5px',
-      height: '39px'}" (click)="updateReservation()">Sauvegarder les modifications</button>
-      </div> -->
     </div>
 
 </nz-modal>
@@ -412,7 +429,6 @@ flexDirection: 'column'}">
         <div class="modal-header ">
             <h5 class="modal-title " id="exampleModalLabel " style="    font-size: 25px;
 font-weight: 600;">{{titleModal}} <i class="fa fa-tasks " style=" font-size:1rem ; margin-left: 1rem; color: #ff7900; " aria-hidden="true "></i></h5>
-            <!-- <button type="button " style="outline: none; " class="btn-close " (click)="deleStorageAndClose() "><span class="visually-hidden ">Close</span></button> -->
         </div>
     </ng-template>
     <div *nzModalContent>
@@ -424,18 +440,6 @@ font-weight: 600;">{{titleModal}} <i class="fa fa-tasks " style=" font-size:1rem
     </div>
     <div *nzModalFooter [style]="{display:'flex',    padding: '1%', borderTop: 'none',    justifyContent: 'center',textAlign: 'center',
 flexDirection: 'column'}">
-        <!-- <div *ngIf="!customerModif['@id']">
-        <button nz-button nzType="default" (click)="handleCancel()" [style]="{height: '39px',marginRight: '37px', color:'black', background:'white',fontWeight: '300',fontSize: '14px',border: '1px solid #dcd9d9',borderRadius: '5px'}" (click)="retour()">Retour</button>
-        <button nz-button nzType="primary" [nzLoading]="LoadingDraft" [style]="{marginRight: '37px',color:'white', background:'#8D191E',fontWeight: '300',fontSize: '14px',border: 'none',borderRadius: '5px',width: '110px',
-      height: '39px'}" (click)="CreateOrUpdateDraft()">Enregistrer</button>
-        <button nz-button nzType="primary" [nzLoading]="LoadingNoDraft" [style]="{color:'white', background:'#2EE083',fontWeight: '300',fontSize: '14px',border: 'none',borderRadius: '5px',width: '193px',
-      height: '39px'}" (click)="CreateOrUpdateNoDraft()">Confirmer et Reserver</button>
-    </div>
-    <div *ngIf="customerModif['@id']">
-        <button nz-button nzType="primary" [nzLoading]="LoadingNoDraft" [style]="{color:'white', background:'#8D191E',fontWeight: '300',fontSize: '14px',border: 'none',borderRadius: '5px',
-    height: '39px'}" (click)="updateReservation()">Sauvegarder les modifications</button>
-    </div> -->
-
 
     </div>
 

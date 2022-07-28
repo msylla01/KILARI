@@ -134,31 +134,27 @@ export class ApiService {
     })
   }
 
-  // find(id: number, endPoint:string): Observable<any> {
-  //   return new Observable((observer)=> {
-  //     this.httpClient.get(environment.BASE_URL + '/' + endPoint + '/' ,this.httpOptionsLogin).subscribe(
-  //       result => {
-  //         console.log(result);
-  //         observer.next(result);
-  //       },
-  //       error => {
-  //         if (error.status === 401){
-  //           observer.error("Session expiré")
-  //           this.route.navigate(['login-kilari']);
-  //         }else {
-  //           observer.error(error.error ? error.error['hydra:description']: 'Une erreur c\'est produite')
-  //         }
+  find(id: number, endPoint:string): Observable<any> {
+    return new Observable((observer)=> {
+      this.httpClient.get(environment.BASE_URL + '/' + endPoint + '/' ,this.httpOptionsLogin).subscribe(
+        result => {
+          console.log(result);
+          observer.next(result);
+        },
+        error => {
+          if (error.status === 401){
+            observer.error("Session expiré")
+            this.route.navigate(['login-kilari']);
+          }else {
+            observer.error(error.error ? error.error['hydra:description']: 'Une erreur c\'est produite')
+          }
 
-  //       },() => {
-  //         observer.complete();
-  //       }
-  //     );
-  //   });
-  //   return this.httpClient.get<any>(this.baseURL + '/toc/' + id + '/')
-  //   .pipe(
-  //     catchError(this.errorHandler)
-  //   )
-  // }
+        },() => {
+          observer.complete();
+        }
+      );
+    });
+  }
 
   getOptionFind(endpoint: string, params: any, options?: any) {
     return this.httpClient.get(environment.BASE_URL + "/" + endpoint + "/" +  params + "/");

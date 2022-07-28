@@ -10,9 +10,9 @@ import { FullComponent } from './layouts/full/full.component';
 import { HomepageComponent } from './home/homepage/homepage.component';
 import { AccountsRoutingModule } from './accounts/accounts-routing.module';
 import { SharedModule } from './shared/shared.module';
-import { RaiModule } from './rai/rai.module';
+import { RaiModule } from './pages/rai/rai.module';
 import { TocService } from './services/toc.service';
-import { DatePipe } from '@angular/common';
+import { DatePipe, registerLocaleData } from '@angular/common';
 import { PlanactionraiModule } from './planactionrai/planactionrai.module';
 import { PlanactionraiRoutingModule } from './planactionrai/planactionrai-routing.module';
 import {AuthGuard} from './services/auth.guard'
@@ -24,7 +24,7 @@ import { ToastrModule } from 'ngx-toastr';
 import en from '@angular/common/locales/en';
 
 import { NZ_ICONS } from 'ng-zorro-antd/icon';
-import { NZ_I18N, en_US } from 'ng-zorro-antd/i18n';
+import { NZ_I18N, en_US, fr_FR } from 'ng-zorro-antd/i18n';
 import { IconDefinition } from '@ant-design/icons-angular';
 import * as AllIcons from '@ant-design/icons-angular/icons';
 
@@ -39,6 +39,11 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HighchartsChartModule } from 'highcharts-angular';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { LoyoutGlobalComponent } from './loyout-global/loyout-global.component';
+import fr from '@angular/common/locales/fr';
+// import { FindElementPipe } from './pipe/findElement.pipe';
+// import { FindElementPipe } from './pipe/findElement.pipe';
+
+registerLocaleData(fr);
 // import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
@@ -53,7 +58,8 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     AppComponent,
     FullComponent,
     HomepageComponent ,
-      LoyoutGlobalComponent
+      LoyoutGlobalComponent,
+      // FindElementPipe
    ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [

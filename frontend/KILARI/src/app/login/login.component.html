@@ -1,4 +1,4 @@
-<!-- <div class="login-content">
+<div class="login-content">
 
     <div class="header-form">
         <img src="../../assets/GOS.jpeg" alt="logo">
@@ -27,24 +27,25 @@
                   Remember me
                 </label>
                 </div>
-                <a style="cursor: pointer;" class="oublier" (click)="openLock(contentLock)">Mot de passe oublié ?</a>
+                <!-- (click)="openLock(contentLock)" -->
+                <a style="cursor: pointer;" class="oublier">Mot de passe oublié ?</a>
             </div>
-
+            <!-- -->
             <div class="btn-connect">
-                <button type="submit" class="btn btn-primary" (click)="login()">Sign in</button>
+                <button type="submit" (click)="login()" class="btn btn-primary">Sign in</button>
             </div>
 
 
         </form>
-
+        <!-- (click)="open(content)" -->
         <div class="create-count">
             <p>Don't have an account yet ?</p>
-            <a style="cursor: pointer;" (click)="open(content)">Create an account</a>
+            <a style="cursor: pointer;">Create an account</a>
         </div>
     </div>
 
 </div>
- -->
+
 
 
 <!-- <ng-template #content let-modal class="content-modal">
