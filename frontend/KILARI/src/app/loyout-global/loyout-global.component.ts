@@ -28,7 +28,7 @@ export class LoyoutGlobalComponent implements OnInit {
   }
 
   getNumbTicket(){
-    let endPoint = "tocticket"
+    let endPoint = "toc"
       this.ApiService.get(endPoint).subscribe(
         (response:any) => {
           this.ListTickOcean = response;

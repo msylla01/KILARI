@@ -86,6 +86,34 @@ this.defaultString = plan_rai.Numerotocpro;
   if (!plan_rai) {
     this.PasForm.reset();
   }
+  else{
+    this.default = plan_rai.id
+    this.defaultString = plan_rai.Numerotocpro;
+    console.log('plan_rai', plan_rai);
+        this.titleModal = "Modification d'un plan d'action rai";
+        this.tilreBtn =  "Enregistrer le PA modifier"
+        this.updateOrCreate =  true
+        this.disableBtn =  false;
+        this.disableBtnAdd = true
+        for (let index = 0; index < plan_rai.planrai.length; index++) {
+          const element = plan_rai.planrai[index];
+          console.log('element',element);
+          this.IdTOc =  element.id;
+          const res = new FormGroup({
+              Libelle: new FormControl(element.Libelle),
+              Porteur: new FormControl(element.Porteur),
+              Dateprevisionel: new FormControl(element.Dateprevisionel),
+              Dateeffective: new FormControl(element.Dateeffective),
+              Perimetre: new FormControl(element.Perimetre),
+              Efficacite: new FormControl(element.Efficacite),
+              Status: new FormControl(element.Status),
+              Commentaire: new FormControl(element.Commentaire),
+              tocpr: new FormControl(element.tocpr),
+            });
+            this.pas.push(res);
+        }
+        console.log('this.pas edit====++', this.pas);
+  }
 
   this.addPas()
 }
@@ -315,11 +343,11 @@ handleCancel(): void {
   submitValed(){
     if (!this.updateOrCreate) {
       this.onSubmit();
+      this.getTocProbleme()
     }
     else{
       this.updatePlanAction();
       this.getTocProbleme()
-      // this.deleStorageAndClose();
     }
 
   }
@@ -334,7 +362,7 @@ handleCancel(): void {
             console.log('res planification====>',res);
           this.showSuccess('La création bine effectué')
           this.getTocProbleme()
-          // this.deleStorageAndClose();
+        this.handleCancel()
           this.default = "";
           this.pas.clear();
           console.log('planaction  objet :',i,'created successfully!',);
@@ -350,23 +378,23 @@ handleCancel(): void {
     let endPoint =  'planaction';
     // return
     this.pas.value.forEach((element:any) => {
-let data = {
-  Libelle: element.Libelle,
-  Porteur: element.Porteur,
-  Dateprevisionel: element.Dateprevisionel,
-  Dateeffective: element.Dateeffective,
-  Perimetre: element.Perimetre,
-  Efficacite: element.Efficacite,
-  Status: element.Status,
-  Commentaire: element.Commentaire,
-  tocpr: element.tocpr,
-}
+    let data = {
+      Libelle: element.Libelle,
+      Porteur: element.Porteur,
+      Dateprevisionel: element.Dateprevisionel,
+      Dateeffective: element.Dateeffective,
+      Perimetre: element.Perimetre,
+      Efficacite: element.Efficacite,
+      Status: element.Status,
+      Commentaire: element.Commentaire,
+      tocpr: element.tocpr,
+    }
       console.log('planaction  objet++++//element     :',data);
       this.ApiService.put(endPoint,element.id,data).subscribe(
       (res:any) => {
         console.log('res planification update====>',res);
       this.showSuccess('La mise ça jour est bien effectuée')
-
+      this.handleCancel()
       console.log('planaction  objet :created successfully!',);
       }),
       (error: any) => {

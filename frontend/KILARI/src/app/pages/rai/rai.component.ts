@@ -72,6 +72,10 @@ export class RaiComponent implements OnInit {
   step3:any = {};
   totalStep:any = {};
 
+
+  elementRAI:any = {}
+
+
   isVisibleReservation = false;
   isVisibleDetail = false;
 
@@ -103,6 +107,10 @@ export class RaiComponent implements OnInit {
   stepTranc: boolean = false;
   disabeldTIckToc:boolean = false;
 
+
+  searchPorteur:any;
+
+
   tagsPays:any =[];
   tagsPlat:any= [];
   tagsServi:any= [];
@@ -116,7 +124,7 @@ export class RaiComponent implements OnInit {
   backgroundStep2: any;
   backgroundStep3: any;
   backgroundSTep4: any;
-
+reloading:boolean = false;
   listService:any = [];
   uploading = false;
   fileList: NzUploadFile[] = [];
@@ -255,13 +263,24 @@ export class RaiComponent implements OnInit {
     {id:2, value:"Contournement"},
   ]
 
+
   declenchement:any = [
     {id:1, value:"1"},
     {id:2, value:"2"},
-    {id:2, value:"3"},
-    {id:2, value:"4"},
-    {id:2, value:"5"},
+    {id:3, value:"3"},
+    {id:4, value:"4"},
+    {id:5, value:"5"},
   ]
+
+
+
+  // declenchement:any = [
+  //   {valeur:"Un seul incident provoquant l'indisponibilité totale de plusieurs services distincts ", indice:"1"},
+  //   {valeur:"Un seul incident provoquant l'indisponibilité totale d'un services dans plusieurs pays", indice:"2"},
+  //   {valeur:"Un incident provoquant l'indisponibilité les data centers du GOS", indice:"3"},
+  //   {valeur:"Un incident majeur dont la root cause n'est pas déterminer(le work-around étant toujours actif", indice:"4"},
+  //   {valeur:"Plusieurs incidents majeurs impactant un service ou une  plateforme et dont l'occurence est supérieur à deux sur une période", indice:"5"},
+  // ]
 
   TypeProbleme:any = [
     {id:1, value:"MAJEUR"},
@@ -285,9 +304,29 @@ export class RaiComponent implements OnInit {
     this.getPlatforme()
     this.getService()
     this.getNumbTicket();
-    this.filterTicket();
+    // this.filterTicket();
     this.getPlatforme();
-    this.ImpactTicketUpdate()
+    this.NewListTickOcean =[...this.ListTickOcean];
+    console.log('===>999',this.NewListTickOcean);
+
+    // this.ImpactTicketUpdate()
+  }
+
+
+  func(idval){
+    let endPoint = 'pays'
+    const result = this.Pays.find( ({ id }) => id === idval );
+    return result.value // { name: 'cherries', quantity: 5 }
+  }
+  func1(idval){
+    let endPoint = 'service'
+    const result = this.Service.find( ({ id }) => id === idval );
+    return result.value // { name: 'cherries', quantity: 5 }
+  }
+  func2(idval){
+    let endPoint = 'platform'
+    const result = this.Platforme.find( ({ id }) => id === idval );
+    return result.value // { name: 'cherries', quantity: 5 }
   }
 
 
@@ -389,15 +428,19 @@ export class RaiComponent implements OnInit {
   }
 
   showModal1Detail(rai?:any): void {
-    this.titleModal = "Detail de la RAI";
+    this.titleModal = "Detail de la RAI enregistré";
     this.isVisibleDetail = true;
+    this.elementRAI = {...rai}
+    console.log('elementRAI', this.elementRAI);
+
   }
 
 
   handleCancel(): void {
     console.log('handleCancel',);
     this.isVisibleReservation = false;
-    this.disabeldTIckToc = false
+    this.disabeldTIckToc = false;
+    this.isVisibleDetail=false;
     localStorage.removeItem('hideDest');
     localStorage.removeItem('hideTranc');
     this.backgroundStep1 = false;
@@ -414,9 +457,9 @@ export class RaiComponent implements OnInit {
     this.IdTocFilnale = [];
     this.disableChamp = false;
     this.values =[];
-  this.tagsPays = []
-  this.tagsPlat = []
-  this.tagsServi = []
+    this.tagsPays = []
+    this.tagsPlat = []
+    this.tagsServi = []
   }
 
   get DisabledRAI(){
@@ -450,10 +493,10 @@ export class RaiComponent implements OnInit {
 
 
   getSelect(event:any){
-  console.log('event.target.value ==>', event)
-  this.changePays.push(event)
-  event = ""
-  this.step1.Platforme = ""
+    console.log('event.target.value ==>', event)
+    this.changePays.push(event)
+    event = ""
+    this.step1.Platforme = ""
     }
 
   getPlatforme(){
@@ -871,7 +914,7 @@ this.deleStorageAndClose();
       let data =
       {
         toctiket:toctiket_id,
-        Numero: element
+        Numero: element.Numero
       }
       console.log('data ticket ocean ajout ==> etape1', element,toctiket_id);
 
@@ -888,8 +931,8 @@ this.deleStorageAndClose();
   }
 
   ImpactTicketUpdate(toctiket_id?:Number){
-    // for (let index = 0; index < this.values.length; index++) {
-      // const element = this.values[index];
+    for (let index = 0; index < this.values.length; index++) {
+      const element = this.values[index];
       let endPoint = 'tocticket';
       let data =
       {
@@ -907,7 +950,7 @@ this.deleStorageAndClose();
           // this.showDanger('La création de la RAI a échoué');
         }
       );
-    // }
+    }
   }
 
   ImpactPays(toctiket_id){
@@ -1709,15 +1752,35 @@ this.deleStorageAndClose();
   }
 
 
+getRespac(date1, date2): any {
+let Date11 = new Date(date1);
+let Date22 = new Date(date2);
+    console.log('eeee=====>',date1, date2,  (new Date(Date22)).getTime() - (new Date(Date11)).getTime() - 2);
 
+    return  (new Date(Date11)).getTime() - (new Date(Date22)).getTime() - 2;
+}
+
+
+previewImage: string | undefined = '';
+previewVisible = false;
+
+// handlePreview = async (file: NzUploadFile): Promise<void> => {
+//   if (!file.url && !file.preview) {
+//     file.preview = await getBase64(file.originFileObj!);
+//   }
+//   this.previewImage = file.url || file.preview;
+//   this.previewVisible = true;
+// };
 
   getNumbTicket(){
     let endPoint = "toc"
     this.SpinnerService.showSpinner();
       this.ApiService.get(endPoint).subscribe(
         (response:any) => {
-          this.ListTickOcean = response
+          this.ListTickOcean = response.
           this.SpinnerService.hideSpinner();
+          this.loading = false;
+          this.reloading = false;
           console.log('ListTickOcean++ ///', response);
         },
         (error:any) => {
@@ -1727,19 +1790,58 @@ this.deleStorageAndClose();
       );
   }
 
-  filterTicket(){
-    console.log('event===>',this.searchToc);
-    if (this.searchToc) {
-       this.ListTickOcean.map( (el:any)=>{
-        console.log('el===>', el,this.searchToc,this.searchToc.toLowerCase().includes(el.Numero.toLowerCase()), this.searchToc.toLowerCase());
-        if (this.searchToc.includes(el.Numero)) {
-           return this.NewListTickOcean.push(el)
+  filterPorteur(event:any){
+    console.log('event===>',event.target.value);
+    this.searchPorteur = event.target.value
+    if (event.target.value   ) {
+        this.ListTickOcean.filter((el:any)=>{
+        if ( el.tocpro[0].Porteur.toLowerCase().includes(event.target.value.toLowerCase()) ) {
+            this.ListTickOcean = []
+             this.ListTickOcean.push(el);
+             this.ListTickOcean;
         }
-        this.NewListTickOcean =  [...this.ListTickOcean]
+        else if(!el.tocpro[0].Porteur.toLowerCase().includes(event.target.value.toLowerCase())){
+          console.log('aaaa=>>',el.tocpro[0].Porteur.toLowerCase().includes(event.target.value.toLowerCase()));
+            this.ListTickOcean
+        }
       })
-    }else{
-      this.NewListTickOcean =  [...this.ListTickOcean]
     }
+
+    if (!event.target.value) {
+      console.log('==><====NUm',this.ListTickOcean,this.ListTickOcean);
+        this.ListTickOcean
+    }
+  }
+
+  filterTicket(event:any){
+    console.log('event===>',event.target.value);
+    this.searchToc = event.target.value
+    if (event.target.value   ) {
+        this.ListTickOcean.filter((el:any)=>{
+        if ( el.toc[0]?.Numero.toLowerCase().includes(event.target.value.toLowerCase()) ) {
+            this.ListTickOcean = []
+             this.ListTickOcean.push(el);
+             this.ListTickOcean;
+        }
+        else if(!el.tocpro[0].Porteur.toLowerCase().includes(event.target.value.toLowerCase())){
+          console.log('aaaa=>>',el.toc[0]?.Numero.toLowerCase().includes(event.target.value.toLowerCase()));
+            this.ListTickOcean
+        }
+      })
+    }
+
+    if (!event.target.value) {
+      console.log('==><====NUm',this.ListTickOcean,this.ListTickOcean);
+        this.ListTickOcean
+    }
+  }
+
+  reloadPage(){
+    this.searchPorteur = "";
+    this.searchToc = "";
+    this.reloading = true
+    // location.reload();
+    this.getNumbTicket()
   }
 
   dissabledChampR(event:any){
@@ -1753,6 +1855,18 @@ this.deleStorageAndClose();
       return
     }
   }
+
+  // dissabledEtage(event:any){
+  //   console.log('event==>',event.target.value);
+  //   if (event.target.value && event.target.value === "Réalisé") {
+  //   this.dissabledR = false;
+  //   return
+  //   }
+  //   else{
+  //     this.dissabledR = true;
+  //     return
+  //   }
+  // }
 
   getRAI(){
     let endPoint = "rai"

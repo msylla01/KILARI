@@ -2,10 +2,15 @@
     <p class="liste-rai">Liste des RAI</p>
     <div class="btn-search-rai">
         <div class="imput-search-btn">
-            <small> Filtrer par Toc:</small>
-            <form action="#">
-                <input type="text*" name="searchToc" [(ngModel)]="searchToc" class="form-control" placeholder="Rechercher par ticket" autocomplete="off">
-                <button type="submit" class="btn btn-secondary" (click)="filterTicket()"><i class="fas fa-search"></i></button>
+            <!-- <small> Filtrer par Toc:</small> -->
+            <form action="#" style="display: flex;gap:1rem">
+                <input type="text*" name="searchPorteur" (change)="filterPorteur($event)" [(ngModel)]="searchPorteur" class="form-control" placeholder="Rechercher par porteur" autocomplete="off">
+                <input type="text*" name="searchToc" [(ngModel)]="searchToc" (change)="filterTicket($event)" class="form-control" placeholder="Rechercher par ticket" autocomplete="off">
+                <i *ngIf="!reloading" (click)="reloadPage()" style=" margin-top: 0.7rem;font-size: 1.4rem;cursor: pointer;" class="fa fa-refresh" aria-hidden="true"></i>
+                <div *ngIf="reloading" class="spinner-border spinner-border-sm" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <!-- <button type="submit" class="btn btn-secondary" (click)="filterTicket()"><i class="fas fa-search"></i></button> -->
             </form>
             <!-- (click)="showModal1()" -->
         </div>
@@ -29,11 +34,16 @@
                     white-space: nowrap;">Date RI reçue</th>
                     <th style="font-size: 14px;font-weight: 600;
                     white-space: nowrap;">Date RAI</th>
+                    <!-- <th style="font-size: 14px;font-weight: 600;
+                     white-space: nowrap;">Date RAI</th> -->
                     <th style="font-size: 14px;font-weight: 600;
-                    white-space: nowrap;">Type de problème</th>
+                    white-space: nowrap;">Type problème</th>
                     <th style="font-size: 14px;font-weight: 600;
-                      white-space: nowrap;">Statut RAI</th>
+                      white-space: nowrap;">Date réception RI</th>
+                    <!-- <th style="font-size: 14px;font-weight: 600;
+                      white-space: nowrap;">Respect SLA RAI</th> -->
                     <th style="font-size: 14px;font-weight: 600;
+
                       white-space: nowrap;">Pays</th>
                     <th style="font-size: 14px;font-weight: 600;
                     white-space: nowrap;"> Plateforme</th>
@@ -51,39 +61,42 @@
                             {{element.Numero}}
                         </nz-tag>
                     </td>
-                    <td style="white-space: nowrap;">{{ item.tocpro[0].Porteur }}</td>
-                    <td style="white-space: nowrap;">{{ item.tocpro[0].Numerotocpro }}</td>
-                    <td style="white-space: nowrap;">{{ item.priorite }}</td>
-                    <td style="white-space: nowrap;">Statut</td>
-                    <td>{{item.Datedebut}}-{{item.heurD}}</td>
-                    <td>{{item.Datedebut}}-{{item.heurD}}</td>
-                    <td style="white-space: nowrap;">{{ item.tocpro[0].rai[0].Rirecu}}</td>
-                    <td>{{item.Datefin}}-{{item.heurF}}</td>
+                    <td style="text-align: center;">{{ item.tocpro[0].Porteur }}</td>
+                    <td style="text-align: center;">{{ item.tocpro[0].Numerotocpro }}</td>
+                    <td style="text-align: center;" *ngIf="item.tocpro[0].rai[0].declenchement < 4 " class="critical">P1</td>
+                    <td style="text-align: center;" *ngIf="item.tocpro[0].rai[0].declenchement >= 4" class="wanning">P2</td>
+                    <td style="text-align: center;">Statut</td>
+                    <td style="text-align: center;">{{item.Datedebut}}-{{item.heurD}}</td>
+                    <td style="text-align: center;">{{item.Datefin}}-{{item.heurF}}</td>
+                    <!-- <td style="text-align: center;">{{item.Datedebut}}-{{item.heurD}}</td> -->
+                    <td>{{ item.tocpro[0].typeproblem}}</td>
+                    <td style="text-align: center;">{{item.Datefin}}-{{item.heurF}}</td>
+                    <!-- <td style="text-align: center;">{{getRespac(item.tocpro[0].rai[0].DateRept, item.tocpro[0].rai[0].Datecritere)}}</td> -->
 
-                    <td style="    white-space: nowrap;">
-                        <nz-tag *ngFor="let element of item.Impactpays" nzColor="processing">
-                            {{element.pays}}
+                    <td>
+                        <nz-tag *ngFor="let element of item.Impactpays" nzColor="processing" style="    margin-bottom: 0.3rem;">
+                            {{func(element.pays)}}
                         </nz-tag>
                     </td>
 
-                    <td style="    white-space: nowrap;">
-                        <nz-tag *ngFor="let element of item.Impactplat" nzColor="processing">
-                            {{element.Platform}}
+                    <td>
+                        <nz-tag *ngFor="let element of item.Impactplat" nzColor="processing" style="    margin-bottom: 0.3rem;">
+                            {{func2(element.Platform)}}
                         </nz-tag>
                     </td>
 
-                    <td style="    white-space: nowrap;">
-                        <nz-tag *ngFor="let element of item.Impactservice" nzColor="processing">
-                            {{element.service}}
+                    <td style=" margin-bottom: 0.8rem;">
+                        <nz-tag *ngFor="let element of item.Impactservice" nzColor="processing" style="    margin-bottom: 0.3rem;">
+                            {{func1(element.service)}}
                         </nz-tag>
                     </td>
 
-                    <td class="" style="    white-space: nowrap;">
+                    <td class="" style="white-space: nowrap;">
                         <!-- (click)="open(content, item)" -->
                         <button style="    margin-right: 0.6rem;" type="button" class="btn btn-danger">
                   <i class="fa fa-edit" aria-hidden="true" (click)="showModal1(item)"></i>
                 </button>
-                        <button type="button" class="btn btn-success">
+                        <button style="    margin-right: 0.6rem;" (click)="showModal1Detail(item)" type="button" class="btn btn-success">
                   <i class="fa fa-eye" aria-hidden="true"></i>
                 </button>
                     </td>
@@ -245,13 +258,14 @@ font-weight: 600;">{{titleModal}} <i class="fa fa-tasks " style=" font-size:1rem
                     </div>
                 </div>
             </div>
+            <!--  -->
             <div id="imput-content-step3 " *ngIf="groundStep3">
                 <div class="imput-content-step3 ">
                     <div class="content ">
                         <div class="content-left ">
                             <div class="statut-rai ">
                                 <label for="statut-rai ">Statut Rai : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                                <select id="inputState " class="form-select " name="status " [(ngModel)]="step3.status" (change)="dissabledChampR($event)">
+                                <select id="inputState " class="form-select " name="status" [(ngModel)]="step3.status" (change)="dissabledChampR($event)">
                                   <option>Selectionner un statut</option>
                                   <option *ngFor="let item of StatusRAI" [value]="item.value">{{item.value}}</option>
                               </select>
@@ -260,7 +274,7 @@ font-weight: 600;">{{titleModal}} <i class="fa fa-tasks " style=" font-size:1rem
                                 <label for="rai-recu ">Rapport incident Recu : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
                                 <div style="display: flex;gap:1rem">
                                     <div class="div1" style="width: 100%;">
-                                        <select id="inputState " class="form-select " name="Rairecu " [(ngModel)]="step3.Rairecu ">
+                                        <select id="inputState " class="form-select " name="Rairecu" [(ngModel)]="step3.Rairecu">
                                       <option *ngFor="let item of RI_recu" [value]="item.value">{{item.value}}</option>
                                     </select>
                                     </div>
@@ -278,30 +292,30 @@ font-weight: 600;">{{titleModal}} <i class="fa fa-tasks " style=" font-size:1rem
                             </div>
                             <div class="e ">
                                 <label for="rapport-redige ">Rapport Rédigé : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                                <select id="inputState " class="form-select " name="Rapportredige " [(ngModel)]="step3.Rapportredige ">
+                                <select id="inputState " class="form-select " name="Rapportredige" [(ngModel)]="step3.Rapportredige">
                                   <option *ngFor="let item of Rediges" [value]="item.value">{{item.value}}</option>
                                 </select>
                             </div>
                             <div class="rapport-partage ">
                                 <label for="rapport-partage ">Rapport Partagé : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                                <select id="inputState " class="form-select " name="Rapportpartage " [(ngModel)]="step3.Rapportpartage ">
+                                <select id="inputState " class="form-select " name="Rapportpartage" [(ngModel)]="step3.Rapportpartage">
                                   <option *ngFor="let item of Partages" [value]="item.value">{{item.value}}</option>
                                 </select>
                             </div>
                             <div class="compte-rendu ">
                                 <label for="rcompte-rendu ">Compte rendu : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                                <select id="inputState " class="form-select " name="Comptrendus " [(ngModel)]="step3.Comptrendus ">
+                                <select id="inputState " class="form-select " name="Comptrendus" [(ngModel)]="step3.Comptrendus">
                                   <option *ngFor="let item of Compte_rendu" [value]="item.value">{{item.value}}</option>
                                 </select>
                             </div>
                         </div>
                         <div class="content-right ">
                             <div class="date-rai ">
-                                <label for="date-rai ">Date de la Rai : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                                <label for="date-rai ">Date de la RAI : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
                                 <input name="Datecritere" [(ngModel)]="step3.Datecritere" type="date" class="form-control ">
                             </div>
                             <div class="date-reception-rai ">
-                                <label for="date-reception-rai ">Date reception de la Rai : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
+                                <label for="date-reception-rai ">Date d'incident de la RI : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
                                 <input type="date" name="DateRept" [(ngModel)]="step3.DateRept" class="form-control ">
                             </div>
                             <div class="cause ">
@@ -313,7 +327,7 @@ font-weight: 600;">{{titleModal}} <i class="fa fa-tasks " style=" font-size:1rem
 
                             <div class="root-cause ">
                                 <label for="declenchement ">Déclenchement Rapport incident : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                                <select id="inputState " class="form-select " name="declenchement " [(ngModel)]="step3.declenchement ">
+                                <select id="inputState " class="form-select " name="declenchement" [(ngModel)]="step3.declenchement">
                                 <option *ngFor="let item of declenchement" [value]="item.value">{{item.value}}</option>
                               </select>
                             </div>
@@ -327,7 +341,7 @@ font-weight: 600;">{{titleModal}} <i class="fa fa-tasks " style=" font-size:1rem
                     <div class="commentaires ">
                         <div style="width: 100%;display: flex;flex-direction: column;">
                             <label for="cause ">Cause immédiate: <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                            <textarea name="Cause" [(ngModel)]="step3.Cause " id=" " cols="30 " rows="6"></textarea>
+                            <textarea name="Cause" [(ngModel)]="step3.Cause" id=" " cols="30 " rows="6"></textarea>
                         </div>
                     </div>
                     <div class="footer-finale ">
@@ -342,7 +356,7 @@ font-weight: 600;">{{titleModal}} <i class="fa fa-tasks " style=" font-size:1rem
                 <span *ngIf="loading2 " style="margin-left: 0.2rem; ">Loading...</span>
               </button>
 
-                        <button *ngIf="!step3.id && !disableChamp" type="button " class="btn btn-success " (click)="nexStep4() ">
+                        <button *ngIf=" !dissabledR" type="button " class="btn btn-success " (click)="nexStep4() ">
                 <span *ngIf="!loading2 " style="margin-left: 0.2rem; ">Passer à l'étape 4</span>
                 <span *ngIf="loading2 " class="spinner-border spinner-border-sm " role="status " aria-hidden="true "></span>
                 <span *ngIf="loading2 " style="margin-left: 0.2rem; ">Loading...</span>
@@ -362,28 +376,28 @@ font-weight: 600;">{{titleModal}} <i class="fa fa-tasks " style=" font-size:1rem
                         <div class="content-left ">
                             <div class="statut-rai ">
                                 <label for="stat-root-cause ">Status root cause : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                                <select class="form-select " aria-label="Default select example " name="Statrootcause " [(ngModel)]="step3.Statrootcause ">
+                                <select class="form-select " aria-label="Default select example " name="Statrootcause" [(ngModel)]="step3.Statrootcause">
                               <option *ngFor="let item of Stat_root" [value]="item.value">{{item.value}}</option>
                             </select>
                             </div>
                             <div class="rai-recu ">
                                 <label for="root-cause ">Root cause : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                                <textarea name="Rootcause" [(ngModel)]="step3.Rootcause " id=" " cols="30 " rows="6"></textarea>
+                                <textarea name="Rootcause" [(ngModel)]="step3.Rootcause" id=" " cols="30 " rows="6"></textarea>
                             </div>
                         </div>
                         <div class="content-right ">
                             <div class="date-rai ">
                                 <label for="type-solution ">Types de solution : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                                <select id="Typesolution " name="Typesolution " [(ngModel)]="step3.Typesolution " class="form-select ">
+                                <select id="Typesolution " name="Typesolution" [(ngModel)]="step3.Typesolution" class="form-select ">
                               <option *ngFor="let item of action_solut" [value]="item.value">{{item.value}}</option>
                             </select>
                             </div>
                             <div class="date-reception-rai ">
                                 <div style="    width: 100%;">
                                     <label for="commentaires ">Commentaires : <small class="red-star" style="color: red;font-size: 20px;">*</small></label>
-                                    <textarea name="Commentaire " [(ngModel)]="step3.Commentaire " id=" " cols="30 " rows="6 " style="width: 100%;"></textarea>
+                                    <textarea name="Commentaire" [(ngModel)]="step3.Commentaire" id=" " cols="30 " rows="6 " style="width: 100%;"></textarea>
                                 </div>
-                                <div class="div1" style=" width: 80%;">
+                                <!-- <div class="div1" style=" width: 80%;">
                                     <input type="file" name="uploadedFileRAI" id="uploadedFileRAI" (change)="fileChangeRAI($event)" [(ngModel)]="step3.uploadedFileRAI" accept="*/*">
                                     <label class="uploadedFileRAI" for="uploadedFileRAI">
                                       <i class="fas fa-save" style="    margin-right: 1rem;
@@ -392,7 +406,7 @@ font-weight: 600;">{{titleModal}} <i class="fa fa-tasks " style=" font-size:1rem
                                     </label>
                                     <small style="font-size: 16px;
                                     font-weight: 600;">{{step3.uploadedFileRAI?.name}}</small>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -423,24 +437,190 @@ flexDirection: 'column'}">
 </nz-modal>
 
 
-<nz-modal [(nzVisible)]="isVisibleDetail" nzWidth="1500px" [style]="{fontSize: '23px',color:'#8D191E',height:'23%'}" [nzTitle]="modalTitle" (nzOnCancel)="handleCancel()">
+<nz-modal [(nzVisible)]="isVisibleDetail" nzWidth="1300px" [style]="{fontSize: '23px',color:'#8D191E',height:'23%'}" [nzTitle]="modalTitle" (nzOnCancel)="handleCancel()">
 
     <ng-template #modalTitle>
         <div class="modal-header ">
             <h5 class="modal-title " id="exampleModalLabel " style="    font-size: 25px;
-font-weight: 600;">{{titleModal}} <i class="fa fa-tasks " style=" font-size:1rem ; margin-left: 1rem; color: #ff7900; " aria-hidden="true "></i></h5>
+              font-weight: 600;">{{titleModal}} <i class="fa fa-tasks " style=" font-size:1rem ; margin-left: 1rem; color: #ff7900; " aria-hidden="true "></i></h5>
         </div>
     </ng-template>
     <div *nzModalContent>
-        <div class="ligne1-detail">
-            <div>aaaa</div>
-            <div>bbbb</div>
-            <div>nnnn</div>
+        <div class="part1">
+
+            <div class="parti-datail">
+
+
+                <div class="ligne1-detail1">
+                    <div class="ligne1">Detail du ticket incident</div>
+
+                    <div class="div1">
+                        <div class="" style="    font-weight: bolder;"> Les différents tickets incident</div>
+                        <div class="">
+                            <nz-tag *ngFor="let element of elementRAI.toc" nzColor="processing" [style]="{marginBottom:'10px'}">
+                                {{element.Numero}}
+                            </nz-tag>
+                        </div>
+                    </div>
+                    <div class="div1">
+                        <div class="" style="    font-weight: bolder;"> Description du ticket incident</div>
+                        <div class="" style="color: orange;">{{elementRAI.Description}}</div>
+                    </div>
+                    <div class="div1">
+                        <div class="" style="    font-weight: bolder;">Date et heure de début du incident</div>
+                        <div class="" style="color: orange;">{{elementRAI.Datedebut}} {{elementRAI.heurD}}</div>
+                    </div>
+                    <div class="div1">
+                        <div class="" style="    font-weight: bolder;">Date et heure de rétablissement de l'incident</div>
+                        <div class="" style="color: orange;">{{elementRAI.Datefin}} {{elementRAI.heurF}}</div>
+                    </div>
+                    <div class="div1" style="    font-weight: bolder;">
+                        <div class="">Priorité de l'incident</div>
+                        <div class="" style="color: orange;">{{elementRAI.priorite}}</div>
+                    </div>
+                    <div class="div1">
+                        <div class="" style="    font-weight: bolder;">Pays impacter par l'incident</div>
+                        <div class="" style="color: orange;">
+                            <nz-tag *ngFor="let element of elementRAI.Impactpays" nzColor="processing">
+                                {{func(element.pays)}}
+                            </nz-tag>
+                        </div>
+                    </div>
+                    <div class="div1">
+                        <div class="" style="    font-weight: bolder;">Servce impacter par l'incident</div>
+                        <div class="" style="color: orange;">
+                            <nz-tag *ngFor="let element of elementRAI.Impactservice" nzColor="processing">
+                                {{func1(element.service)}}
+                            </nz-tag>
+                        </div>
+                    </div>
+                    <div class="div1">
+                        <div class="" style="    font-weight: bolder;">Plateforme impacter par de l'incident</div>
+                        <div class="" style="color: orange;">
+                            <nz-tag *ngFor="let element of elementRAI.Impactplat" nzColor="processing">
+                                {{func2(element.Platform)}}
+                            </nz-tag>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="ligne1-detail2">
+                    <div class="ligne1">Detail du ticket problème</div>
+                    <div class="div1">
+                        <div class="" style="    font-weight: bolder;"> Le ticket problème</div>
+                        <div class="">
+                            {{elementRAI.tocpro[0].Numerotocpro}}
+                        </div>
+                    </div>
+                    <div class="div1">
+                        <div class="" style="    font-weight: bolder;"> Porteur</div>
+                        <div class="" style="color: orange;">{{elementRAI.tocpro[0].Porteur}}</div>
+                    </div>
+                    <div class="div1">
+                        <div class="" style="    font-weight: bolder;"> Type de problème</div>
+                        <div class="" style="color: orange;">{{elementRAI.tocpro[0].typeproblem}}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="parti-datail">
+
+
+                <div class="ligne1-detail1">
+                    <div class="ligne1">Detail du Rapport d'analyse d'incident</div>
+
+                    <div class="div1">
+                        <div class="" style="    font-weight: bolder;"> Action de rétablissement</div>
+                        <div class="">
+                            {{elementRAI.tocpro[0].rai[0].Actionretablissement}}
+                        </div>
+                    </div>
+                    <div class="div1">
+                        <div class="" style="    font-weight: bolder;">Cause incident</div>
+                        <div class="" style="color: orange;">{{elementRAI.tocpro[0].rai[0].Cause}}</div>
+                    </div>
+                    <div class="div1">
+                        <div class="" style="    font-weight: bolder;">Compte rendu</div>
+                        <div class="" style="color: orange;">{{elementRAI.tocpro[0].rai[0].Comptrendus}}</div>
+                    </div>
+                    <div class="div1">
+                        <div class="" style="    font-weight: bolder;">Date de la reception de la RAI</div>
+                        <div class="" style="color: orange;">{{elementRAI.tocpro[0].rai[0].DateRept}}</div>
+                    </div>
+                    <div class="div1" style="    font-weight: bolder;">
+                        <div class="">Date de la RAI</div>
+                        <div class="" style="color: orange;">{{elementRAI.tocpro[0].rai[0].Datecritere}}</div>
+                    </div>
+                    <div class="div1">
+                        <div class="" style="    font-weight: bolder;">Rapport partagé</div>
+                        <div class="" style="color: orange;">
+                            {{elementRAI.tocpro[0].rai[0].Rapportpartage}}
+                        </div>
+                    </div>
+                    <div class="div1">
+                        <div class="" style="    font-weight: bolder;">Rapport rédigé</div>
+                        <div class="" style="color: orange;">
+                            {{elementRAI.tocpro[0].rai[0].Rapportredige}}
+                        </div>
+                    </div>
+                    <div class="div1">
+                        <div class="" style="    font-weight: bolder;">Rapport d'incident reçu</div>
+                        <div class="" style="color: orange;">
+                            {{elementRAI.tocpro[0].rai[0].Rirecu}}
+                        </div>
+                    </div>
+                    <div class="div1">
+
+                        <div class="" style="    font-weight: bolder;">Respect SLA RAI</div>
+                        <div class="" style="color: red;">
+                            {{elementRAI.tocpro[0].rai[0].Rirecu}}
+                        </div>
+                    </div>
+                </div>
+                <div class="ligne1-detail2">
+                    <div class="ligne1">Detail du Rapport d'analyse d'incident</div>
+
+                    <div class="div1">
+                        <div class="" style="    font-weight: bolder;"> Root cause</div>
+                        <div class="">
+                            {{elementRAI.tocpro[0].rai[0].Rootcause}}
+                        </div>
+                    </div>
+                    <div class="div1">
+                        <div class="" style="    font-weight: bolder;"> Fichier Rapport Analyse d'incident</div>
+                        <div class="" style="color: orange;">
+                            <img nz-image width="23px" height="29px" nzSrc="../../../assets/PDF.png" alt="" />
+                            <!-- <img src="../../../assets/PDF.png" alt="pdf prez" style="width: 23px;height: 29px;"> -->
+                            <!-- {{elementRAI.tocpro[0].rai[0].uploadedFileRAI}} -->
+                        </div>
+                    </div>
+                    <div class="div1">
+                        <div class="" style="    font-weight: bolder;"> Statut root cause</div>
+                        <div class="" style="color: orange;">{{elementRAI.tocpro[0].rai[0].Statrootcause}}</div>
+                    </div>
+                    <div class="div1">
+                        <div class="" style="    font-weight: bolder;"> Type de solution</div>
+                        <div class="" style="color: orange;">{{elementRAI.tocpro[0].rai[0].Typesolution}}</div>
+                    </div>
+                    <div class="div1">
+                        <div class="" style="    font-weight: bolder;"> Déclenchement</div>
+                        <div class="" style="color: orange;">{{elementRAI.tocpro[0].rai[0].declenchement}}</div>
+                    </div>
+                    <div class="div1">
+                        <div class="" style="    font-weight: bolder;"> Statut rapport incident</div>
+                        <div class="" style="color: orange;">{{elementRAI.tocpro[0].rai[0].status}}</div>
+                    </div>
+                    <div class="div1">
+                        <div class="" style="    font-weight: bolder;"> MTTR</div>
+                        <div class="" style="color: red;">{{elementRAI.tocpro[0].rai[0].status}}</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div *nzModalFooter [style]="{display:'flex',    padding: '1%', borderTop: 'none',    justifyContent: 'center',textAlign: 'center',
 flexDirection: 'column'}">
-
+        <!-- <button></button> -->
     </div>
 
 </nz-modal>

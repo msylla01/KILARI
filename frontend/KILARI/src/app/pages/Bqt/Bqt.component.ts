@@ -21,6 +21,8 @@ export class BqtComponent implements OnInit {
 
   commantaire:string;
   titleModal:any;
+reloading:boolean = false;
+
   search:any;
   // modalRef: NgbModalRef | any;
   loading:boolean = true
@@ -51,6 +53,11 @@ export class BqtComponent implements OnInit {
     {id:2, value:"NOK"},
   ]
 
+  StatusCR:any = [
+    {id:1, value:"OUI"},
+    {id:2, value:"NON"},
+  ]
+
   fileChangeBQT(event:any) {
     if (event.target.files && event.target.files.length > 0) {
        let extensionFile = event.target.files[0].name.split('.').pop()
@@ -58,6 +65,13 @@ export class BqtComponent implements OnInit {
       console.log('FILE', this.elementBQT.uploadedFilePword);
 
     }
+  }
+
+  reloadPage(){
+    this.search = "";
+    this.reloading = true
+    // location.reload();
+    this.getAllBQT()
   }
 
   fileChangeRendu(event:any) {
@@ -69,6 +83,28 @@ export class BqtComponent implements OnInit {
     }
   }
 
+  filterSearch(event:any){
+    console.log('event===>',event.target.value);
+    this.search = event.target.value
+    if (event.target.value   ) {
+        this.ListBQT.filter((el:any)=>{
+        if ( el.Libelle.toLowerCase().includes(event.target.value.toLowerCase()) ) {
+            this.ListBQT = []
+             this.ListBQT.push(el);
+             this.ListBQT;
+        }
+        else if(!el.Libelle.toLowerCase().includes(event.target.value.toLowerCase())){
+          console.log('aaaa=>>',el.Libelle.toLowerCase().includes(event.target.value.toLowerCase()));
+            this.ListBQT
+        }
+      })
+    }
+
+    if (!event.target.value) {
+      console.log('==><====NUm',this.ListBQT);
+        this.ListBQT
+    }
+  }
 
   // async createPDF(){
   //   this.handleCancel();
@@ -230,7 +266,9 @@ export class BqtComponent implements OnInit {
     this.ApiService.get(endPoint).subscribe(
       (response:any) => {
         this.ListBQT = response;
-        this.commantaire = this.ListBQT[0].ComptRendus.slice(0,100)
+        this.loading = false;
+        this.reloading = false
+        // this.commantaire = this.ListBQT[0].ComptRendus.slice(0,100)
         console.log('ListBQT', this.ListBQT,this.commantaire);
     this.SpinnerService.hideSpinner()
 
@@ -238,6 +276,9 @@ export class BqtComponent implements OnInit {
       (error:any) => {
         console.log('error',error);
     this.SpinnerService.hideSpinner()
+    this.reloading = false
+
+    this.loading = false;
 
       }
     );
@@ -267,22 +308,10 @@ export class BqtComponent implements OnInit {
   handleCancel(): void {
     console.log('handleCancel',);
     this.isVisibleBQT = false;
+    this.elementBQT = {}
     this.isVisibleBQTDetail = false
   }
 
-
-  // ViewBQT(contentView:any, bqt?:any){
-  //   this.titleModal = "Details de la BQT"
-  //   this.IdBQT =  bqt.id
-  //   this.elementBQT = {...bqt}
-  //   console.log('this.elementBQT view',this.elementBQT );
-
-  //   this.modalRef =  this.modalService.open(contentView, {size  : 'xl'})
-  //   this.modalRef.result.then(
-  //     (result:any) => {
-  //       console.log('oooook',result);
-  //   });
-  // }
 
   SauveBQT(){
     if (!this.elementBQT.Libelle) {
@@ -320,7 +349,7 @@ this.loading = false
     this.ApiService.post(endPoint, data).subscribe(
       (res: any) => {
         console.log('data res bqt', res);
-        this.deleStorageClose();
+        this.handleCancel();
         this.showSuccess('La création du BQT bien effectuée');
         this.getAllBQT();
         this.elementBQT = {};
@@ -371,7 +400,7 @@ this.loading = false
       (res: any) => {
         console.log('data res bqt', res);
         this.showSuccess('La mise à jour de la BQT bien effectuée');
-        this.deleStorageClose();
+        this.handleCancel();
         this.getAllBQT();
         this.loading = true;
       },

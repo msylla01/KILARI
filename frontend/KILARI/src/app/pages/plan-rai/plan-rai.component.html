@@ -26,7 +26,11 @@
             <tbody>
                 <tr style="text-align: center;border: 1px solid #cccccc" *ngFor="let toc of ListTocProbleme">
                     <th scope="row">#</th>
-                    <td>{{ toc.Numerotocpro }}</td>
+                    <td>
+                        <nz-tag nzColor="processing">
+                            {{ toc.Numerotocpro }}
+                        </nz-tag>
+                    </td>
                     <td style="border: 1px solid #cccccc;    padding: 0.4rem 0">
                         <table class="table partiale" style="border: 0px solid #cccccc">
                             <tr *ngFor="let t1 of toc.planrai">
@@ -66,7 +70,7 @@
                         <button style="margin-right: 0.6rem;" (click)="showModal1(toc)" type="button" class="btn btn-secondary">
                       <i class="fa-solid fa-plus"></i>
                     </button>
-                        <button style="    margin-right: 0.6rem;" type="button" class="btn btn-danger">
+                        <button (click)="showModal1(toc)" style="    margin-right: 0.6rem;" type="button" class="btn btn-danger">
                       <i class="fa fa-edit" aria-hidden="true"></i>
                     </button>
                         <button type="button" class="btn btn-success">
